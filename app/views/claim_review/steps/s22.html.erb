@@ -1,0 +1,69 @@
+
+         <!-- Heading -->
+<div class="text-center mb-5">
+  <div class="col-12 col-md-10 col-lg-8 mx-auto">
+    <h4><%= t('claim_r') %></h4>
+    <h2 class="text-primary"> <%= link_to @claim.title, claim_path(@claim.id) %></h2>
+  </div>
+</div>
+<!-- Heading -->
+<div class="container">
+  <div class="row">
+    <div class="col-3">
+      <%= form_for @claim_review, method: :put, url: wizard_path do |f| %>
+      <div class="">
+        <%
+            passed_step=false
+            @all_steps.each do |key,value| %>
+        <%= is_visible(key).html_safe %><div class="">
+          <% if (step==File.basename(wizard_path(key)))
+                    passed_step=true %>
+          <div class="no-style"><b><%== value %></b></div>
+          <% elsif passed_step %>
+          <%= f.submit value, style: '', class: 'no-style' %>
+          <% else %>
+          <%= f.submit value, style: '', class: 'no-style' %>
+          <% end %>
+        </div>
+      </div>
+      <% end %>
+    </div>
+  </div>
+  <div class="col-9">
+    <% if f.object.errors.any? %>
+    <div class="error_messages">
+      <% f.object.errors.full_messages.each do |error| %>
+      <p><%= error %></p>
+      <% end %>
+    </div>
+    <% end %>
+    <fieldset>
+      <br><h6><strong><%== t('share_setting') %></strong></h6>
+
+          <li><big><b><font color=blue><%== t('review_sharing_mode_q_long') %></font></b></big><span class='required'>*</span><br>
+          <br><%= f.radio_button :review_sharing_mode, '1', :checked => (!@claim_review.review_sharing_mode.blank? && @claim_review.review_sharing_mode==1) %> <%== t('yes_share') %><br><%= f.radio_button :review_sharing_mode, '-1', :checked => (!@claim_review.review_sharing_mode.blank? && @claim_review.review_sharing_mode==-1) %> <%== t('no_share') %><br><br>
+
+          <br>
+
+          </li>
+
+          <li><big><b><font color=blue><%== t('claim_review_field') %><br><small><small><%== t('published_article_url') %></small></small></font></b></big><br>
+          <%= f.text_area(:note_review_sharing_mode, size: '100x10', class: 'field-long field-textarea') %><br>
+
+          <br>
+
+          </li>
+
+          <% if !@claim.blockchain_tx.nil? %>
+<li><big><b><font color=blue><%== t('add_to_blockchain_q_long') %></font></b></big><br>
+          <br><%= f.radio_button :add_to_blockchain, '1', :checked => (!@claim_review.add_to_blockchain.blank? && @claim_review.add_to_blockchain==1) %> <%== t('yes') %><br><%= f.radio_button :add_to_blockchain, '0', :checked => (!@claim_review.add_to_blockchain.blank? && @claim_review.add_to_blockchain==0) %> <%== t('no') %><br><br>
+          <br>
+          </li>
+          <% end %>
+      <%= link_to t('previous_step'),previous_wizard_path+'?s=prev',:class=>'btn btn btn-primary',:style=>'color:white; background-color:#4B99AD' %>
+&nbsp;&nbsp;&nbsp;<%= f.submit t('finish'), :class => 'btn btn btn-primary' %>
+    </fieldset>
+    <div style='float:right'><%= link_to t('del_review'), claim_claim_review_path(@claim.id,@claim_review), style: '', method: :delete, data: { confirm: t('warning_del') } %></div>
+    <% end %>
+  </div>
+</div>

@@ -1,0 +1,2 @@
+module ClaimReviewsHelper
+end

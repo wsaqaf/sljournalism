@@ -1,0 +1,28 @@
+<% @users.each do |user| %>
+<div class="container">
+  <div class="row">
+    <div class="offset-1" style="width:900px">
+
+      <h5><%== user.name %></h5>
+      <ul>
+      <li>Email: <%== user.email %></li>
+      <li>Created at: <%== user.created_at %></li>
+      <% if user.affiliation && !user.affiliation.empty? %>
+        <li>Affiliation: <%== user.affiliation %></li>
+      <% end %>
+      <li><%== user.role %></li>
+      <% if user.url && !user.url.empty? %>
+        <li>URL: <%== user.url %></li>
+      <% end %>
+      <% if user.details && !user.details.empty? %>
+        <li>Bio: <%== user.details %></li>
+        edit
+      <% end %>
+      <%= link_to 'Edit user profile', edit_admin_user_path(user.id) %>
+      </ul>
+    </div>
+    </div>
+    <hr>
+  </div>
+<% end %>
+<center><%= link_to "Add new user", new_admin_user_path,:class=>'btn btn btn-secondary',:style=>'' %></center>

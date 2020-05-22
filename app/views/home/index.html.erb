@@ -1,0 +1,63 @@
+<div class="text-center mb-5">
+  <div class="col-12 col-md-10 col-lg-8 mx-auto">
+    <h1><%= t('home_t') %></h1>
+    <p><%= t('home_d') %></p>
+  </div>
+</div>
+<div class="container">
+  <div class="row">
+    <div class="offset-md-2 col-12 col-md-4">
+      <ul class="list-group list-group-flush">
+        <li class="list-group-item">
+          <h4 class="text-primary">
+            <%= t('step_1') %>
+          </h4>
+          <p> <%= t('step_1_d') %></p>
+        </li>
+        <li class="list-group-item">
+          <h4 class="text-primary">
+            <%= t('step_2') %>
+          </h4>
+          <p> <%= t('step_2_d') %></p>
+        </li>
+        <li class="list-group-item">
+          <h4 class="text-primary">
+            <%= t('step_3') %>
+          </h4>
+          <p> <%= t('step_3_d') %></p>
+        </li>
+      </ul>
+      <div class="pl-3">
+        <a href= "<%= new_claim_path %>">
+          <button type="button" class="btn mt-2 btn-primary"><%= t('get_started') %></button></a> <br>
+        <span class="small"><%= link_to t('or_browse'), claims_path %></span>
+        <hr><span class="small"><%== t('video_tutorial') %></span>
+      </div>
+    </div>
+    <div class="col-12 col-md-4 text-center">
+      <img width="80%" src="<%= asset_path('figure3.png') %>" />
+    </div>
+  </div>
+</div>
+
+<div class="text-center mt-5 mb-5">
+  <div class="col-12 col-md-10 col-lg-8 mx-auto">
+    <h4 class="mb-4"><%= t('tools_for_journalists') %></h4>
+    <!-- <p>We provide journalists and media with more efficient tools for fact checking.</p> -->
+
+    <a href="<%= url_for :controller => 'resources' %>">
+      <div class="bg-secondary p-5 text-white">
+        <h4><%= t('become_factchecker') %></h4>
+        <p><%= t('collection_tools') %></p>
+      </div>
+    </a>
+
+    <h4 class="mt-5 mb-4"><%= t('for_developers') %></h4>
+    <!-- <p>We provide journalists and media with more efficient tools for fact checking.</p> -->
+
+      <div class="bg-primary mt-4 p-5 text-white">
+        <h4><%= t('coming_soon_msg') %></h4>
+        <p><%= t('developer_api') %></p>
+      </div>
+  </div>
+</div>

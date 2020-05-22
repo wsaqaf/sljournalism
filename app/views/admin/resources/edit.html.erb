@@ -1,0 +1,48 @@
+<div class="form-claim">
+  <fieldset>
+    <legend>&nbsp;<%= t('edit') %> <%= t('resource').capitalize %></legend>
+    <%= form_for @resource, :html => { :onsubmit => "do_submit('resource')" } do |f| %>
+      <% if f.object.errors.any? %>
+      <div class="error_messages">
+          <% f.object.errors.full_messages.each do |error| %>
+            <p><%= error %></p>
+          <% end %>
+      </div>
+      <% end %>
+    <ul>
+      <li><%= t('give_resource_title') %><span class='required'>*</span>
+      <%= f.text_field :name, :onchange => "NewMedium('"+config.relative_url_root.to_s+"',0,'resource','resources','resources')", class: 'field-long', disabled: (@resource.user_id!=current_user.id && current_user.role!="admin"), readonly: (@resource.user_id!=current_user.id && current_user.role!="admin"), :autocomplete=>"off" %>
+      </li>
+      <div id="resource_note"></div>
+      <li>
+      <%= t('resource_url') %>
+      <%= f.text_field :url, class: 'field-long', :onfocusout => "URLPreview('"+config.relative_url_root.to_s+"','resource')", disabled: (@resource.user_id!=current_user.id && current_user.role!="admin"), readonly: (@resource.user_id!=current_user.id && current_user.role!="admin"), :autocomplete=>"off" %>
+      </li>
+      <div id="url_preview_block">
+        <% if @resource.url_preview.present? %><%== @resource.url_preview.gsub('\"','"').gsub("\\'", "'") %><% else %>No URL preview available<% end %>
+      </div>
+      <%= f.hidden_field :url_preview %>
+      <li>
+      <%= t('resource_tutorial_url') %>
+      <%= f.text_field :tutorial, class: 'field-long', disabled: (@resource.user_id!=current_user.id && current_user.role!="admin"), readonly: (@resource.user_id!=current_user.id && current_user.role!="admin"), :autocomplete=>"off" %>
+      </li>
+      <li>
+        <%= t('resource_icon_url') %>
+      <%= f.text_field :icon, class: 'field-long', disabled: (@resource.user_id!=current_user.id and current_user.role!="admin"), readonly: (@resource.user_id!=current_user.id and current_user.role!="admin"), :autocomplete=>"off" %>
+      </li>
+      <li>
+        <%= t('more_notes_resource') %>
+      <%= f.text_area(:description, size: '50x10', class: 'field-long field-textarea', disabled: (@resource.user_id!=current_user.id and current_user.role!="admin"), readonly: (@resource.user_id!=current_user.id and current_user.role!="admin")) %>
+      </li>
+      <li>
+        <%= t('resource_reference1') %><br><small><i><%= t('resource_reference2') %></i></small>
+      <%= f.text_field :used_for_qs, class: 'field-long', :autocomplete=>"off" %>
+      </li>
+      <li>
+        <%= f.submit 'Submit', :class => 'btn btn btn-primary', id: "submit" %>
+      </li>
+    </ul>
+    <% end %>
+  </fieldset>
+  <%= link_to "Delete", resource_path(@resource), method: :delete, data: { confirm: t('warning_msg2',type: t('the_resource')) } %>
+  </div>

@@ -1,0 +1,5 @@
+<h1><%= t('new')+' '+t('claim')+' '+' '+t('review') %></h1>
+
+<%= render 'form', claim_review: @claim_review %>
+
+<%= link_to t('go_back'), claim_claim_reviews_path %>

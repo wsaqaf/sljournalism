@@ -1,0 +1,112 @@
+# Additional translations at https://github.com/plataformatec/devise/wiki/I18n
+
+en:
+  devise:
+    account:
+      email: "Email"
+      edit_title: "Edit"
+      User: "user"
+      update_acc: "Update profile"
+      del_acc: "Delete account"
+      confirm_del: "Are you sure? All content you created will also be deleted."
+      go_back: "Go back"
+      awaiting_confirmation: "Currently waiting confirmation for"
+      name: "Name"
+      affiliation: "Team(s) [separate with comma for multiple teams]"
+      role: "Role"
+      url: "URL"
+      details: "Bio"
+      password: "Password"
+      current_pw: "Current password"
+      new_pw: "New password"
+      repeat_pw: "Retype new password"
+      email_h: "You will need this email to log in everytime"
+      name_h: "Your name will be included in meta data of your claim reviews"
+      affiliation_h: "This will be useful to identify peers in your organisation and for networking purposes"
+      role_h: "Available roles: Client: Can submit claims for review, Factchecker: Can only review claims, Guest: Can only view claims and reviews"
+      url_h: "A public web page to your profile (e.g., official URL or social media link)"
+      details_h: "Some description about you (title, location, interests, etc.)"
+      current_pw_h: "We need your current password to confirm your changes"
+      changed_pw_h: "Leave blank if you won't change your current password"
+      new_pw_h: "Must be six characters long and can include special characters such as %&#*?! and numbers"
+      repeat_pw_h: "Retype the new password again"
+      remember_me: "Remember me"
+      change_pw: "Change your password"
+      confirm_pw: "Confirm password"
+      forgot_pw: "Forgot your password?"
+      send_reset_instr: "Send me reset password instructions"
+      resend_instr: "Resend confirmation instructions"
+      missing_instr: "Didn't receive confirmation instructions?"
+      resend_unlock_instr: "Resend unlock instructions"
+      missing_unlock_instr: "Didn't receive unlock instructions?"
+      confirm_my_acc: "Confirm my account"
+      confirm_email_link: "You can confirm your account through the link below"
+      email_changed_to: "We're contacting you to notify you that your email is being changed to"
+      pw_changed: "We're contacting you to notify you that your password has been changed"
+      pw_change_requested: "Someone has requested a link to change your password. You can do this through the link below."
+      pw_change_not_requested: "If you didn't request this, please ignore this email."
+      pw_change_pending: "Your password won't change until you access the link above and create a new one."
+      acc_locked: "Your account has been locked due to an excessive number of unsuccessful sign in attempts."
+      unlock_acc_link: "Click the link below to unlock your account"
+      unlock_acc: "Unlock my account"
+    confirmations:
+      confirmed: "Your email address has been successfully confirmed."
+      send_instructions: "You will receive an email with instructions for how to confirm your email address in a few minutes."
+      send_paranoid_instructions: "If your email address exists in our database, you will receive an email with instructions for how to confirm your email address in a few minutes."
+    failure:
+      already_authenticated: "You are already signed in."
+      inactive: "Your account is not activated yet."
+      invalid: "Invalid %{authentication_keys} or password."
+      locked: "Your account is locked."
+      last_attempt: "You have one more attempt before your account is locked."
+      not_found_in_database: "Invalid %{authentication_keys} or password."
+      timeout: "Your session expired. Please sign in again to continue."
+      unauthenticated: "You need to sign in or sign up before continuing."
+      unconfirmed: "You have to confirm your email address before continuing."
+    mailer:
+      confirmation_instructions:
+        subject: "Confirmation instructions"
+      reset_password_instructions:
+        subject: "Reset password instructions"
+      unlock_instructions:
+        subject: "Unlock instructions"
+      email_changed:
+        subject: "Email Changed"
+      password_change:
+        subject: "Password Changed"
+    omniauth_callbacks:
+      failure: "Could not authenticate you from %{kind} because \"%{reason}\"."
+      success: "Successfully authenticated from %{kind} account."
+    passwords:
+      no_token: "You can't access this page without coming from a password reset email. If you do come from a password reset email, please make sure you used the full URL provided."
+      send_instructions: "You will receive an email with instructions on how to reset your password in a few minutes."
+      send_paranoid_instructions: "If your email address exists in our database, you will receive a password recovery link at your email address in a few minutes."
+      updated: "Your password has been changed successfully. You are now signed in."
+      updated_not_active: "Your password has been changed successfully."
+    registrations:
+      destroyed: "Bye! Your account has been successfully cancelled. We hope to see you again soon."
+      signed_up: "Welcome! You have signed up successfully."
+      signed_up_but_inactive: "You have signed up successfully. However, we could not sign you in because your account is not yet activated."
+      signed_up_but_locked: "You have signed up successfully. However, we could not sign you in because your account is locked."
+      signed_up_but_unconfirmed: "A message with a confirmation link has been sent to your email address. Please follow the link to activate your account."
+      update_needs_confirmation: "You updated your account successfully, but we need to verify your new email address. Please check your email and follow the confirmation link to confirm your new email address."
+      updated: "Your account has been updated successfully."
+      updated_but_not_signed_in: "Your account has been updated successfully, but since your password was changed, you need to sign in again"
+    sessions:
+      signed_in: "Signed in successfully."
+      signed_out: "Signed out successfully."
+      already_signed_out: "Signed out successfully."
+    unlocks:
+      send_instructions: "You will receive an email with instructions for how to unlock your account in a few minutes."
+      send_paranoid_instructions: "If your account exists, you will receive an email with instructions for how to unlock it in a few minutes."
+      unlocked: "Your account has been unlocked successfully. Please sign in to continue."
+  errors:
+    messages:
+      already_confirmed: "was already confirmed, please try signing in"
+      confirmation_period_expired: "needs to be confirmed within %{period}, please request a new one"
+      expired: "has expired, please request a new one"
+      not_found: "not found"
+      not_locked: "was not locked"
+      not_saved:
+        one: "1 error prohibited this %{resource} from being saved:"
+        other: "%{count} errors prohibited this %{resource} from being saved:"

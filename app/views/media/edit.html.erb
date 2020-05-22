@@ -1,0 +1,44 @@
+<div class="form-claim">
+  <fieldset>
+    <legend>&nbsp;<%= t('edit') %> <%= t('medium').capitalize %></legend>
+    <%= form_for @medium, :html => { :onsubmit => "do_submit('medium')" } do |f| %>
+      <% if f.object.errors.any? %>
+      <div class="error_messages">
+          <% f.object.errors.full_messages.each do |error| %>
+            <p><%= error %></p>
+          <% end %>
+      </div>
+      <% end %>
+    <ul>
+      <li><%= t('give_claim_title') %>
+      <%= f.text_field :name, class: 'field-long', :readonly => true %>
+      </li>
+      <li>
+      <%= t('medium_url') %>
+      <%= f.text_field :url, :onchange => "URLPreview('"+config.relative_url_root.to_s+"','medium')", class: 'field-long', :autocomplete=>"off" %>
+      </li>
+      <div id="url_preview_block"></div>
+      <%= f.hidden_field :url_preview %>
+      <li>
+      <%= t('medium_type') %>
+        <%= f.select :medium_type, options_for_select(@medium_types, :selected => @medium.medium_type) %>
+      </li>
+      <li>
+        <%= t('share_medium') %><br>
+          &nbsp;&nbsp;<b><%= f.radio_button :sharing_mode, '1', :checked => @medium.sharing_mode==1 || @medium.sharing_mode.nil? %> Yes share with everyone &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          <%= f.radio_button :sharing_mode, '-1', :checked => @medium.sharing_mode==-1 %> No keep it private to me only &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</b>
+      </li>
+      <li>
+      <br><%= t('more_notes_medium') %>
+      <%= f.text_area(:description, size: '50x10', class: 'field-long field-textarea') %>
+      </li>
+      <li>
+        <%= f.submit t('submit'), :class => 'btn btn btn-primary' %>
+      </li>
+    </ul>
+    <% end %>
+  </fieldset>
+  <%= link_to t('show'), @medium %> |
+  <%= link_to t('delete'), medium_path(@medium), method: :delete, data: { confirm: t('warning_msg2',type: t('the_medium')) } %> |
+  <%= link_to t('go_back'), media_path %>
+  </div>

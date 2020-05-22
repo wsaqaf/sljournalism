@@ -1,0 +1,63 @@
+<div class="container">
+  <h3><%= t('claim').capitalize+' '+t('reviews') %></h3>
+  <% if (@claim_reviews.size==0) %>
+  <%= t('no_results') %>
+  <% end %>
+  <% @claim_reviews.each do |claim_review| %>
+  <ul>
+    <%
+            claim = Claim.find(claim_review.claim_id); rating={"1"=>t('rate_false'),"2"=>t('rate_mostly_false'),"3"=>t('rate_mixed'),"4"=>t('rate_mostly_true'),"5"=>t('rate_true'),"0"=>t('rate_no_decision')}
+            usr = User.find(claim_review.user_id); reviewer_name=usr.name; reviewer_aff=usr.affiliation;
+            md_name=t('not_provided'); sr_name=t('not_provided');
+            if not claim.medium_id.blank?
+              begin
+                md = Medium.find(claim.medium_id); if not md.blank? then md_name=md.name; end;
+              rescue
+                md_name=t('not_provided')
+              end
+            end
+            if not claim.src_id.blank?
+              begin
+                sr = Src.find(claim.src_id); if not sr.blank? then sr_name=sr.name; end;
+              rescue
+                sr_name=t('not_provided')
+              end
+            end
+            if not reviewer_aff.blank? then reviewer_aff=" ["+reviewer_aff+"]"; end
+          %>
+    <li><b><%= t('claim').capitalize %>:</b> <%= link_to claim.title, claim_path(claim.id) %></li>
+    <li><b><%= t('assessment') %>:</b>
+      <%
+             rating={"1"=>t('rate_false'),"2"=>t('rate_mostly_false'),"3"=>t('rate_mixed'),"4"=>t('rate_mostly_true'),"5"=>t('rate_true'),"0"=>t('rate_no_decision')}
+            %>
+      <% if !claim_review.review_verdict.blank? %>
+      <%= link_to(image_tag(config.relative_url_root.to_s+'/'+claim_review.review_verdict.to_s+'.png', style:"height:30px", alt:"'"+rating[claim_review.review_verdict.to_s].to_s+"'", title:"'"+rating[claim_review.review_verdict.to_s].to_s+"'"),claim_claim_review_path(claim.id,claim_review.id)) %>
+      <% txt="["+rating[claim_review.review_verdict.to_s].to_s+"]"
+             else
+              txt=t('not_assessed')
+            end %>
+      <%== txt %>
+    </li>
+    <% if md_name!=t('not_provided') %>
+    <li><b><%= t('medium').capitalize %>:</b> <%= link_to md_name, medium_path(claim.medium_id) %></li>
+    <% else %>
+    <li><b><%= t('medium').capitalize %>:</b> <%= md_name %></li>
+    <% end %>
+    <% if sr_name!=t('not_provided') %>
+    <li><b><%= t('source').capitalize %>:</b> <%= link_to sr_name, src_path(claim.src_id) %></li>
+    <% else %>
+    <li><b><%= t('source').capitalize %>:</b> <%= sr_name %></li>
+    <% end %>
+    <li><%= t('reviewer') %>: <%= reviewer_name %><%= reviewer_aff %></li>
+    <li><%= t('updated_at') %>: <%= claim_review.updated_at %></li>
+
+    <% if claim_review.user_id == current_user.id || current_user.role=="admin"  %>
+    <br><%= link_to t('edit')+' '+t('review'), claim_claim_reviews_path(claim.id), method: :create %> -
+    <%= link_to link_to t('delete')+' '+t('review'), claim_claim_review_path(claim.id,claim_review), method: :delete, data: { confirm: "Are you sure?" } %><br>
+    <% end %>
+
+    <br><b><%= link_to t('more_about')+' '+t('this_review'), claim_claim_review_path(claim.id,claim_review.id) %></b>
+  </ul>
+  <hr>
+  <% end %>
+</div>

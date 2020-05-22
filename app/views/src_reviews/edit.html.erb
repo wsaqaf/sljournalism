@@ -1,0 +1,6 @@
+<h1><%= t('edit')+' '+t('src').capitalize+' '+t('review') %></h1>
+
+<%= render 'form', src_review: @src_review %>
+
+<%= link_to t('show'), @src_review %> |
+<%= link_to t('go_back'), src_reviews_path %>

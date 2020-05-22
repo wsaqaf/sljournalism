@@ -1,0 +1,124 @@
+<div class="container">
+  <% if @import_note.present?  %>
+    <font color="blue"><%== @import_note %></font>
+    <hr>
+  <% end %>
+<h4><%= t('title_claim') %>: <%= @claim.title %></h4>
+<% if @claim.tag_list.size>0 %>
+    <%= t('tags_claim') %>: <%= raw @claim.tags.map(&:claim_name).map { |t| link_to t, tag_path(t) }.join(', ') %>
+<% end %>
+
+<h6><%= t('url') %>:
+<% if @claim.url.present? %>
+  <%= link_to @claim.url,@claim.url %>
+  <% if @claim.url_preview.present? %>
+    <br><%== @claim.url_preview.gsub('\"','"').gsub("\\'", "'") %>
+  <% end %>
+<% else %>
+  <%= t('not_provided') %>
+<% end %>
+</h6>
+<h6><%= t('medium').capitalize %>:
+<% if @claim.medium_id.present? %>
+  <% begin %>
+    <% @medium = Medium.find @claim.medium_id %>
+             <a href='<%= media_path %>/<%= @claim.medium_id %>' target=_blank><%= @medium.name %></a>
+  <% rescue %>
+    <% end %>
+<% else %>
+    <%= t('not_provided') %>
+<% end %>
+</h6>
+<h6><%= t('source').capitalize %>:
+  <% if @claim.src_id.present? %>
+  <% begin %>
+    <% @src = Src.find @claim.src_id %>
+           <a href='<%= srcs_path %>/<%= @claim.src_id %>' target=_blank><%= @src.name %></a>
+           <% rescue %>
+             <% end %>
+ <% else %>
+     <%= t('not_provided') %>
+ <% end %>
+</h6>
+<h6><%= t('share_setting') %>?
+  <% if @claim.sharing_mode==1 %>
+    <%= t('is_shared') %>
+  <% else %>
+      <%= t('is_private') %>
+  <% end %>
+</h6>
+<h6><%= t('description') %>:
+  <% if @claim.description.present? %>
+    <%= @claim.description %>
+  <% else %>
+      <%= t('not_provided') %>
+  <% end %>
+</h6>
+<% if current_user.role=="client" || current_user.role=="admin" %>
+  <h6><%= t('added_to_blockchain') %>:
+    <% if @claim.add_to_blockchain==1 && !@claim.time_added_to_blockchain.nil? && !@claim.blockchain_tx.nil? %>
+      <%= t('added_to_blockchain') %>
+      <%= t('added_on_date') %>: <%= @claim.time_added_to_blockchain %><br>
+      <%= t('blockchain_tx') %>: <%= @claim.blockchain_tx %><br>
+    <% else %>
+        <%= t('not_added_to_blockchain') %>
+    <% end %>
+  </h6>
+  <h6><%= t('expiry_date') %>:
+    <% if !@claim.expiry_date.nil? %>
+      <%= @claim.expiry_date %>
+    <% else %>
+        <%= t('not_expiry_date') %>
+    <% end %>
+  </h6>
+  <h6><%= t('bounty_amount') %>:
+    <% if !@claim.bounty_amount.nil? %>
+      <%= @claim.bounty_amount %>
+    <% else %>
+        <%= t('no_bounty') %>
+    <% end %>
+  </h6>
+  <h6><%= t('conditions') %>:
+    <% if !@claim.conditions.nil? %>
+      <%= @claim.conditions %>
+    <% else %>
+        <%= t('no_conditions') %>
+    <% end %>
+  </h6>
+<% end %>
+
+<hr>
+<p><%= t('added_by') %>: <%= User.find(@claim.user_id).name %>
+<br><%= t('created_at') %>: <%= @claim.created_at %>
+<br><%= t('updated_at') %>: <%= @claim.updated_at %></p>
+<br>
+<%= link_to t('export_this_claim'), export_claim_path(@claim), method: :post %>
+
+<br><br>
+<h6>
+ <% @reviews = ClaimReview.where("claim_id=? AND ((review_sharing_mode=1 AND review_verdict IS NOT NULL) OR user_id=?)",@claim.id,current_user.id)
+    if (@reviews.blank?) then @total_reviews=0 else @total_reviews=@reviews.size end
+    if (@total_reviews>0)
+       @my_review = ClaimReview.where(claim_id: @claim.id, user_id: current_user.id).first
+      if (@my_review.blank?) %>
+         <hr><%= link_to t('check_reviews')+" "+t('this_claim'), claim_claim_reviews_path(@claim.id) %>
+         <%= link_to t('review').capitalize+" "+t('this_claim'), claim_claim_reviews_path(@claim.id), method: :create %>
+     <% else %>
+        <%= link_to t('see_your_review') +" "+t('this_claim'), claim_claim_review_path(@claim.id,@my_review.id) %>
+       <% if @total_reviews>1 %>
+          <hr> <%= link_to t('check_other_reviews') +" "+t('this_claim'), claim_claim_reviews_path(@claim.id) %><br>
+       <% end
+     end
+  else %>
+    <br><%= link_to t('review').capitalize+" "+t('this_claim'), claim_claim_reviews_path(@claim.id), method: :create %>
+ <% end %>
+
+</h6>
+<br><br>
+<%= link_to t('go_back'), claims_path %>
+
+  <% if @claim.user_id == current_user.id || current_user.role=="admin"  %> -
+    <%= link_to t('edit'), edit_claim_path(@claim) %> -
+    <%= link_to t('delete'), claim_path(@claim), method: :delete, data: { confirm: @warning_msg} %>
+  <% end %>
+</div>

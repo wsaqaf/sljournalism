@@ -1,0 +1,176 @@
+<div class="mb-5">
+<% if user_signed_in? %>
+<div class="text-center col-12 col-md-10 col-lg-8 mx-auto">
+  <h2><%= t('db_t') %></h2>
+  <p><%= t('db_d') %></p>
+</div>
+<div class="container">
+  <div class="form-row">
+    <div class="col-md-4">
+      <!-- Filter -->
+      <%= @filter_msg.html_safe %>
+    </div>
+    <div class="col-md-4">
+      <!-- Sort -->
+      <%= @sort_msg.html_safe %>
+    </div>
+    <div class="col-md-4">
+      <!-- Search -->
+      <div class="row">
+        <div class="col-12">
+          <label>Search</label>
+          <%= form_tag(claims_path, method: :get, class: "form-inline") do %>
+          <%= text_field_tag :q, params[:q], class: 'form-control'  %>
+          <%= submit_tag t('search'), name: nil, :class => 'btn btn btn-primary' %>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+  <% if params[:blockchain_resp].present?
+        if params[:blockchain_resp].length>3 %>
+          <font color=green>Successfully added to the blockchain with transaction: <%= params[:blockchain_resp] %></font>
+        <% end
+  end %>
+</div>
+<hr>
+<% @claims.each do |claim| %>
+<!-- <%= react_component("Post", {title: claim.title}) %> -->
+<!-- Claim Card -->
+<div class="container">
+  <div class="row">
+    <div class="offset-1" style="width:900px">
+      <p class="uppercase m-0" style="font-size: 10px">
+      <% if claim.user_id == current_user.id || current_user.role=="admin"
+        dependent_reviews=ClaimReview.where("claim_id = ?",claim.id).count("id")
+        if (dependent_reviews>0)
+          warning_msg= t('warning_del_dependents', count:dependent_reviews)+".\n"
+          warning_msg=warning_msg+t('warning_msg2',type: t('the_claim'))
+        else
+          warning_msg=t('warning_msg1',type: t('the_claim'))
+        end
+      %>
+     <% end %> </p>
+
+      <h4 class="mt-0 no-link-style"><%= link_to claim.title, claim_path(claim) %></h4><small>
+      <%= t('added_by') %>: <%= User.find(claim.user_id).name %> -
+      <%= t('created_at') %>: <%= claim.created_at %> -
+      <%= t('updated_at') %>: <%= claim.updated_at %> -
+      <% if claim.user_id == current_user.id || current_user.role=="admin" %>
+        <%= link_to t('edit'), edit_claim_path(claim) %> -
+        <%= link_to t('delete'), claim_path(claim), method: :delete, data: { confirm: warning_msg } %> -
+      <% end %>
+      <%= link_to t('export'), export_claim_path(claim), method: :post %></small><br>
+      <% if !claim.tags.empty? %>
+        <%= t('tags') %>:
+          <small>
+          <%= raw claim.tags.map(&:claim_name).map { |t| link_to t, tag_path(t) }.join(', ') %> | <%= t('updated_at') %>:
+          <%= claim.created_at.strftime("%Y-%m-%d") %></small>
+      <% end %>
+      <div class="mt-2">
+      <%
+
+      @my_review = ClaimReview.where("claim_id=? AND user_id=?",claim.id,current_user.id).first
+      @rev_menu=""
+      if (@my_review.blank?) then @revtype ="Add" else @revtype ="Edit"
+      end %>
+      </div>
+      <div class="mt-2">
+        <%
+      @result2="<table><tr>"
+      @reviews = ClaimReview.where("claim_id=? AND ((review_sharing_mode=1 AND review_verdict IS NOT NULL) OR user_id=?)",claim.id,current_user.id)
+      @last_review_time=''
+      if (@reviews.blank?) then @total_reviews=0; @results2=""
+      else
+        @total_reviews=@reviews.size
+        assessments={"1"=>t('rate_false'),"2"=>t('rate_mostly_false'),"3"=>t('rate_mixed'),"4"=>t('rate_mostly_true'),"5"=>t('rate_true'),"0"=>t('rate_no_decision')}
+        assessments2={"1"=>0,"2"=>0,"3"=>0,"4"=>0,"5"=>0,"0"=>0}
+        @reviews.each do |rev|
+          if rev.review_verdict.present? then
+              if (@last_review_time.blank?) then @last_review_time=rev.updated_at
+              elsif (rev.updated_at>@last_review_time) then @last_review_time=rev.updated_at
+              end
+              assessments2[rev.review_verdict.to_s]=assessments2[rev.review_verdict.to_s]+1
+              @result2=@result2+"<td><a href='"+claim_claim_review_path(claim.id,rev.id)+"' target=_blank><img src='"+config.relative_url_root.to_s+"/"+rev.review_verdict.to_s+".png' height=30 alt='"+assessments[rev.review_verdict.to_s].to_s+"' title='"+assessments[rev.review_verdict.to_s].to_s+"'></a></td>"
+            end
+        end
+        result1=""
+        assessments.each do |key, value|
+            if assessments2[key]>0
+              result1= result1+" "+value+" – "+assessments2[key].to_s
+            end
+        end
+      end %>
+    <small>
+        <% if (@total_reviews>0) %>
+          <% if !result1.empty? %>
+            <%= result1 %>
+            <% if (@total_reviews>1) %>
+              <%= link_to "(" + t('show_reviews', reviews: @total_reviews), claim_claim_reviews_path(claim.id) %> |
+            <% else %>
+              <%= link_to "(" + t('show_review'), claim_claim_reviews_path(claim.id) %> |
+            <% end %>
+            <% if @revtype == "Add" %>
+                <%= link_to t('add_review'), claim_claim_reviews_path(claim.id), method: :create %> )
+            <% else %>
+                <%= link_to t('edit_review'), claim_claim_reviews_path(claim.id), method: :create %> |
+                <%= link_to t('del_review'), claim_claim_review_path(claim.id,@my_review), method: :delete, data: { confirm: t('confirm_del_q')} %> )
+            <% end %>
+          <% else %>
+            ( <%= link_to t('edit_review'), claim_claim_reviews_path(claim.id), method: :create %> |
+            <%= link_to t('del_review'), claim_claim_review_path(claim.id,@my_review), method: :delete, data: { confirm: t('confirm_del_q')} %> )
+          <% end %>
+        <% else %>
+            <div  style='float:right'><%= link_to t('add_review'), claim_claim_reviews_path(claim.id), method: :create %></div><br>
+        <% end %>
+    </small>
+      </div>
+
+      <!-- URL PREVIEW -->
+
+    <div>
+   <%
+    if !claim.url_preview.present?
+      url_prev='<div id="final_url_preview" class="fragment">'
+      url_prev=url_prev+'<div style="text-align: left"><img src="'+config.relative_url_root.to_s+'/assets/claim.png" id="cimg" height=75 />'
+      if (!claim.url.blank?) then url=claim.url; else url=claim_path(claim); end
+      if (!claim.description.blank?) then description=claim.description; else description=""; end
+      url_prev=url_prev+"\n<h4><a href=\""+url+"\">"+claim.title+"</a></h4><br><p class=\"text\">"+description+"</p><br></div></div>"
+  else
+    url_prev=claim.url_preview.delete('\\\\"')
+  end
+  if @total_reviews>0 then
+           url_prev=url_prev.gsub('\"','"').gsub("\\'", "'")
+           url_prev=url_prev.sub("</h4>","<div style='float: right'>"+@result2+"</td></tr></table></div></h4>")
+  else
+           url_prev=url_prev.gsub('\"','"').gsub("\\'", "'")
+  end %>
+ <%== url_prev %>
+
+  </div>
+
+    </div>
+    <!-- For the future, could preview media or type here
+    <div class="col-2">
+      <div class="media">
+        <img style="border-radius:100%" src="https://via.placeholder.com/80" class="mr-3 mt-4" alt="...">
+      </div> -->
+
+    </div>
+    <hr>
+  </div>
+  <% end %>
+  <div class="container">
+    <% if @total_count>10 then %> <%== pagy_bootstrap_nav(@pagy) %> <% end %>
+    <hr>
+    <div class="container text-center p2">
+      <%= link_to t('add')+" "+t('or')+" "+t('import')+" "+t('claim').capitalize, new_claim_path,:class=>'btn btn btn-secondary',:style=>'' %>
+    </div>
+  </div>
+  <% else %>
+    <%= t('go_sign_in_part1') %> <b><%= link_to t('sign_in'), new_user_session_path %></b>.
+    <br>
+    <br>
+    <%= t('go_sign_up_part1') %> <b><%= link_to t('sign_up'), new_user_registration_path %></b>.
+  <% end %>
+</div>

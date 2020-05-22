@@ -1,0 +1,2 @@
+module MediumReviewsHelper
+end

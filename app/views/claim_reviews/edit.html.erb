@@ -1,0 +1,6 @@
+<h1><%= t('edit')+' '+t('claim').capitalize+' '+t('review') %></h1>
+
+<%= render 'form', claim_review: @claim_review %>
+
+<%= link_to t('show'), @claim_review %> |
+<%= link_to t('go_back'), claim_reviews_path %>

@@ -1,0 +1,77 @@
+<div class="text-center mb-5">
+  <div class="col-12 col-md-10 col-lg-8 mx-auto">
+    <h1><%= t('medium_t') %></h1>
+    <p><%= t('claim_d') %></p>
+  </div>
+</div>
+ <div class="container">
+  <div class="row">
+    <div class="col-12 col-md-8 offset-md-2">
+      <% if params[:import_err].present? %>
+        <center><font color="red"><%== t('invalid_json') %></font></center><br>
+      <% end %>
+      <fieldset>
+        <legend>&nbsp;<%= t('add_new_medium') %></legend>
+        <%= form_for @medium, :html => { :onsubmit => "do_submit('medium')" } do |f| %>
+          <% if f.object.errors.any? %>
+          <div class="error_messages">
+              <% f.object.errors.full_messages.each do |error| %>
+                <p><%= error %></p>
+              <% end %>
+          </div>
+          <% end %>
+        <ul>
+          <li><%= t('give_medium_title') %><span class='required'>*</span>
+          <%= f.text_field :name, :onchange => "NewMedium('"+config.relative_url_root.to_s+"',0,'medium','media','media')", class: 'field-long', :autocomplete=>"off" %><br>
+          </li>
+          <div id="medium_note"></div><br>
+          <li>
+          <%= t('medium_url') %>
+          <%= f.text_field :url, :onchange => "URLPreview('"+config.relative_url_root.to_s+"','medium')", class: 'field-long', :autocomplete=>"off" %><br>
+          </li>
+          <div id="url_preview_block"></div><br>
+          <%= f.hidden_field :url_preview %>
+          <li>
+          <%= t('medium_type') %>
+            <%= f.select :medium_type, options_for_select(@medium_types, :selected => @medium.medium_type) %><br><br>
+          </li>
+          <li>
+            <%= t('share_medium') %><br>
+              &nbsp;&nbsp;<b><%= f.radio_button :sharing_mode, '1', :checked => @medium.sharing_mode==1 || @medium.sharing_mode.nil? %> <%= t('yes_share') %> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              <%= f.radio_button :sharing_mode, '-1', :checked => @medium.sharing_mode==-1 %> <%= t('no_share') %> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</b><br><br>
+          </li>
+          <li>
+          <%= t('more_notes_medium') %><br>
+          <%= f.text_area(:description, size: '50x10', class: 'field-long field-textarea') %><br><br>
+          </li>
+          <li>
+            <b><%= f.check_box :start_review, :checked => true %> <%= t('start_review') %></b><br><br>
+          </li>
+
+            <%= f.submit t('submit'), :class => 'btn btn btn-primary', id: "submit" %>
+        </ul>
+        <% end %>
+      </fieldset>
+      <hr>
+
+      <p class="text-center"><i><%= t('or') %></i><br>
+      <a class="btn btn-outline-primary" data-toggle="collapse" href="#collapseExample2" role="button"
+        aria-expanded="false" aria-controls="collapseExample2">
+        + <%= t('medium_import') %>
+      </a></p>
+
+      <div class="collapse" id="collapseExample2">
+        <i><%= t('medium_import_note') %></i><br>
+             <br><b><%= t('medium_select_file') %></b><br><br>
+            <%= form_for(@medium, url: {action: "create"}, html: {multipart: true}) do |f| %>
+                <%= f.file_field :file %><br>
+                <%= t('medium_select_url') %> <%= f.text_field :url, :style => "padding: 1px 1px; line-height: 10px; width: 320px" %><br>
+                <%= f.check_box :include_review, :checked => true %> <%= t('medium_option_include_review') %> <br>
+                <%= f.check_box :overwrite, :checked => true %> <%= t('medium_option_overwrite') %> <br>
+                <%= f.submit 'Import', :class => 'btn btn btn-primary', id: "submit", :style => "float: left; padding: 5px 5px 5px 5px; line-height: 15px;" %><br><br>
+             <% end %>
+      </div>
+
+    </div>
+  </div>
+</div>

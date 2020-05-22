@@ -1,0 +1,44 @@
+<div class="form-claim">
+  <fieldset>
+    <legend>&nbsp;<%= t('edit') %> <%= t('src').capitalize %></legend>
+    <%= form_for @src, :html => { :onsubmit => "do_submit('src')" } do |f| %>
+      <% if f.object.errors.any? %>
+      <div class="error_messages">
+          <% f.object.errors.full_messages.each do |error| %>
+            <p><%= error %></p>
+          <% end %>
+      </div>
+      <% end %>
+    <ul>
+      <li><%= t('give_src_title') %>
+      <%= f.text_field :name, class: 'field-long', :readonly => true %>
+      </li>
+      <li>
+      <%= t('src_url') %>
+      <%= f.text_field :url, :onchange => "URLPreview('"+config.relative_url_root.to_s+"','src')", class: 'field-long', :autocomplete=>"off" %>
+      </li>
+      <div id="url_preview_block"></div>
+      <%= f.hidden_field :url_preview %>
+      <li>
+      <%= t('src_type') %>
+      <%= f.select :src_type, options_for_select(@src_types, :selected => @src.src_type) %>
+      </li>
+      <li>
+        <%= t('share_src') %><br>
+        &nbsp;&nbsp;<b><%= f.radio_button :sharing_mode, '1', :checked => @src.sharing_mode==1 || @src.sharing_mode.nil? %> <%= t('yes_share') %>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <%= f.radio_button :sharing_mode, '-1', :checked => @src.sharing_mode==-1 %> <%= t('no_share') %> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</b>
+    </li>
+    <li>
+      <br><%= t('more_notes_src') %>
+        <%= f.text_area(:description, size: '50x10', class: 'field-long field-textarea') %>
+        </li>
+        <li>
+          <%= f.submit t('submit'), :class => 'btn btn btn-primary', id: 'submit' %>
+      </li>
+    </ul>
+    <% end %>
+  </fieldset>
+  <%= link_to t('show'), @src %> |
+  <%= link_to t('delete'), src_path(@src), method: :delete, data: { confirm: t('warning_msg2',type: t('the_source'))} %> |
+  <%= link_to t('go_back'), srcs_path %>
+  </div>

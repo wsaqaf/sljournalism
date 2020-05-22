@@ -1,0 +1,110 @@
+<div class="text-center mb-5">
+  <div class="col-12 col-md-10 col-lg-8 mx-auto">
+    <h1><%== t('about_galileo') %></h1>
+    <p></p>
+  </div>
+</div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-8 offset-2">
+      <a href="https://www.vinnova.se/p/faktaassistenten/" target=_blank><img src="https://www.ai.se/sites/default/files/content/styles/news_full/public/vinnova.png" width="300" width=150 alt="Vinnova" align="right"></a>
+      <h3><%== t('how_it_started') %></h3>
+      <%== t('about_msg1') %>
+
+      <br><h3><%== t('partners') %></h3><br>
+      <h4><b><%== t('future_of_journalism') %></b> </h4>
+<%== t('future_of_journalism_about') %>
+<style>
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        grid-gap: 1rem;
+        > div {
+          background: black;
+          padding: 1rem;
+          position: relative;
+          &::before {
+            // for apsect ratio
+            content: "";
+            display: block;
+            padding-bottom: 100%;
+          }
+          img {
+            position: absolute;
+            max-width: 200px;
+
+            // Alternate Version
+            top: 0;
+            bottom: 0;
+            right: 0;
+            left: 0;
+            margin: auto;
+
+          }
+        }
+      }
+
+      body {
+        margin: 2rem;
+      }
+</style>
+
+      <h5><b><%== t('project_members') %></b></h5>
+      <div class="grid">
+      <div><img src="https://faktaassistenten.sh.se/docs/Aftonbladet.png" width=150 alt="Aftonbladet.png"></div>
+      <div><img src="https://faktaassistenten.sh.se/docs/Corren.png" width=150 alt="Corren.png"></div>
+      <div><img src="https://faktaassistenten.sh.se/docs/Expressen_wordmark.svg.png" width=150 alt="Expressen_wordmark.svg.png"></div>
+      <div><img src="https://faktaassistenten.sh.se/docs/GotlandsTidningar_Logo.jpg" width=150 alt="GotlandsTidningar_Logo.jpg"></div>
+      <div><img src="https://faktaassistenten.sh.se/docs/Kuriren.png" width=150 alt="Kuriren.png"></div>
+      <div><img src="https://faktaassistenten.sh.se/docs/NSD.PNG" width=150 alt="NSD.PNG"></div>
+      <div><img src="https://faktaassistenten.sh.se/docs/PT.PNG" width=150 alt="PT.PNG"></div>
+      <div><img src="https://faktaassistenten.sh.se/docs/SVT.png" width=150 alt="SVT.png"></div>
+      <div><img src="https://faktaassistenten.sh.se/docs/dn.png" width=150 alt="dn.png"></div>
+      <div><img src="https://faktaassistenten.sh.se/docs/eposten.png" width=150 alt="eposten.png"></div>
+      <div><img src="https://faktaassistenten.sh.se/docs/folkbladet.png" width=150 alt="folkbladet.png"></div>
+      <div><img src="https://faktaassistenten.sh.se/docs/gotlands-allehanda.jpg" width=150 alt="gotlands-allehanda.jpg"></div>
+      <div><img src="https://faktaassistenten.sh.se/docs/handelshogskolan-stockholm-1.jpg" width=150 alt="handelshogskolan-stockholm-1.jpg"></div>
+      <div><img src="https://faktaassistenten.sh.se/docs/helagotland.png" width=150 alt="helagotland.png"></div>
+      <div><img src="https://faktaassistenten.sh.se/docs/mvt.png" width=150 alt="mvt.png"></div>
+      <div><img src="https://faktaassistenten.sh.se/docs/nepa.png" width=150 alt="nepa.png"></div>
+      <div><img src="https://faktaassistenten.sh.se/docs/nt.png" width=150 alt="nt.png"></div>
+      <div><img src="https://faktaassistenten.sh.se/docs/sr.png" width=150 alt="sr.png"></div>
+      <div><img src="https://faktaassistenten.sh.se/docs/svd.png" width=150 alt="svd.png"></div>
+      <div><img src="https://faktaassistenten.sh.se/docs/vt.png" width=150 alt="vt.png"></div>
+      </div>
+<br><br>
+<img src="https://faktaassistenten.sh.se/docs/SH.png" alt="SH" align=right>
+      <%== t('about_sh_txt') %>
+
+    </div>
+
+
+  </div>
+
+</div>
+
+<div class="container mt-5">
+  <h3 class="text-center mb-4"><%== t('researchers') %></h3>
+  <div class="row mt-3">
+    <div class="col-12 col-md-5 offset-md-1">
+      <div class="d-flex">
+        <img height="70px" src="<%= asset_path('walid.png') %>" />
+        <div class="ml-4">
+          <h5>Walid Al-Saqaf, PhD</h5>
+          <p class="small"><%== t('about_walid') %></p>
+        </div>
+      </div>
+
+    </div>
+    <div class="col-12 col-md-5">
+      <div class="d-flex">
+        <img height="70px" src="<%= asset_path('malin.png') %>" />
+        <div class="ml-4">
+          <h5>Malin Picha Edwardsson, PhD</h5>
+          <p class="small"><%== t('about_malin') %></p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,142 @@
+<div class="text-center mb-5">
+  <div class="col-12 col-md-10 col-lg-8 mx-auto">
+    <h1><%= t('claim_t_edit') %></h1>
+    <p><%= t('claim_d') %></p>
+  </div>
+</div>
+<div class="container">
+  <div class="row">
+    <div class="col-12 col-md-8 offset-md-2">
+      <% if params[:import_err].present? %>
+        <center><font color="red"><%== t('invalid_json') %></font></center><br>
+      <% end %>
+<fieldset>
+<div class="form-claim">
+
+    <%= form_for @claim, :html => { :onsubmit => "do_submit('claim')" } do |f| %>
+    <% if f.object.errors.any? %>
+    <div class="error_messages">
+      <% f.object.errors.full_messages.each do |error| %>
+      <p><%= error %></p>
+      <% end %>
+  </div>
+  <% end %>
+<ul>
+  <li><%= t('give_claim_title') %><span class='required'>*</span>
+  <%= f.text_field :title, class: 'field-long', :autocomplete=>"off" %>
+  </li>
+  <li><%= t('assign_existing_tags') %>
+  <%= f.select(:tag_ids, options_for_select(Tag.order(Arel.sql('lower(claim_name) ASC')).map{ |t| [t.claim_name, t.id] }),{}, { :multiple => true }) %><br>
+  <a href="#new_tags" data-toggle="collapse" data-parent="#accordion1" style="text-decoration: none">
+    <b><%= t('create_more_tags') %></b><span class="glyphicon glyphicon-plus"></span></a>
+    <div class="panel-collapse collapse" id="new_tags">
+      <%= t('type_new_tags') %>
+          <%= f.text_field :tag_list, class: 'field-long', :autocomplete=>"off" %>
+          <div id="new_tags_block"></div>
+          <%= link_to t('add_tags'), "#add_tags", :onclick => 'submit_tags("'+config.relative_url_root.to_s+'","claim")', :class=>'btn btn btn-primary',:style=>'color:white; background-color:#4B99AD' %>
+        </div>
+      </li>
+      <li>
+        <%= t('claim_url') %>
+        <%= f.text_field :url, :onfocusout => "URLPreview('"+config.relative_url_root.to_s+"','claim')", class: 'field-long', :autocomplete=>"off" %>
+        <i><small><%= t('claim_url_note') %></small></i>
+      </li>
+      <div id="url_preview_block">
+        <% if @claim.url_preview.present? %>
+        <%== @claim.url_preview.gsub('\"','"').gsub("\\'", "'") %>
+        <% end %>
+      </div>
+      <%= f.hidden_field :url_preview %>
+      <li>
+        <%= t('medium_claim') %>
+        <%= f.text_field :medium_name, data: {autocomplete_source: media_path }, :onchange => "NewMedium('"+config.relative_url_root.to_s+"',1,'medium','media','media')", class: 'field-long', :autocomplete=>"off" %>
+      </li>
+      <div id="medium_note"></div>
+      <li>
+        <%= t('src_claim') %>?<br>
+        <%= f.text_field :src_name, data: {autocomplete_source: srcs_path }, :onchange => "NewMedium('"+config.relative_url_root.to_s+"',1,'src','srcs','sources')", :autocomplete=>"off" %>
+      </li>
+      <div id="src_note"></div>
+      <li>
+        <%= t('image_claim') %>
+        &nbsp;&nbsp;<b><%= f.radio_button :has_image, '1', :checked => @claim.has_image==1 %> <%= t('yes_answer') %>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          <%= f.radio_button :has_image, '-1', :checked => @claim.has_image==-1 %> <%= t('no_answer') %>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          <%= f.radio_button :has_image, '0', :checked => (@claim.has_image==0 || @claim.has_image.nil?) %>
+          <%= t('not_sure') %>/ <%= t('skip_question') %></b>
+      </li>
+      <li>
+        <%= t('video_claim') %>
+        &nbsp;&nbsp;<b><%= f.radio_button :has_video, '1', :checked => @claim.has_video==1 %> <%= t('yes_answer') %>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          <%= f.radio_button :has_video, '-1', :checked => @claim.has_video==-1 %> <%= t('no_answer') %>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          <%= f.radio_button :has_video, '0', :checked => (@claim.has_video==0 || @claim.has_video.nil?) %>
+          <%= t('not_sure') %>/ <%= t('skip_question') %></b>
+      </li>
+      <li>
+        <%= t('text_claim') %>
+        &nbsp;&nbsp;<b><%= f.radio_button :has_text, '1', :checked => (@claim.has_text==1|| @claim.has_text.nil?) %>
+          <%= t('yes_answer') %> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          <%= f.radio_button :has_text, '-1', :checked => @claim.has_text==-1 %> <%= t('no_answer') %>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          <%= f.radio_button :has_text, '0', :checked => @claim.has_text==0  %> <%= t('not_sure') %>/
+          <%= t('skip_question') %></b>
+      </li>
+      <li><br><br>
+        <%= t('share_claim') %>
+        &nbsp;&nbsp;<b><%= f.radio_button :sharing_mode, '1', :checked => @claim.sharing_mode==1 || @claim.sharing_mode.nil? %>
+          <%= t('yes_share') %> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          <%= f.radio_button :sharing_mode, '-1', :checked => @claim.sharing_mode==-1 %> <%= t('no_share') %>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</b>
+      </li>
+      <li>
+        <br><%= t('more_notes_claim') %>
+        <%= f.text_area(:description, size: '50x10', class: 'field-long field-textarea') %>
+      </li>
+
+            <% if current_user.role=="client" || current_user.role=="admin" %>
+                    <div>
+                      <li class="mt-4">
+                        <p><%= f.check_box :add_to_blockchain, :checked => true %> <%= t('save_to_blockchain') %></p>
+                      </li>
+                        <li>
+                        <label><%= t('expiry_date') %></label>
+                        <%= f.date_select :expiry_date, hide_label: true %>
+                      </li>
+                      <li>
+                        <label><%= t('bounty_amount') %></label>
+                        <%= f.text_field :bounty_amount, class: 'field-long', :autocomplete=>"off" %>
+                      </li>
+                      <li>
+                        <label><%= t('conditions') %></label>
+                        <%= f.text_area(:conditions, size: '50x10', class: 'field-long field-textarea') %>
+                      </li>
+                    </div>
+                <% end %>
+
+
+<br>
+      <li>
+        <%= f.submit t('submit'), :class => 'btn btn btn-primary' %>
+      </li>
+    </ul>
+  </fieldset>
+<% end %>
+<%= link_to t('show'), @claim %> |
+<%= link_to t('delete'), claim_path(@claim), method: :delete, data: { confirm: t('warning_msg2',type: t('the_claim')) } %>
+|
+<%= link_to t('go_back'), claims_path %>
+
+</div>
+</div>
+</div>
+<script>
+$(document).on('ready page:load', function () {
+$('#claim_tag_ids').chosen({
+allow_single_deselect: true,
+width: '100%'
+})
+});
+</script>

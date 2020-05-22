@@ -1,0 +1,86 @@
+  <div class="text-center mb-5">
+    <div class="col-12 col-md-10 col-lg-8 mx-auto">
+      <h1><%= t('resource_t') %></h1>
+      <p><%= t('claim_d') %></p>
+    </div>
+  </div>
+   <div class="container">
+    <div class="row">
+      <div class="col-12 col-md-8 offset-md-2">
+        <fieldset>
+          <legend>&nbsp;<%= t('add_new_resource') %></legend>
+          <%= form_for @resource, :html => { :onsubmit => "do_submit('resource')" } do |f| %>
+            <% if f.object.errors.any? %>
+            <div class="error_messages">
+                <% f.object.errors.full_messages.each do |error| %>
+                  <p><%= error %></p>
+                <% end %>
+            </div>
+            <% end %>
+          <ul>
+            <li><%= t('give_resource_title') %><span class='required'>*</span>
+            <%= f.text_field :name, class: 'field-long', :autocomplete=>"off" %><br><br>
+            </li>
+            <div id="resource_note"></div>
+            <li>
+            <%= t('resource_url') %>
+            <%= f.text_field :url, :onchange => "URLPreview('"+config.relative_url_root.to_s+"','resource')", class: 'field-long', :autocomplete=>"off" %><br><br>
+            </li>
+            <div id="url_preview_block">
+              <% if @resource.url_preview.present? %><%== @resource.url_preview.gsub('\"','"').gsub("\\'", "'") %><br><br><% end %>
+            </div>
+            <%= f.hidden_field :url_preview %>
+            <li>
+            <%= t('resource_tutorial_url') %>
+            <%= f.text_field :tutorial, class: 'field-long', :autocomplete=>"off" %><br><br>
+            </li>
+            <li>
+            <%= t('resource_icon_url') %>
+            <%= f.text_field :icon, class: 'field-long', :autocomplete=>"off" %><br><br>
+            </li>
+            <li>
+            <%= t('more_notes_resource') %>
+            <%= f.text_area(:description, size: '50x10', class: 'field-long field-textarea') %><br><br>
+            </li>
+            <% if !@ref.present? %>
+              <li>
+              <%= t('resource_reference1') %><br><small><i><%= t('resource_reference2') %></i></small>
+              <%= f.text_field :used_for_qs, class: 'field-long', :autocomplete=>"off" %><br><br>
+              </li>
+            <% elsif @ref.empty? %>
+              <li>
+              <%= t('resource_reference') %>
+              <%= f.text_field :used_for_qs, class: 'field-long', :autocomplete=>"off" %>
+              </li>
+            <% else %>
+            <div style="display:none">
+              <%= f.text_field :used_for_qs, :value => @ref, readonly: true %>
+              </div>
+            <% end %>
+            <li>
+              <%= f.submit 'Submit', :class => 'btn btn btn-primary', id: "submit" %>
+            </li>
+          </ul>
+          <% end %>
+        </fieldset>
+
+        <p class="text-center"><i><%= t('or') %></i><br>
+        <a class="btn btn-outline-primary" data-toggle="collapse" href="#collapseExample2" role="button"
+          aria-expanded="false" aria-controls="collapseExample2">
+          + <%= t('resource_import') %>
+        </a></p>
+        <div class="collapse" id="collapseExample2">
+          <i><%= t('resource_import_note') %></i><br>
+          <br><b><big><%= t('resource_select_file') %></big></b><br><br>
+          <%= form_for(@resource, url: {action: "create"}, html: {multipart: true}) do |f| %>
+             <%= f.file_field :file %>
+             <br><%= t('resource_select_url') %> <%= f.text_field :url, :style => "padding: 1px 1px; line-height: 10px; width: 320px" %><br>
+             <%= f.check_box :used_for_qs, :checked => true %> <%= t('resource_option_add_qs') %> <br>
+             <%= f.check_box :overwrite, :checked => true %> <%= t('resource_option_overwrite') %> <br><br>
+             <%= f.submit 'Import', :class => 'btn btn btn-primary', id: "submit", :style => "float: left; padding: 5px 5px 5px 5px; line-height: 15px;" %><br><br>
+             <%= t('resource_note_imports').html_safe %> <br><%= link_to t('resource_fca_page'), t('resource_fca_page_url') %><br>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>

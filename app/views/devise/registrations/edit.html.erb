@@ -1,0 +1,63 @@
+<div class="container">
+<h2><%= t('devise.account.edit_title') %> <%= t('devise.account.'+resource_name.to_s.humanize) %></h2>
+
+<%= simple_form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f| %>
+  <%= f.error_notification %>
+
+    <% if devise_mapping.confirmable? && resource.pending_reconfirmation? %>
+      <p><%= t('devise.account.awaiting_confirmation') %>: <%= resource.unconfirmed_email %></p>
+    <% end %>
+
+    <%= f.input :name,
+                label: t('devise.account.name'),
+                required: true,
+                hint: t('devise.account.name_h'),
+                autofocus: true ,
+                input_html: { autocomplete: "name", :style=> 'width: 400px' }%>
+    <%= f.input :email,
+                label: t('devise.account.email'),
+                readonly: true,
+                input_html: { autocomplete: "email", :style=> 'width: 400px' }%>
+    <%= f.input :affiliation,
+                label: t('devise.account.affiliation'),
+                required: false,
+                hint: t('devise.account.affiliation_h'),
+                autofocus: true ,
+                input_html: { autocomplete: "affiliation", :style=> 'width: 400px' }%>
+    <%= f.input :url,
+                label: t('devise.account.url'),
+                required: false,
+                hint: t('devise.account.url_h'),
+                autofocus: true,
+                input_html: { autocomplete: "url", :style=> 'width: 400px' } %>
+    <%= f.input :details,
+                label: t('devise.account.details'),
+                required: false,
+                hint: t('devise.account.details_h'),
+                autofocus: true,
+                input_html: { autocomplete: "details", :style=> 'width: 400px' } %>
+    <%= f.input :current_password,
+                label: t('devise.account.current_pw'),
+                hint: t('devise.account.current_pw_h'),
+                required: true,
+                input_html: { autocomplete: "current-password", :style=> 'width: 400px' } %>
+    <%= f.input :password,
+                label: t('devise.account.new_pw'),
+                hint: t('devise.account.changed_pw_h'),
+                required: false,
+                input_html: { autocomplete: "new-password", :style=> 'width: 400px' } %>
+    <%= f.input :password_confirmation,
+                label: t('devise.account.repeat_pw'),
+                hint: t('devise.account.repeat_pw_h'),
+                required: false,
+                input_html: { autocomplete: "new-password", :style=> 'width: 400px' } %>
+
+  <div class="form-claim">
+    <%= f.button :submit, t('devise.account.update_acc') %>
+  </div>
+<% end %>
+<br><br>
+<p><%= link_to t('devise.account.del_acc'), registration_path(resource_name), data: { confirm: t('devise.account.confirm_del') }, method: :delete %></p>
+
+<%= link_to t('devise.account.go_back'), :back %>
+</div>

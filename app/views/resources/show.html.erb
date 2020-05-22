@@ -1,0 +1,62 @@
+<div class="container">
+  <% if @import_note.present? %>
+    <font color="blue"><%== @import_note %></font>
+    <hr>
+    <b><%= link_to t('go_back_to_resources'), resources_path %>
+    <% else %>
+      <div class="text-center mb-5">
+        <div class="col-12 col-md-10 col-lg-8 mx-auto">
+          <h3><%= @resource.name %></h3>
+          <p><%= @resource.description %></p>
+        </div>
+      </div>
+      <p><%= t('resource_url') %>:
+        <% if @resource.url.present? %>
+          <%= link_to @resource.url,@resource.url %>
+          <% if @resource.url_preview.present? %>
+            <br>
+            <%== @resource.url_preview.gsub('\"','"').gsub("\\'", "'") %>
+          <% end %>
+        <% else %>
+          <small><%= t('not_provided') %></small>
+        <% end %></p>
+      <h6><%= t('description') %>:
+        <% if @resource.description.present? %>
+          <%= @resource.description %>
+        <% else %>
+          <%= t('not_provided') %>
+        <% end %>
+      </h6>
+      <h6><%= t('tutorial') %>:
+        <% if (!@resource.tutorial.blank?) %>
+          <% if ((@resource.tutorial.include? "youtube.com" or @resource.tutorial.include? "youtu.be")) %>
+            <%= link_to @resource.tutorial,@resource.tutorial %>
+            <%
+              embedded_frame=''
+              begin
+                embedded_frame='<br><br><iframe width="560" height="315" src="https://www.youtube.com/embed/'+@resource.tutorial.match(/\?v\=(.+)\&?/)[1]+'" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>'
+              rescue
+              end
+            %>
+            <%== embedded_frame %>
+          <% else %>
+            <%= link_to @resource.tutorial,@resource.tutorial %>
+          <% end %>
+        <% else %>
+          <%= t('not_provided') %>
+        <% end %>
+      </h6>
+      <h6><%= t('added_by') %>: <%= User.find(@resource.user_id).name %></h6>
+      <h6><%= t('created_at') %>: <%= @resource.created_at %></h6>
+      <h6><%= t('updated_at') %>: <%= @resource.updated_at %></h6>
+      <br>
+      <%= link_to t('export_this_resource'), export_resource_path(@resource), method: :post %>
+      <br>
+      <br>
+      <%= link_to t('go_back'), resources_path %>
+      <% if @resource.user_id == current_user.id or current_user.role=="admin" %>
+        - <%= link_to t('edit'), edit_resource_path(@resource) %> -
+        <%= link_to t('delete'), resource_path(@resource), method: :delete, data: { confirm: t('warning_msg') } %>
+      <% end %>
+    <% end %>
+  </div>

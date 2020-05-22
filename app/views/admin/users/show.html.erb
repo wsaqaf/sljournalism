@@ -1,0 +1,29 @@
+<div class="container">
+  <div class="text-center mb-5">
+    <div class="col-12 col-md-10 col-lg-8 mx-auto">
+      <h3><%= @user.name %></h3>
+      <p><%= @user.details %></p>
+    </div>
+  </div>
+  <p><%= t('user_url') %>:
+    <% if @user.url.present? %>
+      <%= link_to @user.url,@user.url %>
+    <% else %>
+      <small><%= t('not_provided') %></small>
+    <% end %></p>
+  <h6><%= t('description') %>:
+    <% if @user.details.present? %>
+      <%= @user.details %>
+    <% else %>
+      <%= t('not_provided') %>
+    <% end %>
+  </h6>
+  <h6><%= t('created_at') %>: <%= @user.created_at %></h6>
+  <h6><%= t('updated_at') %>: <%= @user.updated_at %></h6>
+  <br>
+  <%= link_to t('go_back'), admin_users_path %>
+  <% if @user.user_id == current_user.id or current_user.role="admin" %>
+    - <%= link_to t('edit'), edit_user_path(@user) %> - 
+    <%= link_to t('delete'), user_path(@user), method: :delete, data: { confirm: t('warning_msg') } %>
+  <% end %>
+  </div>

@@ -1,0 +1,41 @@
+<div class="container">
+<% if user_signed_in? %>
+  <h3><%= t('src').capitalize+' '+t('reviews') %></h3>
+<% if (@src_reviews.size==0) %>
+  <%= t('no_results') %>
+<% end %>
+    <ul>
+    <% @src_reviews.each do |src_review| %>
+      <li>
+          <%
+            src = Src.find(src_review.src_id); rating={"1"=>t('rate_totally_untrustworthy'),"2"=>t('rate_mostly_untrustworthy'),"3"=>t('rate_somewhat_untrustworthy'),"4"=>t('rate_mostly_trustworthy'),"5"=>t('rate_totally_trustworthy'),"0"=>t('rate_no_decision')}
+            usr = User.find(src_review.user_id); reviewer_name=usr.name; reviewer_aff=usr.affiliation;
+            if not reviewer_aff.blank? then reviewer_aff=" ["+reviewer_aff+"]"; end
+          %>
+          <%= t('src').capitalize %>: <%= link_to src.name, src_path(src_review.src_id) %><br>
+          <%= t('assessment') %>:
+         <% if !src_review.src_review_verdict.blank? %>
+           <%= link_to(image_tag(config.relative_url_root.to_s+'/'+src_review.src_review_verdict.to_s+'.png', style:"height:30px", alt:"'"+rating[src_review.src_review_verdict.to_s].to_s+"'", title:"'"+rating[src_review.src_review_verdict.to_s].to_s+"'"),src_src_review_path(src.id,src_review.id)) %>
+          <% txt="["+rating[src_review.src_review_verdict.to_s].to_s+"]"
+          else
+            txt=t('not_assessed')
+          end %>
+         <%== txt %>
+         <br>
+          <%= t('reviewer') %>: <%= reviewer_name %><%= reviewer_aff %><br>
+          <%= t('updated_at') %>: <%= src_review.updated_at %><br>
+          <% if src_review.user_id == current_user.id || current_user.role=="admin"  %>
+            <br><%= link_to  t('edit')+' '+t('review'), src_src_reviews_path(src.id), method: :create %> -
+            <%= link_to  t('delete')+' '+t('review'), src_src_review_path(src.id,src_review), method: :delete, data: { confirm: "Are you sure?" } %><br>
+          <% end %>
+
+          <br><b><%= link_to t('more_about')+' '+t('this_review'), src_src_review_path(src.id,src_review.id) %></b>
+      </li><hr>
+    <% end %>
+<% else %>
+  <h4>Welcome to Fact Check Assistant! </h4> <br><hr><br>
+  You can access the service by <b><%= link_to "signing in", new_user_session_path %></b>.
+  <br><br>
+  If you don't have an account, please <b><%= link_to "sign up", new_user_registration_path %></b>.
+<% end %>
+</div>

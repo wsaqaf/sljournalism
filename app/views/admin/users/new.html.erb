@@ -1,0 +1,56 @@
+<div class="form-claim">
+  <fieldset>
+    <legend>&nbsp;Add new user</legend>
+    <%= form_for @user, as: :user, url: admin_users_path, method: :post, html: { :onsubmit => "do_submit('user')" } do |f| %>
+      <% if f.object.errors.any? %>
+      <div class="error_messages">
+          <% f.object.errors.full_messages.each do |error| %>
+            <p><%= error %></p>
+          <% end %>
+      </div>
+      <% end %>
+    <ul>
+      <li>Name:
+      <%= f.text_field :name, class: 'field-long', :required=>"true" %>
+      </li>
+      <li>
+        Email:
+      <%= f.text_field :email, class: 'field-long', :required=>"true" %>
+      </li>
+      <li>
+        Affiliation:
+      <%= f.text_field :affiliation, class: 'field-long', :autocomplete=>"off" %>
+      </li>
+      <li>
+        URL:
+        <%= f.text_field :url, class: 'field-long', :autocomplete=>"off" %>
+      </li>
+      <li>
+        Password:
+        <%= f.password_field :password, class: 'field-long', :required=>"true" %>
+      </li>
+      <li>
+        Confirm password:
+        <%= f.password_field :password_confirmation, class: 'field-long', :required=>"true" %>
+      </li>
+      <li>
+        Role:
+          <b>
+            <%= f.radio_button :role, 'admin', :checked => @user.role=='admin'%> Admin
+            <%= f.radio_button :role, 'client', :checked => @user.role=='client' %> Client
+            <%= f.radio_button :role, 'factchecker', :checked => @user.role=='factchecker'%> Factchecker
+            <%= f.radio_button :role, 'user', :checked => @user.role=='user' %> User
+          </b>
+      </li>
+      <li>
+      Bio:
+      <%= f.text_area(:details, size: '50x10', class: 'field-long field-textarea') %>
+      </li>
+      <li>
+        <%= f.submit t('submit'), :class => 'btn btn btn-primary' %>
+      </li>
+    </ul>
+    <% end %>
+  </fieldset>
+  <%= link_to t('go_back'), admin_root_path %>
+  </div>

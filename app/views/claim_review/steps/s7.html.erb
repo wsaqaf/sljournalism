@@ -1,0 +1,106 @@
+
+         <!-- Heading -->
+<div class="text-center mb-5">
+  <div class="col-12 col-md-10 col-lg-8 mx-auto">
+    <h4><%= t('claim_r') %></h4>
+    <h2 class="text-primary"> <%= link_to @claim.title, claim_path(@claim.id) %></h2>
+  </div>
+</div>
+<!-- Heading -->
+<div class="container">
+  <div class="row">
+    <div class="col-3">
+      <%= form_for @claim_review, method: :put, url: wizard_path do |f| %>
+      <div class="">
+        <% 
+            passed_step=false
+            @all_steps.each do |key,value| %>
+        <%= is_visible(key).html_safe %><div class="">
+          <% if (step==File.basename(wizard_path(key)))
+                    passed_step=true %>
+          <div class="no-style"><b><%== value %></b></div>
+          <% elsif passed_step %>
+          <%= f.submit value, style: '', class: 'no-style' %>
+          <% else %>
+          <%= f.submit value, style: '', class: 'no-style' %>
+          <% end %>
+        </div>
+      </div>
+      <% end %>
+    </div>
+  </div>
+  <div class="col-9">
+    <% if f.object.errors.any? %>
+    <div class="error_messages">
+      <% f.object.errors.full_messages.each do |error| %>
+      <p><%= error %></p>
+      <% end %>
+    </div>
+    <% end %>
+    <fieldset>
+      <br><h6><strong><%== t('reviewing_vid_claim_title') %></strong></h6>
+      
+          <li><big><b><font color=blue><%== t('claim_vid_old_q_long') %></font></b></big><br>
+          <br><%= f.radio_button :vid_old, '-1', :checked => (!@claim_review.vid_old.blank? && @claim_review.vid_old==-1) %> <%== t('claim_vid_old_q_options_yes') %><br><%= f.radio_button :vid_old, '1', :checked => (!@claim_review.vid_old.blank? && @claim_review.vid_old==1) %> <%== t('claim_vid_old_q_options_no') %><br><%= f.radio_button :vid_old, '0', :checked => (!@claim_review.vid_old.blank? && @claim_review.vid_old==0) %> <%== t('not_sure') %><br><br><%= f.radio_button :vid_old, '', :checked => (@claim_review.vid_old.blank?) %> <%= t('skip_question') %><br>
+          
+          <br>
+          
+                  <br>
+                  <%
+                    require 'digest/sha1';
+                    current_code=Digest::SHA1.base64digest("@claim_review."+"vid_old")
+                    has_resources=Resource.where("used_for_qs like ?", "%"+current_code+"%")
+                  %>
+                  <div class="panel-group" id="accordion1">
+                  	<div class="panel panel-default">
+                      	<div class="panel-heading">
+                              	<a href="#Resources" data-toggle="collapse" data-parent="#accordion1" style="text-decoration: none">
+                                  <b><%= t('resources') %> (<%= has_resources.size.to_s %>)</b> &nbsp; <span class="glyphicon glyphicon-plus"></span></a>
+                          </div>
+                          <div class="panel-collapse collapse" id="Resources">
+                          	<div class="panel-body"><br>
+                            <% if not has_resources.blank? %>
+                                  <ul>
+                                  <% has_resources.each do |r| %>
+                                  <li><h6>- <%== try_resource(r.name,'claim') %><%= link_to r.name, resource_path(r.id), target: "_blank" %></h6></li>
+                                <% end %>
+                                <% if (not @claim.url.blank?) %>
+                                      <hr><small><%== t('claim')[0].upcase+t('claim')[1..-1]+" URL: <input type='text' id='url_link' value='"+@claim.url.to_s+"' style='background-color:lightgrey;width:75%'> <button onclick=copyToClipboard('#url_link')>"+t('copy_url')+"</button>" %></small>
+                                <% end %>
+                              </ul>
+                              <hr><p>- <%= link_to t('add_additional_resource'), new_resource_path(ref: current_code), target: "_blank" %><br><br>
+                              <small>- <%= t('check_current_resources1') %><b><%= link_to t('resources'), resources_path(), target: "_blank" %></b><%= t('check_current_resources2') %> <b><%= current_code %></b></small></p>
+                          <% else %>
+                              <% if (not @claim.url.blank?) %>
+                                   <hr><small><%== t('claim')[0].upcase+t('claim')[1..-1]+" URL: <input type='text' id='url_link' value='"+@claim.url.to_s+"' style='background-color:lightgrey;width:75%'> <button onclick=copyToClipboard('#url_link')>"+t('copy_url')+"</button>" %></small>
+                              <% end %>
+                              <p><b><% t('no_associated_resource') %></b></p>
+                              <hr><p>- <%= link_to t('add_resource_to_q'), new_resource_path(ref: current_code), target: "_blank" %><br><br>
+                              <small>- <% t('associate_to_q') %> <% t('this_resource') %>: <b><%= current_code %></b></small></p>
+                          <% end %>
+                          </div>
+                       </div>
+                  </div>
+                  <hr>
+             
+          </li>
+              
+          <li><big><b><font color=blue><%== t('optional_note') %></font></b></big><br>
+          <%= f.text_area(:note_vid_old, size: '50x10', class: 'field-long field-textarea') %><br>
+          
+          <br>
+          
+          </li>
+              
+      
+                        <% if !@first_step.present? or @first_step!=step %>
+                            <%= f.submit t('previous_step'), :class => 'btn btn btn-primary' %>
+                        <% end %>
+                            <%= f.submit t('next_step'), :class => 'btn btn btn-primary' %>
+                  
+    </fieldset>
+    <div style='float:right'><%= link_to t('del_review'), claim_claim_review_path(@claim.id,@claim_review), style: '', method: :delete, data: { confirm: t('warning_del') } %></div>
+    <% end %>
+  </div>
+</div>
+              

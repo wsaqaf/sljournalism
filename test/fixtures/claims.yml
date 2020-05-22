@@ -1,0 +1,19 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  claimid: 1
+  claimtype: 1
+  claimtitle: MyString
+  claimurl: MyString
+  claimsource: 1
+  claimmedia: 1
+  claimdescription: MyText
+
+two:
+  claimid: 1
+  claimtype: 1
+  claimtitle: MyString
+  claimurl: MyString
+  claimsource: 1
+  claimmedia: 1
+  claimdescription: MyText

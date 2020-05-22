@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title><%= t('website_title') %></title>
+  <%= csrf_meta_tags %>
+  <%= favicon_link_tag 'favicon.ico', :rel => 'icon', :type => "image/x-icon" %>
+  <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+  <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+</head>
+
+<body data-no-turbolink="<%= @no_turbolinks %>">
+  <!-- New nav -->
+  <div class="container">
+    <div class="row">
+
+      <nav class="navbar navbar-expand-lg navbar-light bg-white w-100">
+        <a class="navbar-brand" href="<%= config.relative_url_root.to_s+"/" %>">
+          <img src="<%= asset_path('logo.svg') %>" />
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+          aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="nav navbar-nav ml-auto">
+            <% if user_signed_in? %>
+            <li class="nav-item">
+              <% if !request.fullpath.include? "claims" or request.fullpath.include? "claims/new" then %>
+            <li class="nav-item"><%= link_to t('claims'), claims_path %></li>
+            <% else %>
+            <li class="nav-item"><%= link_to t('claims'), claims_path, style: 'text-decoration:underline' %></li>
+
+            <% end %>
+
+            <% if !request.fullpath.include? "claims/new" then %>
+            <li class="nav-item"><%= link_to t('add_new'), new_claim_path %></li>
+            <% else %>
+            <li class="nav-item"><%= link_to t('add_new'), new_claim_path, style: 'text-decoration:underline' %>
+            </li>
+            <% end %>
+
+        <% if !request.fullpath.include? "medi" then %>
+        <li class="nav-item"><%= link_to t('media'), media_path %></li>
+        <% else %>
+        <li class="nav-item"><%= link_to t('media'), media_path, style: 'text-decoration:underline' %></li>
+        <% end %>
+        <% if !request.fullpath.include? "src" then %>
+        <li class="nav-item"><%= link_to t('sources'), srcs_path %></li>
+        <% else %>
+        <li class="nav-item"><%= link_to t('sources'), srcs_path, style: 'text-decoration:underline' %></li>
+        <% end %>
+        <% if !request.fullpath.include? "resource" then %>
+        <li class="nav-item">
+        <%= link_to t('resources_for_verification'), resources_path %></li>
+        <% else %>
+        <li class="nav-item">
+        <%= link_to t('resources_for_verification'), resources_path, style: 'text-decoration:underline' %></li>
+        <% end %>
+        <% if current_user.role=="admin" %>
+          <% if !request.fullpath.include? "admin" then %>
+            <li class="nav-item"><%= link_to 'Admin', admin_root_path %></li>
+          <% else %>
+            <li class="nav-item"><%= link_to 'Admin', admin_root_path, style: 'text-decoration:underline' %></li>
+          <% end %>
+        <% end %>
+            <% end %>
+
+            <!-- Languages -->
+            <!-- Edit profiles -->
+            <% if user_signed_in? %>
+            <li class="nav-item"><%= link_to t('edit_profile'), edit_user_registration_path %></li>
+            <% end %>
+            <!-- Sign in / out -->
+            <% if user_signed_in? %>
+            <li class="nav-item"><%= link_to t('sign_out'), destroy_user_session_path, method: :delete %></li>
+            <% else %>
+            <li class="nav-item"><%= link_to t('sign_up'), new_user_registration_path %></li>
+            <li class="nav-item"><%= link_to t('sign_in'), new_user_session_path %></li>
+            <% end %>
+            <li class="nav-item dropdown">
+              <a class="nav-item dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+                aria-haspopup="true" aria-expanded="false">
+                <%= I18n.locale %>
+              </a>
+              <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                <% Claim.language_options.each do |language, locale| %>
+                <%= link_to language, url_for(locale: locale), action: "set_lcale", class: 'dropdown-item' %>
+                <% end %>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </nav>
+    </div>
+  </div>
+  <% if notice || alert %>
+  <div class="container text-center alert alert-success">
+    <p class="m-0"><%= notice %></p>
+    <p class="m-0"><%= alert %></p>
+  </div>
+  <% end %>
+
+  <div class="container mt-5"></div>
+  <%= yield %>
+  <div class="bg-primary p-5 mt-5 text-white">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-4">
+          <h4>Galileo</h4>
+          <p><%== t('about_galileo_txt') %>(<a href="https://www.vinnova.se/p/faktaassistenten/" style="color:yellow">vinnova.se/p/faktaassistenten</a>)
+            <span style="color:white !important"> <%= link_to t("read more"), about_index_path, style: "color:white" %> </span>
+          </p>
+          <br>
+        </div>
+        <div class="offset-2 col-md-4">
+          <h4><%== t('partners') %></h4>
+          <%== t('future_of_journalism_txt') %>
+          <%== t('about_sh') %>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</body>
+
+</html>

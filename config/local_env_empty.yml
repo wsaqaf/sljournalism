@@ -1,0 +1,31 @@
+#This is where you setup the environment variables needed to put the service in production. The SMTP variables may also be used in deployment.
+#After filling the variables, make should rename the file to local_env.yml
+
+SECRET_KEY_BASE: '' #run 'rake secret' and copy the result here
+SMTP_HOST: '' #the SMTP server here, otherwise you can't send email for cases of password reset, etc.'
+SMTP_PORT: '' #the SMTP port, usually it is 26
+SMTP_USER: '' #in case your SMTP server requires authentication
+SMTP_PW: '' #in case your SMTP server requires authentication
+SERVER_NAME: '' #the name of the website/service
+SERVER_DOMAIN: '' #this is the base domain name (without https://) where the service is running (no directories)
+SERVER_CODE: '' #optional variable for debugging purposes
+ADMIN_EMAIL: '' #the email address of the website's admin where emails will come from
+RELATIVE_URL: '' #this is the directory where the app runs (if it runs on the main website, it should be left blank)
+DB_NAME: '' #the name of the postgres database used by the app
+DB_USER: '' #username to access the database
+DB_PW: '' #password to access the database
+BLOCKCHAIN_API_URL: '' #if this is part of a blockchain network, add the API URL here
+
+# Example setup below #
+#SECRET_KEY_BASE: 'cf1xxsdfw207924538ff17b74de2de9b9364b206826bba583acf4025fa62ada44cd18653ca79d1d0c90f2cdbfa7170284f0852db3c133acdef3d1ebb65dae08de'
+#SMTP_HOST: 'myserver.com'
+#SMTP_PORT: '26'
+#SMTP_USER: 'mysmtpusername'
+#SMTP_PW: 'mysmtppassword'
+#SERVER_NAME: 'Local FCA'
+#SERVER_DOMAIN: 'localhost:8080'
+#SERVER_CODE: 'localhost'
+#RELATIVE_URL: ''
+#DB_NAME: 'localfca'
+#DB_USER: 'root'
+#DB_PW: 'pw'

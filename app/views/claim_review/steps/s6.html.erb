@@ -1,0 +1,61 @@
+
+         <!-- Heading -->
+<div class="text-center mb-5">
+  <div class="col-12 col-md-10 col-lg-8 mx-auto">
+    <h4><%= t('claim_r') %></h4>
+    <h2 class="text-primary"> <%= link_to @claim.title, claim_path(@claim.id) %></h2>
+  </div>
+</div>
+<!-- Heading -->
+<div class="container">
+  <div class="row">
+    <div class="col-3">
+      <%= form_for @claim_review, method: :put, url: wizard_path do |f| %>
+      <div class="">
+        <% 
+            passed_step=false
+            @all_steps.each do |key,value| %>
+        <%= is_visible(key).html_safe %><div class="">
+          <% if (step==File.basename(wizard_path(key)))
+                    passed_step=true %>
+          <div class="no-style"><b><%== value %></b></div>
+          <% elsif passed_step %>
+          <%= f.submit value, style: '', class: 'no-style' %>
+          <% else %>
+          <%= f.submit value, style: '', class: 'no-style' %>
+          <% end %>
+        </div>
+      </div>
+      <% end %>
+    </div>
+  </div>
+  <div class="col-9">
+    <% if f.object.errors.any? %>
+    <div class="error_messages">
+      <% f.object.errors.full_messages.each do |error| %>
+      <p><%= error %></p>
+      <% end %>
+    </div>
+    <% end %>
+    <fieldset>
+      <br><h6><strong><%== t('reviewing_vid_claim_title') %></strong></h6>
+      
+          <li><big><b><font color=blue><%== t('claim_vid_review_started_q_long') %></font></b></big><br>
+          <br><%= f.radio_button :vid_review_started, '1', :checked => (!@claim_review.vid_review_started.blank? && @claim_review.vid_review_started==1) %> <%== t('claim_vid_review_started_q_options_yes') %><br><%= f.radio_button :vid_review_started, '-1', :checked => (!@claim_review.vid_review_started.blank? && @claim_review.vid_review_started==-1) %> <%== t('claim_vid_review_started_q_options_no') %><br><br><%= f.radio_button :vid_review_started, '', :checked => (@claim_review.vid_review_started.blank?) %> <%= t('skip_question') %><br>
+          <br><div class='alert alert-success'><b><big><%= t('note') %>: </big></b><%== t('not_all_qs_needed', page:'claim') %></div><br>
+          <br>
+          
+          </li>
+              
+      
+                        <% if !@first_step.present? or @first_step!=step %>
+                            <%= f.submit t('previous_step'), :class => 'btn btn btn-primary' %>
+                        <% end %>
+                            <%= f.submit t('next_step'), :class => 'btn btn btn-primary' %>
+                  
+    </fieldset>
+    <div style='float:right'><%= link_to t('del_review'), claim_claim_review_path(@claim.id,@claim_review), style: '', method: :delete, data: { confirm: t('warning_del') } %></div>
+    <% end %>
+  </div>
+</div>
+              

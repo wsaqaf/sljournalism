@@ -1,0 +1,24 @@
+<div class="container">
+  <h3><%= t('sign_in') %></h3>
+
+  <%= simple_form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
+  <%= f.input :email,
+                label: t('devise.account.email'),
+                required: false,
+                autofocus: true,
+                input_html: { autocomplete: "email", :style=> 'width: 400px' } %>
+  <%= f.input :password,
+                label: t('devise.account.password'),
+                required: false,
+                input_html: { autocomplete: "current-password", :style=> 'width: 200px' } %>
+  <%= f.input :remember_me, label: t('devise.account.remember_me'), as: :boolean if devise_mapping.rememberable? %>
+
+  <%= link_to(t('forgot_pw'), new_user_password_path, id:"forget-password", class:"forget-password") %>
+
+  <div class="mt-2">
+    <%= f.button :submit, t('sign_in'), :class => "btn btn-primary" %>
+  </div>
+<% end %>
+<br>
+<%= link_to t('sign_up'), new_user_registration_path %>
+</div>

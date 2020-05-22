@@ -1,0 +1,36 @@
+ <div class="container">
+<h3><%= t('medium').capitalize+' '+t('reviews') %></h3>
+<% if (@medium_reviews.size==0) %>
+  <%= t('no_results') %>
+<% end %>
+    <ul>
+    <% @medium_reviews.each do |medium_review| %>
+      <li>
+          <%
+            medium = Medium.find(medium_review.medium_id);
+            rating={"1"=>t('rate_totally_unreliable'),"2"=>t('rate_mostly_unreliable'),"3"=>t('rate_somewhat_unreliable'),"4"=>t('rate_mostly_reliable'),"5"=>t('rate_totally_reliable'),"0"=>t('rate_no_decision')}
+            usr = User.find(medium_review.user_id); reviewer_name=usr.name; reviewer_aff=usr.affiliation;
+            if not reviewer_aff.blank? then reviewer_aff=" ["+reviewer_aff+"]"; end
+          %>
+          <%= t('medium').capitalize %>: <%= link_to medium.name, medium_path(medium_review.medium_id) %><br>
+          <%= t('assessment') %>:
+         <% if !medium_review.medium_review_verdict.blank? %>
+           <%= link_to(image_tag(config.relative_url_root.to_s+'/'+medium_review.medium_review_verdict.to_s+'.png', style:"height:30px", alt:"'"+rating[medium_review.medium_review_verdict.to_s].to_s+"'", title:"'"+rating[medium_review.medium_review_verdict.to_s].to_s+"'"),medium_medium_review_path(medium.id,medium_review.id)) %>
+          <% txt="["+rating[medium_review.medium_review_verdict.to_s].to_s+"]"
+          else
+            txt=t('not_assessed')
+          end %>
+         <%== txt %>
+          <br>
+          <%= t('reviewer') %>: <%= reviewer_name %><%= reviewer_aff %><br>
+          <%= t('updated_at') %>: <%= medium_review.updated_at %><br>
+
+          <% if medium_review.user_id == current_user.id || current_user.role=="admin"  %>
+            <br><%= link_to t('edit')+' '+t('review'), medium_medium_reviews_path(medium.id), method: :create %> -
+            <%= link_to t('delete')+' '+t('review'), medium_medium_review_path(medium.id,medium_review), method: :delete, data: { confirm: "Are you sure?" } %><br>
+          <% end %>
+
+          <br><b><%= link_to t('more_about')+' '+t('this_review'), medium_medium_review_path(medium.id,medium_review.id) %></b>
+      </li><hr>
+    <% end %>
+</div>

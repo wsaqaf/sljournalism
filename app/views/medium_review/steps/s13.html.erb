@@ -1,0 +1,64 @@
+
+         <!-- Heading -->
+<div class="text-center mb-5">
+  <div class="col-12 col-md-10 col-lg-8 mx-auto">
+    <h4><%= t('medium_r') %></h4>
+    <h2 class="text-primary"> <%= link_to @medium.name, medium_path(@medium.id) %></h2>
+  </div>
+</div>
+<!-- Heading -->
+<div class="container">
+  <div class="row">
+    <div class="col-3">
+      <%= form_for @medium_review, method: :put, url: wizard_path do |f| %>
+      <div class="">
+        <% 
+            passed_step=false
+            @all_steps.each do |key,value| %>
+        <%= is_visible(key).html_safe %><div class="">
+          <% if (step==File.basename(wizard_path(key)))
+                    passed_step=true %>
+          <div class="no-style"><b><%== value %></b></div>
+          <% elsif passed_step %>
+          <%= f.submit value, style: '', class: 'no-style' %>
+          <% else %>
+          <%= f.submit value, style: '', class: 'no-style' %>
+          <% end %>
+        </div>
+      </div>
+      <% end %>
+    </div>
+  </div>
+  <div class="col-9">
+    <% if f.object.errors.any? %>
+    <div class="error_messages">
+      <% f.object.errors.full_messages.each do |error| %>
+      <p><%= error %></p>
+      <% end %>
+    </div>
+    <% end %>
+    <fieldset>
+      <br><h6><strong><%== t('share_setting') %></strong></h6>
+      
+          <li><big><b><font color=blue><%== t('review_sharing_mode_q_long') %></font></b></big><span class='required'>*</span><br>
+          <br><%= f.radio_button :medium_review_sharing_mode, '1', :checked => (!@medium_review.medium_review_sharing_mode.blank? && @medium_review.medium_review_sharing_mode==1) %> <%== t('yes_share') %><br><%= f.radio_button :medium_review_sharing_mode, '-1', :checked => (!@medium_review.medium_review_sharing_mode.blank? && @medium_review.medium_review_sharing_mode==-1) %> <%== t('no_share') %><br><br>
+          
+          <br>
+          
+          </li>
+              
+          <li><big><b><font color=blue><%== t('optional_note') %></font></b></big><br>
+          <%= f.text_area(:note_medium_review_sharing_mode, size: '50x10', class: 'field-long field-textarea') %><br>
+          
+          <br>
+          
+          </li>
+              
+      <%= link_to t('previous_step'),previous_wizard_path+'?s=prev',:class=>'btn btn btn-primary',:style=>'color:white; background-color:#4B99AD' %>
+&nbsp;&nbsp;&nbsp;<%= f.submit t('finish'), :class => 'btn btn btn-primary' %>
+    </fieldset>
+    <div style='float:right'><%= link_to t('del_review'), medium_medium_review_path(@medium.id,@medium_review), style: '', method: :delete, data: { confirm: t('warning_del') } %></div>
+    <% end %>
+  </div>
+</div>
+              

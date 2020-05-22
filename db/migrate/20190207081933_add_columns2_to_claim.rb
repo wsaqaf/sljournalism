@@ -1,0 +1,56 @@
+class AddColumns2ToClaim < ActiveRecord::Migration[5.1]
+  def change
+    add_column :claims, :note_url, :string
+    add_column :claims, :note_has_video, :string
+    add_column :claims, :note_medium_known, :string
+    add_column :claims, :note_medium_id, :string
+    add_column :claims, :note_medium_review_started, :string
+    add_column :claims, :note_medium_is_blacklisted, :string
+    add_column :claims, :note_medium_failed_factcheck_before, :string
+    add_column :claims, :note_medium_has_poor_security, :string
+    add_column :claims, :note_medium_whois_info_discrepency, :string
+    add_column :claims, :note_medium_hosting_discrepency, :string
+    add_column :claims, :note_medium_is_biased, :string
+    add_column :claims, :note_medium_is_poorly_ranked, :string
+    add_column :claims, :note_medium_is_not_liable, :string
+    add_column :claims, :note_medium_lacks_flagging_means, :string
+    add_column :claims, :note_medium_other_problems, :string
+    add_column :claims, :note_medium_review_verdict, :string
+    add_column :claims, :note_medium_review_description, :string
+    add_column :claims, :note_medium_review_sharing_mode, :string
+    add_column :claims, :note_src_known, :string
+    add_column :claims, :note_claim_id, :string
+    add_column :claims, :note_src_review_started, :string
+    add_column :claims, :note_src_lacks_proper_credentials, :string
+    add_column :claims, :note_src_failed_factcheck_before, :string
+    add_column :claims, :note_src_has_poor_writing_history, :string
+    add_column :claims, :note_src_supported_by_trolls, :string
+    add_column :claims, :note_src_difficult_to_locate, :string
+    add_column :claims, :note_src_other_problems, :string
+    add_column :claims, :note_src_review_verdict, :string
+    add_column :claims, :note_src_review_description, :string
+    add_column :claims, :note_src_review_sharing_mode, :string
+    add_column :claims, :note_img_review_started, :string
+    add_column :claims, :note_img_old, :string
+    add_column :claims, :note_img_forensic_discrepency, :string
+    add_column :claims, :note_img_metadata_discrepency, :string
+    add_column :claims, :note_img_logical_discrepency, :string
+    add_column :claims, :note_vid_review_started, :string
+    add_column :claims, :note_vid_old, :string
+    add_column :claims, :note_vid_forensic_discrepency, :string
+    add_column :claims, :note_vid_metadata_discrepency, :string
+    add_column :claims, :note_vid_audio_discrepency, :string
+    add_column :claims, :note_vid_logical_discrepency, :string
+    add_column :claims, :note_txt_unreliable_news_content, :string
+    add_column :claims, :note_txt_insufficient_verifiable_srcs, :string
+    add_column :claims, :note_txt_has_clickbait, :string
+    add_column :claims, :note_txt_poor_language, :string
+    add_column :claims, :note_txt_crowds_distance_discrepency, :string
+    add_column :claims, :note_txt_author_offers_little_evidence, :string
+    add_column :claims, :note_txt_reliable_sources_disapprove, :string
+    add_column :claims, :note_review_verdict, :string
+    add_column :claims, :note_review_description, :string
+    add_column :claims, :note_review_sharing_mode, :string
+    add_column :claims, :note_review_published_url, :string
+  end
+end

@@ -1,0 +1,70 @@
+<div class="container">
+<h4><%= t('title_src') %>: <%= @src.name %></h4>
+<h6><%= t('url') %>:
+  <% if @src.url.present? %>
+    <%= link_to @src.url,@src.url %>
+    <% if @src.url_preview.present? %>
+      <br><%== @src.url_preview.gsub('\"','"').gsub("\\'", "'") %>
+    <% end %>
+  <% else %>
+  <%= t('not_provided') %>
+  <% end %>
+</h6>
+<h6><%= t('share_setting') %>?
+  <% if @src.sharing_mode==1 %>
+    <%= t('is_shared') %>
+  <% else %>
+      <%= t('is_private') %>
+  <% end %>
+</h6>
+<h6><%= t('description') %>:
+  <% if @src.description.present? %>
+    <%= @src.description %>
+  <% else %>
+      <%= t('not_provided') %>
+  <% end %>
+</h6>
+<h6>
+  <%= t('src_type') %>
+  <% if @src_type.present? %>
+     <%= @src_type %>
+  <% else %>
+     <%= t('not_provided') %>
+  <% end %>
+</h6>
+<p><%= t('added_by') %>: <%= User.find(@src.user_id).name %>
+<br><%= t('created_at') %>: <%= @src.created_at %>
+<br><%= t('updated_at') %>: <%= @src.updated_at %>
+<br><br><%= link_to t('export_this_src'), export_src_path(@src), method: :post %></p>
+
+<hr><%= link_to t('claims_connected')+" "+t('this_src'), claims_path(:s => @src.id) %>
+<br><br>
+<h6>
+  <%
+    @reviews = SrcReview.where("src_id=? AND ((src_review_sharing_mode=1 AND src_review_verdict IS NOT NULL) OR user_id=?)",@src.id,current_user.id)
+    if (@reviews.blank?) then @total_reviews=0 else @total_reviews=@reviews.size end %>
+ <% if (@total_reviews>0) %>
+    <%  @my_review = SrcReview.where(src_id: @src.id, user_id: current_user.id).first
+      if (@my_review.blank?) %>
+         <hr> <%= link_to t('check_reviews')+" "+t('this_src'), src_src_reviews_path(@src.id) %><br><br>
+         <%= link_to t('review').capitalize+" "+t('this_src'), src_src_reviews_path(@src.id), method: :create %>
+     <% else %>
+     <%= link_to t('see_your_review') +" "+t('this_src'), src_src_review_path(@src.id,@my_review.id) %>
+    <% if @total_reviews>1 %>
+       <hr> <%= link_to t('check_other_reviews') +" "+t('this_src'), src_src_reviews_path(@src.id) %><br>
+    <% end
+    end
+  else %>
+ <br><%= link_to t('review').capitalize+" "+t('this_src'), src_src_reviews_path(@src.id), method: :create %>
+ <% end %>
+
+</h6>
+<br><br>
+
+<%= link_to t('go_back'), srcs_path %>
+
+  <% if @src.user_id == current_user.id || current_user.role=="admin" %> -
+    <%= link_to t('edit'), edit_src_path(@src) %> -
+    <%= link_to t('delete'), src_path(@src), method: :delete, data: { confirm: @warning_msg} %>
+  <% end %>
+</div>
