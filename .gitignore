@@ -14,6 +14,7 @@
 /tmp/*
 !/log/.keep
 !/tmp/.keep
+/hyperledger/fabric-samples
 
 /node_modules
 /yarn-error.log
