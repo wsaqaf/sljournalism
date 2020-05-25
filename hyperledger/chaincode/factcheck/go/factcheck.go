@@ -54,7 +54,7 @@ type claim struct {
 // From this point, arguments are optional
 //This is related to the reward for factchecking
 		DatePublished string `json:"datePublished"` //automated timestamp
-		Expiry_date string `json:"expiry_date"` //argv[5]
+		Deadline string `json:"deadline"` //argv[5]
     Reward_amount string `json:"reward_amount"` //argv[6]
 		Conditions string `json:"conditions"` //argv[7]
 //This part includes addtional details about the claim
@@ -262,7 +262,7 @@ func (t *SimpleChaincode) addClaim(stub shim.ChaincodeStubInterface, args []stri
 	clm.Claim_title = args[3]
 	clm.Claim_url_on_org = args[4]
 // From this point, arguments are optional
-	clm.Expiry_date = args[5]
+	clm.Deadline = args[5]
 	clm.Reward_amount = args[6]
 	clm.Conditions = args[7]
 	clm.Claim_url = args[8]
@@ -274,14 +274,14 @@ func (t *SimpleChaincode) addClaim(stub shim.ChaincodeStubInterface, args []stri
 	clm.Has_text = args[14]
 	clm.Tags = args[15]
 
-	// ==== Check if claim already exists and expiry_date is valid ====
-	if clm.Expiry_date!="" {
-		ex, err :=time.Parse("2006-01-02 00:00:00",clm.Expiry_date)
+	// ==== Check if claim already exists and deadline is valid ====
+	if clm.Deadline!="" {
+		ex, err :=time.Parse("2006-01-02 00:00:00",clm.Deadline)
 		if err != nil {
-			return shim.Error("Error in parsing expiry date: "+err.Error())
+			return shim.Error("Error in parsing deadline: "+err.Error())
 		}
 		if ex.Before(t) {
-			return shim.Error("Expiry date cannot be in the past.")
+			return shim.Error("Deadline cannot be in the past.")
 		}
 	}
 
@@ -384,13 +384,13 @@ func (t *SimpleChaincode) addFactcheck(stub shim.ChaincodeStubInterface, args []
 		return fmt.Sprintf("Failed to unmarshal claim record: %s", err.Error())
 	}
 
-	if claimJSON.Expiry_date!="" {
-		ex, err :=time.Parse("2006-01-02 00:00:00",claimJSON.Expiry_date)
+	if claimJSON.Deadline!="" {
+		ex, err :=time.Parse("2006-01-02 00:00:00",claimJSON.Deadline)
 		if err != nil {
-			return shim.Error("Error in parsing expiry date: "+err.Error())
+			return shim.Error("Error in parsing deadline: "+err.Error())
 		}
 		if ex.Before(t) {
-			return shim.Error("Expiry date has already passed.")
+			return shim.Error("Deadline has already passed.")
 		}
 	}
 
