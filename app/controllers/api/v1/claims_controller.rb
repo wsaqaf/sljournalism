@@ -42,7 +42,7 @@ module Api
       end
 
       def allowed_params
-          params.require(:claim).permit(:title, :has_image, :has_video, :has_text, :description, :url, :url_preview, :sharing_mode, :add_to_blockchain, :expiry_date, :bounty_amount, :conditions)
+          params.require(:claim).permit(:title, :has_image, :has_video, :has_text, :description, :url, :url_preview, :sharing_mode, :add_to_blockchain, :expiry_date, :reward_amount, :conditions)
       end
 
     end

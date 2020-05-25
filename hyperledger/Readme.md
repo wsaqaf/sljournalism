@@ -1,0 +1,82 @@
+To install this, just follow all the instructions shown here:
+https://hyperledger-fabric.readthedocs.io/en/release-2.0/build_network.html
+
+1) If you haven't already done so, download and run the latest version of Hyperledger Fabric (v2.0):
+curl -sSL https://bit.ly/2ysbOFE | bash -s
+
+2) run run1.sh in the chaincode folder
+
+3) When in cli, run run2.sh as instructed
+
+4) You are now done and have the chaincode installed.
+ You are now ready to interact with the chaincode in adding, fetching and deleting factchecks.
+
+Here are examples:
+
+ex1: Add claim:
+peer chaincode invoke -o orderer.example.com:7050 --tls true --cafile /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem -C $CHANNEL_NAME -n mycc --peerAddresses peer0.org1.example.com:7051 --tlsRootCertFiles /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/ca.crt --peerAddresses peer0.org2.example.com:9051 --tlsRootCertFiles /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org2.example.com/peers/peer0.org2.example.com/tls/ca.crt -c '{"Args":["addClaim","org1","1", "2","Hydroxychloroquine helps protect from COVID19","http://factcheck1.org/claimreview_a","2020-05-23 00:00:00","2020-05-30 00:00:00","300","Has to meet highest standards","http://twitter.com/123232","Some details about the claim","@realDonaldTrump","Twitter","1","1","1","Tweet,Trump,US politics" ]}' --waitForEvent
+
+ex2: Add factcheck
+peer chaincode invoke -o orderer.example.com:7050 --tls true --cafile /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem -C $CHANNEL_NAME -n mycc --peerAddresses peer0.org1.example.com:7051 --tlsRootCertFiles /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/ca.crt --peerAddresses peer0.org2.example.com:9051 --tlsRootCertFiles /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org2.example.com/peers/peer0.org2.example.com/tls/ca.crt -c '{"Args":["addFactcheck","org1","32","6","C282689iia43462b", "false","http://factcheck1.org/claimreview_a"]}' --waitForEvent
+
+ex3: QueryByRange for records (get all claims):
+docker exec -i cli peer chaincode query -C mychannel -n mycc -c '{"Args":["getRecordsByRange","C0","C99999999999999999999"]}'
+
+ex4:(get all factchecks):
+docker exec -i cli peer chaincode query -C mychannel -n mycc -c '{"Args":["getRecordsByRange","F0","F99999999999999999999"]}'
+
+ex5:QueryByOrg for claims:
+docker exec -i cli peer chaincode query -C mychannel -n mycc -c '{"Args":["queryRecordsByOrg","org1","claim"]}'
+
+ex6: QueryByOrg for factchecks:
+docker exec -i cli peer chaincode query -C mychannel -n mycc -c '{"Args":["queryRecordsByOrg","org1","factcheck"]}'
+
+ex7: QueryRecords for a record with certain characteristics, e.g., :
+docker exec -i cli peer chaincode query -C mychannel -n mycc -c '{"Args":["queryRecordsByOrg","org1","factcheck"]}'
+
+
+Notes:
+- You can find the couchdb statedb data via the links (make sure your firewall ingress port settings are open):
+http://<server ip>:<port for couchdb1/_utils/#/_all_dbs
+http://<server ip>:<port for couchdb2/_utils/#/_all_dbs
+http://<server ip>:<port for couchdb3/_utils/#/_all_dbs
+
+- You can find the raw blockchain data at using:
+sudo less /var/lib/docker/volumes/net_orderer.example.com/_data/chains/mychannel/blockfile_000000
+
+
+====
+Contents of run1.sh:
+
+#!/bin/bash -x
+./byfn.sh -m down
+./byfn.sh up -s couchdb -n
+docker cp ../../chaincode/factcheck cli:/opt/gopath/src/github.com/hyperledger/fabric-samples/chaincode
+docker cp ../../chaincode/run2.sh cli:/opt/gopath/src/github.com/hyperledger/fabric/peer
+docker cp ../../chaincode/.bashrc cli:/root
+echo "Going into cli... Once you are in cli, run: . run2.sh"
+docker exec -it cli /bin/bash
+
+Contents of run2.sh:
+
+#!/bin/bash
+set -x
+export CHANNEL_NAME=mychannel
+peer lifecycle chaincode package mycc.tar.gz --path /opt/gopath/src/github.com/hyperledger/fabric-samples/chaincode/factcheck/go/ --lang golang --label mycc_1
+peer lifecycle chaincode install mycc.tar.gz
+output=$(peer lifecycle chaincode queryinstalled)
+CC_PACKAGE_ID=$(echo $output| sed 's/[^,]*ID: \([^,]*\).*/\1/')
+CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org2.example.com/users/Admin@org2.example.com/msp
+CORE_PEER_ADDRESS=peer0.org2.example.com:9051
+CORE_PEER_LOCALMSPID="Org2MSP"
+CORE_PEER_TLS_ROOTCERT_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org2.example.com/peers/peer0.org2.example.com/tls/ca.crt
+peer lifecycle chaincode install mycc.tar.gz
+peer lifecycle chaincode approveformyorg --channelID $CHANNEL_NAME --name mycc --version 1.0 --init-required --package-id $CC_PACKAGE_ID --sequence 1 --tls true --cafile /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem
+CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp
+CORE_PEER_ADDRESS=peer0.org1.example.com:7051
+CORE_PEER_LOCALMSPID="Org1MSP"
+CORE_PEER_TLS_ROOTCERT_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/ca.crt
+peer lifecycle chaincode approveformyorg --channelID $CHANNEL_NAME --name mycc --version 1.0 --init-required --package-id $CC_PACKAGE_ID --sequence 1 --tls true --cafile /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem
+peer lifecycle chaincode checkcommitreadiness --channelID $CHANNEL_NAME --name mycc --version 1.0 --init-required --sequence 1 --tls true --cafile /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem --output json
+peer lifecycle chaincode commit -o orderer.example.com:7050 --channelID $CHANNEL_NAME --name mycc --version 1.0 --sequence 1 --init-required --tls true --cafile /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem --peerAddresses peer0.org1.example.com:7051 --tlsRootCertFiles /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/ca.crt --peerAddresses peer0.org2.example.com:9051 --tlsRootCertFiles /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org2.example.com/peers/peer0.org2.example.com/tls/ca.crt
+peer chaincode invoke -o orderer.example.com:7050 --isInit --tls true --cafile /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem -C $CHANNEL_NAME -n mycc --peerAddresses peer0.org1.example.com:7051 --tlsRootCertFiles /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/ca.crt --peerAddresses peer0.org2.example.com:9051 --tlsRootCertFiles /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org2.example.com/peers/peer0.org2.example.com/tls/ca.crt -c '{"Args":["Init"]}' --waitForEvent

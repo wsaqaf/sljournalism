@@ -1,630 +1,550 @@
+---
 sv:
-  #About Galileo page
-  about_galileo: "Om Galileo"
-  how_it_started: "Hur det började"
+  about_galileo: Om Galileo
+  about_galileo_txt: Prototypen av Galileo är ett resultat av Faktaassistenten forskningsprojekt som finansieras av Vinnova och utvecklats i samarbete mellan Framtidens Journalistik och Södertörns högskola.
+  about_malin: Malin är lärare och forskare inom journalistik. Hon har ett särskilt fokus på berättelser, och nyligen också blockchain.
   about_msg1: "<p>Prototypen av Galileo är ett resultat av Faktaassistenten forskningsprojekt som finansieras av Vinnova och utvecklats i samarbete mellan 'Framtidens Journalistik' och Södertörns högskola (Läs mer <a href='https://www.vinnova.se/p/faktaassistenten/' target=_blank>här</a>).</p><p>Assistentens första syfte var att hjälpa stärka förtroendet för journalistisk nyhetsproduktion genom att stödja redaktörer för att hitta balansen mellan a snabb och trovärdig nyproduktion för de digitala plattformarna. </p><p>Forskningen och processerna har kulminerat i detta webbplats som visualiserar viktiga resurser och ger praktisk underlättande av faktakontroll.</p>"
-  partners: "Partners"
-  future_of_journalism: "Framtidens Journalistik"
-  future_of_journalism_about: "<h5><b>Om projektet Framtidens Journalistik</b></h5><h5>Bakgrund</h5><p>Framtidens Journalistik &auml;r ett forsknings- och kunskapsutvecklingsprojekt som har p&aring;g&aring;tt sedan 2014 i ett samarbete mellan Sveriges ledande nyhetsredaktioner;TV4, SVT, Sveriges Radio, Dagens Nyheter, Expressen, NTM-koncernen med Upsala NyaTidning, Norrl&auml;ndska Socialdemokraten, Norrbottens-Kuriren, Pite&aring;-Tidningen, Enk&ouml;pings-Posten, Norrk&ouml;pings Tidningar, &Ouml;stg&ouml;ta Correspondenten, Motala Vadstena Tidning, V&auml;sterviks-Tidningen, Folkbladet, Gotlands Allehanda, Gotlands Tidningar. Fram till 2019 ingick ocks&aring; Aftonbladet och Svenska Dagbladet i samarbetet, Framtidens Journalistik samarbetar dessutom med Reuters Institute, Oxford University, Handelsh&ouml;gskolan i Stockholm, S&ouml;dert&ouml;rns H&ouml;gskola och unders&ouml;kningsf&ouml;retaget Nepa f&ouml;r insamling av data och analys.</p><h5>Syfte med projektet Framtidens Journalistik</h5><p>Projektets syfte &auml;r att skapa en b&auml;ttre f&ouml;rst&aring;else f&ouml;r hur nyheter och information sprids och diskuteras i det digitala ekosystemet samt att identifiera n&ouml;dv&auml;ndiga strukturer f&ouml;r att bibeh&aring;lla en l&aring;ngsiktigt h&aring;llbar mediemarknad med ett &ouml;ppet diskussionsklimat. Varje modern demokrati beh&ouml;ver en h&ouml;gkvalitativ nyhetsjournalistik som balanserar tendenser till ett segregerat samh&auml;lle, aktivt motverkar kunskapspolarisering och synar falsk informationsspridning. God nyhetsjournalistik kan fungera som en &ouml;ppen plattform f&ouml;r en st&auml;ndigt p&aring;g&aring;ende diskussion om utvecklingen mot ett framtida samh&auml;lle. Projektets ambition &auml;r att bidra till ett pluralistiskt medielandskap d&auml;r projektets medlemmar alla konkurrerar och samtidigt driver fr&aring;gan om ett gemensamt, sj&auml;lvsanerande medieetiskt system. Det handlar om att v&auml;rna om den samh&auml;llsnytta journalistiken kan erbjuda, som en grundl&auml;ggande tj&auml;nst och en kritisk infrastruktur f&ouml;r att f&aring; en m&aring;ngfald av samh&auml;llsgrupper att engageras, aktiveras och integreras. De ing&aring;ende bolagen tar i olika utstr&auml;ckning aktiv part i de forsknings- och utvecklingsprojekt som bedrivs inom ramen f&ouml;r samarbetet.</p><h5>Tillv&auml;gag&aring;ngss&auml;tt och samarbete med forskning</h5><p>Ett huvudsyfte med projektet &auml;r att &aring;stadkomma och finansiera grundforskning kring medier och journalistik. Det &auml;r ett omr&aring;de som har varit historiskt eftersatt men av avg&ouml;rande betydelse f&ouml;r ett framtida sunt medieklimat. &nbsp;Projektet Framtidens Journalistik f&ouml;r samman ledande forskare, entrepren&ouml;rer och mediebolag i ett ekosystem i syfte att skapa ny kunskap och nya id&eacute;er f&ouml;r digitala nyhetstj&auml;nster. N&auml;tverket samarbetar &auml;ven med internationella forskningscenter och medieakt&ouml;rer.</p><h5>Projektets syn p&aring; mediemarknaden</h5><p>Nyhetsf&ouml;rmedling &auml;r i dag ett arbete som utf&ouml;rs av m&auml;nger av olika akt&ouml;rer; mediebolag, engagerade individer, teknikbolag och textbearbetningsrobotar &auml;r alla en del av v&auml;rdekedjan f&ouml;r nyhetsf&ouml;rmedling. Resultatet &auml;r ett st&ouml;rre nyhetsfl&ouml;de &auml;n n&aring;gonsin tidigare i historien. Detta &auml;r en positiv utveckling som st&auml;ller nya krav p&aring; medieakt&ouml;rerna och &ouml;ppnar upp f&ouml;r helt nya m&ouml;jligheter. Vi ser en stor potential i att vidareutveckla journalistikens roll till ett konkurrenskraftigt erbjudande f&ouml;r ett modernt samh&auml;lle, d&auml;r de demokratiska behoven m&ouml;ts och de kommersiella m&aring;len n&aring;s.</p>"
-  about_sh_txt: "<h6><b>Södertörns högskola</b></h6><p><a href='https://sh.se' target=_blank>Södertörns högskola</a> erbjuder forskning och utbildning av hög kvalitet på alla nivåer och erbjuder en vänlig atmosfär och en inspirerande miljö. Vårt moderna, attraktiva campus ligger bara 20 minuter från Stockholm.</p>"
   about_sh: "<h6><b>Södertörns högskola</b></h6><p><a href='https://sh.se' target=_blank><font color=yellow>Södertörns högskola</font></a> erbjuder forskning och utbildning av hög kvalitet på alla nivåer och erbjuder en vänlig atmosfär och en inspirerande miljö. Vårt moderna, attraktiva campus ligger bara 20 minuter från Stockholm.</p>"
-  forskare: "involverade forskare"
-  about_walid: "Walid specialiserar sig på användning av Internet och medieteknologi för journalistik och yttrandefrihet."
-  about_malin: "Malin är lärare och forskare inom journalistik. Hon har ett särskilt fokus på berättelser, och nyligen också blockchain."
-  about_galileo_txt: "Prototypen av Galileo är ett resultat av Faktaassistenten forskningsprojekt som finansieras av Vinnova och utvecklats i samarbete mellan Framtidens Journalistik och Södertörns högskola."
-  future_of_journalism_txt: "<h6><b>Framtidens Journalistik</b></h6><p>Future of Journalism är ett konsortium av svenska medieföretag som arbetar för nya och innovativa lösningar för nyhetslokaler.</p>"
-  project_members: "Projektets medlemmar"
-  tools_for_journalists: "Verktyg för journalister"
-  become_factchecker: "Bli en professionell faktagranskare"
-  collection_tools: "En samling av världens bästa faktakontrollverktyg"
-  for_developers: "För utvecklare och nyhetsmedier"
-  coming_soon_msg: "Kommer snart: Använd API för att visa faktagranskningar på din webbplats"
-  developer_api: "Dokument för utvecklare och API"
-
-#Views common
-  add_new: "Lägg till"
-  home_t: "Med Galileo blir du en expert på att faktagranska!"
-  home_d: "Vetenskapliga metoder och effektiva checklistor för media och journalister"
-  step_1: "1. Lägg till ett påstående"
-  step_1_d: "Vill du ta reda på sanningshalten om en text, video eller bildkontext? Starta faktagranskningen genom att lägga till ett påstående."
-  step_2: "2. Gör faktakoll"
-  step_2_d: "Använd våra checklistor och verktyg för en robust faktakontroll."
-  step_3: "3. Publicera säkert på blockkedjan"
-  step_3_d: "När en faktragranskning delats på blockkedjan, kan ingen mixtra med den."
-  get_started: "Gör en faktagranskning!"
-  or_browse: "Eller utforska hela databasen"
-  claim_t: "Du lägger till ett påstående"
-  medium_t: "Du lägger till ett medium"
-  src_t: "Du lägger till en källa"
-  resource_t: "Du lägger till en resurs"
-  claim_t_edit: "Du redigerar ett påstående"
-  medium_t_edit: "Du redigerar ett medium"
-  src_t_edit: "Du redigerar en källa"
-  resource_t_edit: "Du redigerar en resurs"
-
-  claim_r: "Du faktagranskar påståendet"
-  medium_r: "Du faktagranskar mediet"
-  source_r: "Du faktagranskar källan"
-  src_r: "Du faktagranskar källan"
-  claim_d: "Tack för att du bidrar till en faktabaserad värld"
-  tools_t: "Vi har samlat några av de bästa verktygen"
-  tools_d: "Har vi missat några? Skicka en länk så lägger vi till verktyget här."
-  db_t: "Utforska alla påståenden"
-  db_d: "Här ser du tidigare faktakollar. Du kan också lägga till ett eget påstående som vem som helst kan hjälpa till att faktagranska."
-  db_t_media: "Kolla på granskningar av online medier"
-  db_d_media: "Här kan du se hur faktagranskare utvärderade vissa plattformar (vi kallar 'medier') när det gäller deras tillförlitlighet."
-  db_t_srcs: "Kolla på granskningar av källor"
-  db_d_srcs: "Här kan du se hur faktagranskare bedömde vissa källor som publicerar på nätet (t.ex. sociala mediekonton) när det gäller deras trovärdighet."
-
-#specific for pagy (this section is not needed for en.yml):
-  pagy:
-
-    item_name:
-    one: "resultat"
-    two: "resultat"
-    other: "resultat"
-
-    nav:
-    prev: "&lsaquo;&nbsp;Föregående"
-    next: "Nästa&nbsp;&rsaquo;"
-    gap: "&hellip;"
-
-    info:
-    no_items: "Inga %{item_name} hittade"
-    single_page: "Visar <b>%{count}</b> %{item_name}"
-    multiple_pages: "Visar %{item_name} <b>%{from}-%{to}</b> av <b>%{count}</b> totalt"
-
-    combo_nav_js: "Sida %{page_input} av %{pages}"
-    items_selector_js: "Visa %{items_input} %{item_name} per sida"
-
-#Views common
-
-  website_title: "Galileo – faktaassistenten"
-  claims: "Alla påståenden"
-  media: "Medier"
-  sources: "Källor"
-  srcs: "Källor"
-  resources_for_verification: "Verktyg"
-  resources: "Resurser"
-  sign_out: "Logga ut"
-  sign_in: "Logga in"
-  sign_in_with: "Logga in med"
-  sign_up: "Registrera dig"
-  forgot_pw: "Glömt lösenord"
-  edit_profile: "Redigera profil"
-  required: "Nödvändig"
-  welcome: "Välkommen"
-  hello: "Hej"
-  welcome_msg: "Välkommen till Galileo – din faktaassistent!"
-  go_sign_in_part1: "För att använda tjänsten, kan du"
-  go_sign_up_part1: "Om du inte har ett konto kan du"
-  start_review: "Börja faktagranska direkt efter inlämning"
-  submit: "Skicka in"
-  video_tutorial: "Videohandledning"
-  video_tutorial: "Också, kolla in våra <a href='https://www.youtube.com/playlist?list=PLlUC5-5Z5z2uGN-yqC9w9IvslWwhlb_zX' target=_blank>instruktionsfilmer</a>"
-
-#Claims/index
-
-  or: "eller"
-  import: "importera"
-  export: "exportera"
-  search: "Sök"
-  no_results: "Inga resultat."
-  tag_cloud: "Tag Cloud"
-  show_all: "[Visa alla]"
-  tags: "Taggar"
-  updated_at: "Uppdaterad vid"
-  reviews: "Faktagranskningar"
-  rate_false: "Falskt"
-  rate_totally_false: "Helt falskt"
-  rate_mostly_false: "Mestadels falskt"
-  rate_somewhat_false: "Aningen falskt"
-  rate_mixed: "Mixed"
-  rate_totally_true: "Helt sant"
-  rate_mostly_true: "Mestadels sant"
-  rate_somewhat_true: "Aningen sant"
-  rate_true: "Sant"
-  true: "Sant"
-  false: "Falkst"
-  rate_no_decision: "Inget beslut"
-  add: "Lägg till"
-  edit: "Redigera"
-  delete: "Radera"
-  show: "Visa"
-  add_review: "Lägg till faktagranskning"
-  edit_review: "Redigera faktagranskning"
-  del_review: "Radera faktagranskning"
-  latest: "Senaste"
-  confirm_del_q: "Är du säker?"
-  warning_msg1: "Är du säker på att du vill gå vidare och ta bort %{type}?"
-  warning_msg2: "Är du säker på att du vill gå vidare och ta bort %{type} och dess faktagranskningar?"
-
-#Claim/new
-
-  add_new_claim: "Lägg till ett nytt påstående"
-  give_claim_title: "Titel"
-  assign_existing_tags: "Taggar"
-  add_tags: "Lägg till taggar"
-  create_more_tags: "Skapa fler taggar"
-  type_new_tags: "Skriv in nya taggar separerade med komma"
-  tag_exists: "taggen finns redan"
-  claim_url: "URL till var påståendet finns (om tillgängligt)"
+  about_sh_txt: "<h6><b>Södertörns högskola</b></h6><p><a href='https://sh.se' target=_blank>Södertörns högskola</a> erbjuder forskning och utbildning av hög kvalitet på alla nivåer och erbjuder en vänlig atmosfär och en inspirerande miljö. Vårt moderna, attraktiva campus ligger bara 20 minuter från Stockholm.</p>"
+  about_walid: Walid specialiserar sig på användning av Internet och medieteknologi för journalistik och yttrandefrihet.
+  add: Lägg till
+  add_additional_resource: Lägg till en ytterligare resurs till denna fråga
+  add_new: Lägg till
+  add_new_claim: Lägg till ett nytt påstående
+  add_new_medium: Lägg till ett nytt medium
+  add_new_resource: Lägg till en ny resurs för faktakoll
+  add_new_src: Lägg till en ny källa
+  add_resource_to_q: Lägg till en resurs till denna fråga.
+  add_review: Lägg till faktagranskning
+  add_tags: Lägg till taggar
+  add_to_blockchain_q_long: Lägg till blockchain?
+  added_by: Tillagd av
+  advanced_options: avancerade alternativ
+  all: Alla
+  assessing_claim_rel_title: Din bedömning av påståendet
+  assessing_medium_rel_title: Utvärdering av mediets tillförlitlighet
+  assessing_src_rel_title: Utvärdera källans pålitlighet
+  assessment: Bedömning
+  assessment_of: 'Bedömning av '
+  assign_existing_tags: Taggar
+  associate_to_q: 'Du kan också koppla en befintlig resurs som du har skapat till ovanstående fråga genom att lägga till följande referenskod till '
+  become_factchecker: Bli en professionell faktagranskare
+  been_reviewed: " som har faktagranskats"
+  calculated_score: Beräknad poäng
+  calculated_score_q_long: "%{review_score}"
+  calculated_score_q_short: Beräknad poäng
+  calculating_score_claim_title: Beräknad poäng
+  check_blacklisted: Kontrollera om %{type} är svartlistad
+  check_current_resources1: 'Du kan också kolla på tillgängliga '
+  check_current_resources2: " och koppla någon av dem till den här frågan genom att lägga till följande referenskod när du redigerar resursen"
+  check_domain_ranking: Få domänens ranking
+  check_factchecked: Kontrollera om anspråk faktiskt kontrollerades
+  check_if_satire: Se om %{type} är satir eller verklig
+  check_other_reviews: 'Kontrollera andra granskningarna av '
+  check_rating: Kontrollera betyg på %{type}
+  check_reputation: Kontrollera webbplatsens rykte
+  check_reviews: 'Kontrollera granskningarna av '
+  check_whois: Få domänens WHOIS-detaljer
+  claim: påstående
+  claim_d: Tack för att du bidrar till en faktabaserad värld
+  claim_img_forensic_discrepency_q_long: Har bilden doktorerats eller manipulerats (med hjälp av verktyg som Paint.Net eller Photoshop)?
+  claim_img_forensic_discrepency_q_options_no: "<b>Nej!</b> Det verkar vara i dess manipulerade"
+  claim_img_forensic_discrepency_q_options_yes: "<b>Ja!</b> Det verkar ha manipulerats"
+  claim_img_forensic_discrepency_q_short: Bildmanipulation
+  claim_img_logical_discrepency_q_long: Visar bilden andra problem eller tecken som inte lägger till eller är vettiga som felaktig belysning, skuggriktning eller storlek, ovanliga färger, kopierade / upprepade objekt?
+  claim_img_logical_discrepency_q_options_no: "<b>Nej!</b> Allt verkar vara bra"
+  claim_img_logical_discrepency_q_options_yes: "<b>Ja!</b> Det fanns några andra problem eller tecken som inte gav mening"
+  claim_img_logical_discrepency_q_short: Avvikande attribut
+  claim_img_metadata_discrepency_q_long: Har bilden metadata som visar geografisk plats, datum, programvara eller annan information som strider mot vad som förväntas?
+  claim_img_metadata_discrepency_q_options_no: "<b>Nej!</b> Det fanns inga metadata eller det visade ingen diskrepans"
+  claim_img_metadata_discrepency_q_options_yes: "<b>Ja!</b> Metadata visade viss skillnad"
+  claim_img_metadata_discrepency_q_short: Metadata
+  claim_img_old_q_long: Har bilden använts tidigare i ett annat sammanhang?
+  claim_img_old_q_options_no: "<b>Nej!</b> Det verkar användas i rätt sammanhang"
+  claim_img_old_q_options_yes: "<b>Ja!</b> Det har använts i ett annat sammanhang tidigare"
+  claim_img_old_q_short: Tidigare användning
+  claim_img_review_started_q_long: Påståendet innehåller en bild, vill du granska den?
+  claim_img_review_started_q_options_no: "<b>Nej!</b> Jag vill hoppa över detta steg och bara göra en egen bedömning"
+  claim_img_review_started_q_options_yes: "<b>Ja!</b> Jag vill granska det"
+  claim_img_review_started_q_short: Starta bildgranskning
+  claim_import: Importera ett påstående
+  claim_import_note: Här kan du ladda upp en json-fil för ett påstående som tidigare exporterades via den 'exportera' funktionen
+  claim_imported: Påståendet importerat och ersatte det äldre påståendet med samma titel.
+  claim_imported_successfully: Import av påståendet lyckades.
+  claim_not_imported: Inte importerad! Ett påstående med samma titel finns redan eller skapats av en annan användare.
+  claim_option_include_review: Inkludera den senaste associerade faktagranskningen automatiskt
+  claim_option_overwrite: Skriv över tidigare påstående med samma titel
+  claim_r: Du faktagranskar påståendet
+  claim_review_field: ClaimReview-schema (inbäddat i offentlig artikel)
+  claim_review_imported: Import av påståendet och faktagranskningen lyckades.
+  claim_review_not_imported: Faktagranskningen har inte importerats av någon anledning.
+  claim_select_file: 'Välj json-fil och klicka sedan på import:'
+  claim_select_url: 'eller importera från URL:'
+  claim_t: Du lägger till ett påstående
+  claim_t_edit: Du redigerar ett påstående
+  claim_txt_author_offers_little_evidence_q_long: Misslyckades författaren / producenten av detta påstående att tillhandahålla tillräckliga bevis för att bevisa det?
+  claim_txt_author_offers_little_evidence_q_options_no: "<b>Nej!</b> Kravet har tillräckligt med bevis"
+  claim_txt_author_offers_little_evidence_q_options_yes: "<b>Ja!</b> Det finns inga tillräckliga bevis för att bevisa påståendet"
+  claim_txt_author_offers_little_evidence_q_short: Källhänvisningar
+  claim_txt_crowds_distance_discrepency_q_long: Inkluderar påståendet ett falskt uttalande om publikstorlekar eller avstånd, eller statistik, namn eller annan information som bara är sakligen fel?
+  claim_txt_crowds_distance_discrepency_q_options_no: "<b>Nej!</b> Jag bekräftade att det inte finns några sakliga felaktigheter"
+  claim_txt_crowds_distance_discrepency_q_options_yes: "<b>Ja!</b> Det finns några sakliga felaktigheter"
+  claim_txt_crowds_distance_discrepency_q_short: Felaktigheter
+  claim_txt_has_clickbait_q_long: Använder artikeln en clickbait-titel?
+  claim_txt_has_clickbait_q_options_no: "<b>Nej!</b> Det verkar inte vara clickbait"
+  claim_txt_has_clickbait_q_options_yes: "<b>Ja!</b> Titeln verkar visa tecken på att vara clickbait"
+  claim_txt_has_clickbait_q_short: Clickbait-titel
+  claim_txt_insufficient_verifiable_srcs_q_long: Misslyckades påståendet faktakontroller eftersom det saknar tillräckliga verifierbara källor eller innehåller dis / felinformation?
+  claim_txt_insufficient_verifiable_srcs_q_options_no: "<b>Nej!</b> Det har faktakontrollerats och visat sig vara sant"
+  claim_txt_insufficient_verifiable_srcs_q_options_yes: "<b>Ja!</b> Det har faktakontrollerats och visat sig vara falskt"
+  claim_txt_insufficient_verifiable_srcs_q_short: Tidigare faktakontroll
+  claim_txt_poor_language_q_long: Har texten dåligt språk eftersom det är språkligt inkoherent eller innehåller grammatiska / stavfel?
+  claim_txt_poor_language_q_options_no: "<b>Nej!</b> Det verkar vara välskrivet"
+  claim_txt_poor_language_q_options_yes: "<b>Ja!</b> Det ser ut som det är dåligt skrivet"
+  claim_txt_poor_language_q_short: Kvalitet i språk
+  claim_txt_reliable_sources_disapprove_q_long: Lider påståendet av andra problem?
+  claim_txt_reliable_sources_disapprove_q_options_no: "<b>Nej!</b> Jag hittade inga andra problem i påståendet"
+  claim_txt_reliable_sources_disapprove_q_options_yes: "<b>Ja!</b> Det fanns andra problem"
+  claim_txt_reliable_sources_disapprove_q_short: Andra problem
+  claim_txt_review_started_q_long: Påståendet innehåller text, vill du granska den?
+  claim_txt_review_started_q_options_no: "<b>Nej!</b> Jag vill hoppa över recensionen och bara göra en bedömning"
+  claim_txt_review_started_q_options_yes: "<b>Ja!</b> Jag vill granska det"
+  claim_txt_review_started_q_short: Starta textgranskning
+  claim_txt_unreliable_news_content_q_long: Är påståendet kanske en del av satire, åsikt, marknadsföring, parodi eller annan osynlig typ av innehåll?
+  claim_txt_unreliable_news_content_q_options_no: "<b>Nej!</b> Det verkar vara allvarligt"
+  claim_txt_unreliable_news_content_q_options_yes: "<b>Ja!</b> Ser ut som innehållet är tänkt att inte vara allvarligt"
+  claim_txt_unreliable_news_content_q_short: Seriositet
+  claim_url: URL till var påståendet finns (om tillgängligt)
   claim_url_note: "* Obs! Om påståendet är en bild, använd den länken som URL (t.ex. http://website.com/image.jpg)"
-  medium_claim: "Vad var mediet där påstående publicerades (t.ex. Twitter, Facebook, New York Times, etc.)? Lämna tomt om det är okänt eller osäkert."
-  src_claim: "Vem är källan (skapare, författare, författare) som producerade påståendet? Lämna tomt om det är okänt eller osäker."
-  image_claim: "Innehåller påståendet en bild?"
-  video_claim: "Innehåller påståendet en video?"
-  text_claim: "Innehåller påståendet en text?"
-  more_notes_claim: "Vill du lägga till mer information?"
-  yes_answer: "Ja"
-  no_answer: "Nej"
-  not_sure: "Inte säker"
-  skip_question: "Hoppa över fråga"
-  share_claim: "Vill du dela detta publikt?"
-  yes_share: "Ja, dela med alla"
-  no_share: "Nej, håll det privat för mig"
-
-  invalid_json: "Filen som du försökte importera verkar inte vara giltig. Se till att du bara importerar filer som har exporterats via systemet genom den 'Exportera' länken."
-  claim_import: "Importera ett påstående"
-  claim_import_note: "Här kan du ladda upp en json-fil för ett påstående som tidigare exporterades via den 'exportera' funktionen"
-  claim_select_file: "Välj json-fil och klicka sedan på import:"
-  claim_select_url: "eller importera från URL:"
-  claim_option_include_review: "Inkludera den senaste associerade faktagranskningen automatiskt"
-  claim_option_overwrite: "Skriv över tidigare påstående med samma titel"
-
-  medium_import: "Importera ett medie"
-  medium_import_note: "Här kan du ladda upp en json-fil för ett medium som tidigare exporterades via den 'exportera' funktionen"
-  medium_select_file: "Välj json-fil och klicka sedan på import:"
-  medium_select_url: "eller importera från URL:"
-  medium_option_include_review: "Inkludera den senaste associerade faktagranskningen automatiskt"
-  medium_option_overwrite: "Skriv över tidigare medium med samma titel"
-
-  src_import: "Importera en källa"
-  src_import_note: "Här kan du ladda upp en json-fil för en källa som tidigare exporterades via den 'exportera' funktionen"
-  src_select_file: "Välj json-fil och klicka sedan på import:"
-  src_select_url: "eller importera från URL:"
-  src_option_include_review: "Inkludera den senaste associerade faktagranskningen automatiskt"
-  src_option_overwrite: "Skriv över tidigare källa med samma titel"
-
-  advanced_options: "avancerade alternativ"
-  save_to_blockchain: "Spara också i blockchain"
-
-#Claim/edit
-  edit_a_claim: "Redigera ett påstående"
-
-#Claim/show
-  title_claim: "Titel"
-  title_claim: "Titel av påståendet"
-  title_medium: "Namn av mediet"
-  title_src: "Name av källan"
-  tags_claim: "Taggar"
-  url: "URL"
-  not_provided: "N/A"
-  share_setting: "Delas det med andra medlemmar"
-  share_setting_brief: "Dela"
-  is_shared: "Ja, det delas"
-  is_private: "Nej, det är privat"
-  description: "Beskrivning"
-  added_by: "Tillagd av"
-  created_at: "Skapad på"
-  updated_at: "Uppdaterad vid"
-  check_reviews: "Kontrollera granskningarna av "
-  see_your_review: "Kontrollera din granskningen av "
-  edit_review: "Redigera granskning "
-  del_review: "Radera granskning "
-  check_other_reviews: "Kontrollera andra granskningarna av "
-  go_back: "Gå tillbaka"
-
-#medium view:
-#Media/index
-
-  rate_totally_unreliable: "Helt opålitlig"
-  rate_mostly_unreliable: "Mestadels opålitlig"
-  rate_somewhat_unreliable: "Något opålitligt"
-  rate_mostly_reliable: "Mestadels pålitligt"
-  rate_totally_reliable: "Helt pålitligt"
-  rate_no_answer: "Inget svar / inte tillämpligt"
-  rate_not_measurable: "Inte mätbart"
-
-#Regulator-barometer relaterade
-  score_is1: "Poäng "
+  claim_vid_audio_discrepency_q_long: Har videon genomgått någon ljudmanipulation? Finns det avvikelser i rösterna / ljudet i videon (t.ex. missanpassning mellan karaktär och hans röst)?
+  claim_vid_audio_discrepency_q_options_no: "<b>Nej!</b> Ljudet verkar bra"
+  claim_vid_audio_discrepency_q_options_yes: "<b>Ja!</b> Det verkar ha varit en viss ljudmanipulation"
+  claim_vid_audio_discrepency_q_short: Ljudmanipulation
+  claim_vid_forensic_discrepency_q_long: Har någon av filmerna i videoklippet doctorerats eller manipulerats per observerade ramar?
+  claim_vid_forensic_discrepency_q_options_no: "<b>Nej!</b> Det verkar vara i dess manipulerade"
+  claim_vid_forensic_discrepency_q_options_yes: "<b>Ja!</b> Det verkar ha manipulerats"
+  claim_vid_forensic_discrepency_q_short: Video manipulation
+  claim_vid_logical_discrepency_q_long: Finns det några andra problem eller tecken som inte läggs upp (t.ex. ledtrådar i landskapet, gator, landmärken eller röster i bakgrunden som indikerar en viss skillnad i fråga om tid, plats eller identitet för de inblandade individerna)?
+  claim_vid_logical_discrepency_q_options_no: "<b>Nej!</b> Allt verkar vara bra"
+  claim_vid_logical_discrepency_q_options_yes: "<b>Ja!</b> Det fanns några andra problem eller tecken som inte gav mening"
+  claim_vid_logical_discrepency_q_short: Ytterligare ledtrådar
+  claim_vid_metadata_discrepency_q_long: Har videon metadata som visar geografisk plats, datum, programvara eller annan information som strider mot vad som förväntas?
+  claim_vid_metadata_discrepency_q_options_no: "<b>Nej!</b> Metadata visade inte någon skillnad"
+  claim_vid_metadata_discrepency_q_options_yes: "<b>Ja!</b> Metadata visade viss skillnad"
+  claim_vid_metadata_discrepency_q_short: Avvikelse av metadata för video
+  claim_vid_old_q_long: Har videon publicerats eller använts ur sammanhanget per omvänd bildsökning av stillbilder?
+  claim_vid_old_q_options_no: "<b>Nej!</b> Det verkar användas i rätt sammanhang"
+  claim_vid_old_q_options_yes: "<b>Ja!</b> Det har använts i ett annat sammanhang tidigare"
+  claim_vid_old_q_short: Vilseledande sammanhang
+  claim_vid_review_started_q_long: Påståendet innehåller en video, vill du granska den?
+  claim_vid_review_started_q_options_no: "<b>Nej!</b> Jag vill hoppa över detta steg och bara göra en egen bedömning"
+  claim_vid_review_started_q_options_yes: "<b>Ja!</b> Jag vill granska videon"
+  claim_vid_review_started_q_short: Starta granskning av video
+  claims: Alla påståenden
+  claims_connected: 'Påstående som är kopplade till '
+  collection_tools: En samling av världens bästa faktakontrollverktyg
+  coming_soon_msg: 'Kommer snart: Använd API för att visa faktagranskningar på din webbplats'
+  confirm_del_q: Är du säker?
+  copy_url: Kopiera URL
+  create_more_tags: Skapa fler taggar
+  created_at: Skapad på
+  db_d: Här ser du tidigare faktakollar. Du kan också lägga till ett eget påstående som vem som helst kan hjälpa till att faktagranska.
+  db_d_media: Här kan du se hur faktagranskare utvärderade vissa plattformar (vi kallar 'medier') när det gäller deras tillförlitlighet.
+  db_d_srcs: Här kan du se hur faktagranskare bedömde vissa källor som publicerar på nätet (t.ex. sociala mediekonton) när det gäller deras trovärdighet.
+  db_t: Utforska alla påståenden
+  db_t_media: Kolla på granskningar av online medier
+  db_t_srcs: Kolla på granskningar av källor
+  del_review: 'Radera granskning '
+  delete: Radera
+  description: Beskrivning
+  developer_api: Dokument för utvecklare och API
+  download: Ladda ner
+  edit: Redigera
+  edit_a_claim: Redigera ett påstående
+  edit_profile: Redigera profil
+  edit_review: 'Redigera granskning '
+  export: exportera
+  export_this_claim: Exportera det här påståendet
+  export_this_medium: Exportera det här mediet
+  export_this_resource: Exportera den här resursen
+  export_this_src: Exportera den här källan
+  'false': Falkst
+  finish: Avsluta
+  for: för
+  for_developers: För utvecklare och nyhetsmedier
+  forgot_pw: Glömt lösenord
+  researchers: Involverade forskare
+  future_of_journalism: Framtidens Journalistik
+  future_of_journalism_about: "<h5><b>Om projektet Framtidens Journalistik</b></h5><h5>Bakgrund</h5><p>Framtidens Journalistik &auml;r ett forsknings- och kunskapsutvecklingsprojekt som har p&aring;g&aring;tt sedan 2014 i ett samarbete mellan Sveriges ledande nyhetsredaktioner;TV4, SVT, Sveriges Radio, Dagens Nyheter, Expressen, NTM-koncernen med Upsala NyaTidning, Norrl&auml;ndska Socialdemokraten, Norrbottens-Kuriren, Pite&aring;-Tidningen, Enk&ouml;pings-Posten, Norrk&ouml;pings Tidningar, &Ouml;stg&ouml;ta Correspondenten, Motala Vadstena Tidning, V&auml;sterviks-Tidningen, Folkbladet, Gotlands Allehanda, Gotlands Tidningar. Fram till 2019 ingick ocks&aring; Aftonbladet och Svenska Dagbladet i samarbetet, Framtidens Journalistik samarbetar dessutom med Reuters Institute, Oxford University, Handelsh&ouml;gskolan i Stockholm, S&ouml;dert&ouml;rns H&ouml;gskola och unders&ouml;kningsf&ouml;retaget Nepa f&ouml;r insamling av data och analys.</p><h5>Syfte med projektet Framtidens Journalistik</h5><p>Projektets syfte &auml;r att skapa en b&auml;ttre f&ouml;rst&aring;else f&ouml;r hur nyheter och information sprids och diskuteras i det digitala ekosystemet samt att identifiera n&ouml;dv&auml;ndiga strukturer f&ouml;r att bibeh&aring;lla en l&aring;ngsiktigt h&aring;llbar mediemarknad med ett &ouml;ppet diskussionsklimat. Varje modern demokrati beh&ouml;ver en h&ouml;gkvalitativ nyhetsjournalistik som balanserar tendenser till ett segregerat samh&auml;lle, aktivt motverkar kunskapspolarisering och synar falsk informationsspridning. God nyhetsjournalistik kan fungera som en &ouml;ppen plattform f&ouml;r en st&auml;ndigt p&aring;g&aring;ende diskussion om utvecklingen mot ett framtida samh&auml;lle. Projektets ambition &auml;r att bidra till ett pluralistiskt medielandskap d&auml;r projektets medlemmar alla konkurrerar och samtidigt driver fr&aring;gan om ett gemensamt, sj&auml;lvsanerande medieetiskt system. Det handlar om att v&auml;rna om den samh&auml;llsnytta journalistiken kan erbjuda, som en grundl&auml;ggande tj&auml;nst och en kritisk infrastruktur f&ouml;r att f&aring; en m&aring;ngfald av samh&auml;llsgrupper att engageras, aktiveras och integreras. De ing&aring;ende bolagen tar i olika utstr&auml;ckning aktiv part i de forsknings- och utvecklingsprojekt som bedrivs inom ramen f&ouml;r samarbetet.</p><h5>Tillv&auml;gag&aring;ngss&auml;tt och samarbete med forskning</h5><p>Ett huvudsyfte med projektet &auml;r att &aring;stadkomma och finansiera grundforskning kring medier och journalistik. Det &auml;r ett omr&aring;de som har varit historiskt eftersatt men av avg&ouml;rande betydelse f&ouml;r ett framtida sunt medieklimat. &nbsp;Projektet Framtidens Journalistik f&ouml;r samman ledande forskare, entrepren&ouml;rer och mediebolag i ett ekosystem i syfte att skapa ny kunskap och nya id&eacute;er f&ouml;r digitala nyhetstj&auml;nster. N&auml;tverket samarbetar &auml;ven med internationella forskningscenter och medieakt&ouml;rer.</p><h5>Projektets syn p&aring; mediemarknaden</h5><p>Nyhetsf&ouml;rmedling &auml;r i dag ett arbete som utf&ouml;rs av m&auml;nger av olika akt&ouml;rer; mediebolag, engagerade individer, teknikbolag och textbearbetningsrobotar &auml;r alla en del av v&auml;rdekedjan f&ouml;r nyhetsf&ouml;rmedling. Resultatet &auml;r ett st&ouml;rre nyhetsfl&ouml;de &auml;n n&aring;gonsin tidigare i historien. Detta &auml;r en positiv utveckling som st&auml;ller nya krav p&aring; medieakt&ouml;rerna och &ouml;ppnar upp f&ouml;r helt nya m&ouml;jligheter. Vi ser en stor potential i att vidareutveckla journalistikens roll till ett konkurrenskraftigt erbjudande f&ouml;r ett modernt samh&auml;lle, d&auml;r de demokratiska behoven m&ouml;ts och de kommersiella m&aring;len n&aring;s.</p>"
+  future_of_journalism_txt: "<h6><b>Framtidens Journalistik</b></h6><p>Future of Journalism är ett konsortium av svenska medieföretag som arbetar för nya och innovativa lösningar för nyhetslokaler.</p>"
+  get_started: Gör en faktagranskning!
+  give_claim_title: Titel
+  give_medium_title: Vad heter mediet
+  give_resource_title: Vad heter resursen
+  give_src_title: Vad heter källan
+  go_back: Gå tillbaka
+  go_back_to_resources: Återgå till resurssidan
+  go_sign_in_part1: För att använda tjänsten, kan du
+  go_sign_up_part1: Om du inte har ett konto kan du
+  hello: Hej
+  home_d: Vetenskapliga metoder och effektiva checklistor för media och journalister
+  home_t: Med Galileo blir du en expert på att faktagranska!
+  how_it_started: Hur det började
+  image_claim: Innehåller påståendet en bild?
+  import: importera
+  info_on_domain: Få information om domänen
+  invalid: ogiltigt
+  invalid_json: Filen som du försökte importera verkar inte vara giltig. Se till att du bara importerar filer som har exporterats via systemet genom den 'Exportera' länken.
+  is_private: Nej, det är privat
+  is_shared: Ja, det delas
+  latest: Senaste
+  learn_more: Läs mer om %{type}
+  least: 'Minst '
+  media: Medier
+  medium: medium
+  medium_claim: Vad var mediet där påstående publicerades (t.ex. Twitter, Facebook, New York Times, etc.)? Lämna tomt om det är okänt eller osäkert.
+  medium_failed_factcheck_before_options_no: "<b>Nej!</b> Det misslyckades aldrig med en faktakontroll förut"
+  medium_failed_factcheck_before_options_yes: "<b>Ja!</b> Det misslyckades minst en gång innan"
+  medium_failed_factcheck_before_q_long: Har mediet misslyckats med en faktakontroll tidigare?
+  medium_failed_factcheck_before_q_short: Fact-check history
+  medium_has_poor_security_options_no: "<b>Nej!</b> Det verkar helt säkert"
+  medium_has_poor_security_options_yes: "<b>Ja!</b> Det har vissa problem med säkerheten"
+  medium_has_poor_security_q_long: Har mediet dåliga tekniska säkerhets- / säkerhetsstandarder (innehåller virus, bedrägerier, skadlig programvara etc.) eller saknar krypterad kommunikation (SSL-certifikat)?
+  medium_has_poor_security_q_short: Teknisk säkerhet
+  medium_hosting_discrepency_options_no: "<b>Nej!</b> Platsinformationen verkar OK"
+  medium_hosting_discrepency_options_yes: "<b>Ja!</b> Det finns ett problem med platsinformationen"
+  medium_hosting_discrepency_q_long: Finns det en oro för den plats där fysisk data lagras och företaget som hanterar sin fysiska infrastruktur och om det är värd tillsammans med andra mindre webbplatser?
+  medium_hosting_discrepency_q_short: Kontakt / adressavvikelse
+  medium_import: Importera ett medie
+  medium_import_note: Här kan du ladda upp en json-fil för ett medium som tidigare exporterades via den 'exportera' funktionen
+  medium_imported: Import och ersatte äldre medium med samma namn.
+  medium_imported_successfully: Import av mediet lyckades.
+  medium_is_biased_options_no: "<b>Nej!</b> Det verkar inte finnas någon konsekvent partiskhet"
+  medium_is_biased_options_yes: "<b>Ja!</b> Det verkar finnas en viss konsekvent partiskhet"
+  medium_is_biased_q_long: Är mediet känt för att vara partiskt (politiskt, socialt, religiöst, etc.)?
+  medium_is_biased_q_short: Känd bias
+  medium_is_blacklisted_options_no: "<b>Nej!</b> Den finns inte på någon svartlista"
+  medium_is_blacklisted_options_yes: "<b>Ja!</b> Den är svartlistad eller markerad som en 'falsk nyhetswebbplats'"
+  medium_is_blacklisted_q_long: Finns mediet på någon offentlig lista med falska nyhetswebbplatser?
+  medium_is_blacklisted_q_short: Kontrollera svartlista
+  medium_is_not_liable_options_no: "<b>Nej!</b> Det krävs ansvar"
+  medium_is_not_liable_options_yes: "<b>Ja!</b> Det undviker helt klart ansvar"
+  medium_is_not_liable_q_long: Undviker mediet några ansvarsvillkor (t.ex. eftersom innehållet är användargenererat)?
+  medium_is_not_liable_q_short: Brist på ansvarsvillkor
+  medium_is_poorly_ranked_options_no: "<b>Nej!</b> Det är inte dåligt rankat"
+  medium_is_poorly_ranked_options_yes: "<b>Ja!</b> Det rankas dåligt"
+  medium_is_poorly_ranked_q_long: Rankas mediet lågt i trovärdighet av andra?
+  medium_is_poorly_ranked_q_short: Dålig ranking
+  medium_lacks_flagging_means_options_no: "<b>Nej!</b> Det har ett sätt att rapportera / flagga innehåll"
+  medium_lacks_flagging_means_options_yes: "<b>Ja!</b> Det saknar ett sätt att rapportera / flagga innehåll"
+  medium_lacks_flagging_means_q_long: Saknar mediet medel för att flagga eller rapportera publicerat innehåll?
+  medium_lacks_flagging_means_q_short: Brist på flaggning betyder
+  medium_not_imported: Inte importerad! Ett medium med samma namn finns redan eller skapats av en annan användare.
+  medium_option_include_review: Inkludera den senaste associerade faktagranskningen automatiskt
+  medium_option_overwrite: Skriv över tidigare medium med samma titel
+  medium_other_problems_options_no: "<b>Nej!</b> Det verkar inte vara några andra problem"
+  medium_other_problems_options_yes: "<b>Ja!</b> Det finns andra problem också"
+  medium_other_problems_q_long: Finns det några andra stora problem som kan göra detta medium opålitligt? Om ja, förkla i anteckningen nedan.
+  medium_other_problems_q_short: Andra problem
+  medium_r: Du faktagranskar mediet
+  medium_review_description_options_yes: ''
+  medium_review_imported: Import av mediet och faktagranskningen lyckades.
+  medium_review_not_imported: Mediet har inte importerats av någon anledning.
+  medium_review_verdict_options_yes: ''
+  medium_select_file: 'Välj json-fil och klicka sedan på import:'
+  medium_select_url: 'eller importera från URL:'
+  medium_t: Du lägger till ett medium
+  medium_t_edit: Du redigerar ett medium
+  medium_type: Vilken typ är det här mediet?
+  medium_type_blog: Bloggplattform
+  medium_type_im: Direktmeddelanden / chat
+  medium_type_news: Nyhetswebbplats
+  medium_type_other: Övrigt
+  medium_type_social_media: Sociala medier / nätverk
+  medium_type_video: Webbplats för videodelning
+  medium_url: URL (t.ex. https://twitter.com, https://facebook.com, https://telegram.org/, https://whatsapp.com)
+  medium_whois_info_discrepency_options_no: "<b>Nej!</b> Det ser ut som information matchar förväntningarna"
+  medium_whois_info_discrepency_options_yes: "<b>Ja!</b> Det finns vissa problem eller avvikelser"
+  medium_whois_info_discrepency_q_long: Är informationen i Whois-posten (inklusive företagsnamn, fysisk adress, företagsstatus osv.) oroande?
+  medium_whois_info_discrepency_q_short: Whois-avvikelse
+  more_about: Mer om
+  more_notes_claim: Vill du lägga till mer information?
+  more_notes_medium: Lägg till mer information om detta medium (särskilt om du angav 'annat' som typ)
+  more_notes_resource: 'Ange mer information om den här resursen och vad den är användbar för:'
+  more_notes_src: Ge mer information om den här källan (särskilt om du nämnde 'Annat' som typen)
+  most: 'Mest '
+  new: Ny
+  next_step: Nästa steg
+  no_answer: Nej
+  no_associated_resource: Inga resurser har kopplats till denna fråga.
+  no_results: Inga resultat.
+  no_share: Nej, håll det privat för mig
+  not_all_qs_needed: Du behöver inte svara på alla frågor.<br>Om du är redo att bedöma påståendet, kan du gå direkt till 'Din bedömning' i menyn.
+  not_assessed: Inte bedömts
+  not_provided: N/A
+  not_sure: Inte säker
+  note: 'Obs:'
+  note_provide_rationale: Det rekommenderas starkt (men är ej obligatoriskt) att du anger en grund för din bedömning i rutan nedan.
+  open_video: Öppna videon
+  optional_note: Ytterligare anteckningar
+  or: eller
+  or_browse: Eller utforska hela databasen
+  pagy:
+    combo_nav_js: Sida %{page_input} av %{pages}
+    gap: "&hellip;"
+    info:
+    item_name:
+    items_selector_js: Visa %{items_input} %{item_name} per sida
+    multiple_pages: Visar %{item_name} <b>%{from}-%{to}</b> av <b>%{count}</b> totalt
+    nav:
+    next: Nästa&nbsp;&rsaquo;
+    no_items: Inga %{item_name} hittade
+    one: resultat
+    other: resultat
+    prev: "&lsaquo;&nbsp;Föregående"
+    single_page: Visar <b>%{count}</b> %{item_name}
+    two: resultat
+  partners: Partners
+  previous_step: Föregående steg
+  project_members: Projektets medlemmar
+  published_article_url: 'Byt ut "url " -värdet under claimReviewed: raden nedan (om ännu inte angiven) med rätt URL till den offentliga artikeln!<br>Om koden är trasig kan du alltid uppdatera den genom att ta bort hela innehållet nedan och skicka igen.'
+  rate_false: Falskt
+  rate_mixed: Mixed
+  rate_mostly_false: Mestadels falskt
+  rate_mostly_reliable: Mestadels pålitligt
+  rate_mostly_true: Mestadels sant
+  rate_mostly_trustworthy: Mestadels trovärdig
+  rate_mostly_unreliable: Mestadels opålitlig
+  rate_mostly_untrustworthy: Mestadels otrovärdig
+  rate_no_answer: Inget svar / inte tillämpligt
+  rate_no_decision: Inget beslut
+  rate_not_measurable: Inte mätbart
+  rate_somewhat_false: Aningen falskt
+  rate_somewhat_true: Aningen sant
+  rate_somewhat_unreliable: Något opålitligt
+  rate_somewhat_untrustworthy: Något otrovärdig
+  rate_totally_false: Helt falskt
+  rate_totally_reliable: Helt pålitligt
+  rate_totally_true: Helt sant
+  rate_totally_trustworthy: Helt trovärdig
+  rate_totally_unreliable: Helt opålitlig
+  rate_totally_untrustworthy: Helt otrovärdig
+  rate_true: Sant
+  read_tips: Läs tips
+  references: Referenser till stöd för din slutsats (valfritt)
+  reliability: tillförlitlighet
+  reliable: pålitligt
+  required: Nödvändig
+  research_source: Undersök källan
+  resource: resurs
+  resource_about: Mer om resursen
+  resource_fca_page: Faktaasisstentens sida för faktakontroll av resurser
+  resource_fca_page_url: https://faktaassistenten.sh.se/?page_id=179&lang=sv
+  resource_icon_url: URL för ikonen (logotyp) som representerar denna resurs (om någon)
+  resource_import: Importera resurs (er)
+  resource_import_note: Här kan du ladda upp en json-fil för en resurs som tidigare exporterades via den 'exportera' funktionen
+  resource_note_imports: 'Obs: Du kan hitta filer att importera på'
+  resource_option_add_qs: Kopplade resurser till frågor automatiskt
+  resource_option_overwrite: Kopplade resurser till frågor automatiskt
+  resource_reference1: 'Referenskoder för steg som denna resurs är kopplad till:'
+  resource_reference2: "(Använd kommatecken eller mellanslag för att lägga till flera referenser)"
+  resource_select_file: 'Välj json-fil och klicka sedan på import:'
+  resource_select_url: 'eller importera från URL:'
+  resource_t: Du lägger till en resurs
+  resource_t_edit: Du redigerar en resurs
+  resource_tutorial_url: En länk till handledning om hur du använder den (om någon)
+  resource_url: Resursens officiella URL
+  resources: Resurser
+  resources_for_verification: Verktyg
+  reverse_image_search: Omvänd bildsökning
+  reverse_video_search: Omvänd sökning i videon
+  review: faktagranskning
+  review_description_q_long: Förklara varför du har gjort den här bedömningen.
+  review_description_q_short: Din bedömning
+  review_sharing_mode_q_long: Vill du dela din granskning?
+  review_steps: Steg för faktagranskning
+  review_verdict_q_long: Med tanke på den givna poängen, vad är din bedömning?
+  review_verdict_q_short: Granskningsbedömning
+  reviewed_by: Faktagranskats av
+  reviewer: Faktagranskare
+  reviewing: Faktagranskning av
+  reviewing_img_claim_title: Granska bilden
+  reviewing_the_medium_title: Faktagranska mediet
+  reviewing_the_src_title: Granska källan
+  reviewing_txt_claim_title: Granska textinnehållet
+  reviewing_vid_claim_title: Granska video
+  reviews: Faktagranskningar
+  rsrc_imported: importerad och ersatt äldre resurs med samma namn.
+  rsrc_imported_successfully: " importerats."
+  rsrc_not_imported: " inte importerad (resurs med samma namn finns redan)."
+  save_to_blockchain: Spara också i blockchain
+  score_is1: 'Poäng '
   score_is2: " och den maximala summan är "
-  score_result1: "Baserat på dina svar på "
+  score_result1: 'Baserat på dina svar på '
   score_result2: " frågor ur "
   score_result3: " bedömningen av "
   score_result4: " är "
   score_result5: " och faller på skalan som visas nedan:"
-  reliability: "tillförlitlighet"
-  trustworthiness: "pålitlighet"
-  validity: "giltighet"
-  valid: "giltigt"
-  reliable: "pålitligt"
-  trustworthy: "pålitligt"
-  invalid: "ogiltigt"
-  unreliable: "opålitligt"
-  untrustworthy: "opålitligt"
-  least: "Minst "
-  most: "Mest "
-  assessment_of: "Bedömning av "
-
-#Medium/new
-
-  add_new_medium: "Lägg till ett nytt medium"
-  give_medium_title: "Vad heter mediet"
-  medium_url: "URL (t.ex. https://twitter.com, https://facebook.com, https://telegram.org/, https://whatsapp.com)"
-  medium_type: "Vilken typ är det här mediet?"
-  share_medium: "Vill du dela detta medium med andra?"
-  more_notes_medium: "Lägg till mer information om detta medium (särskilt om du angav 'annat' som typ)"
-
-#Medium/show
-  claims_connected: "Påstående som är kopplade till "
-
-#Src/new
-
-  add_new_src: "Lägg till en ny källa"
-  give_src_title: "Vad heter källan"
-  src_url: "URL (t.ex. officiell webbplats-URL, officiell Facebook-profil-URL, officiell Twitter-URL-profil, etc.)"
-  src_type: "Vilken typ är den här källan?"
-  share_src: "Vill du dela den här källan med andra medlemmar?"
-  more_notes_src: "Ge mer information om den här källan (särskilt om du nämnde 'Annat' som typen)"
-
-#Src/index
-
-  rate_totally_untrustworthy: "Helt otrovärdig"
-  rate_mostly_untrustworthy: "Mestadels otrovärdig"
-  rate_somewhat_untrustworthy: "Något otrovärdig"
-  rate_mostly_trustworthy: "Mestadels trovärdig"
-  rate_totally_trustworthy: "Helt trovärdig"
-
-#Resource/new
-
-  add_new_resource: "Lägg till en ny resurs för faktakoll"
-  give_resource_title: "Vad heter resursen"
-  resource_url: "Resursens officiella URL"
-  resource_tutorial_url: "En länk till handledning om hur du använder den (om någon)"
-  resource_icon_url: "URL för ikonen (logotyp) som representerar denna resurs (om någon)"
-  more_notes_resource: "Ange mer information om den här resursen och vad den är användbar för:"
-  resource_reference1: "Referenskoder för steg som denna resurs är kopplad till:"
-  resource_reference2: "(Använd kommatecken eller mellanslag för att lägga till flera referenser)"
-  resource_import: "Importera resurs (er)"
-  resource_import_note: "Här kan du ladda upp en json-fil för en resurs som tidigare exporterades via den 'exportera' funktionen"
-  resource_select_file: "Välj json-fil och klicka sedan på import:"
-  resource_select_url: "eller importera från URL:"
-  resource_option_add_qs: "Kopplade resurser till frågor automatiskt"
-  resource_option_overwrite: "Kopplade resurser till frågor automatiskt"
-  resource_note_imports: "Obs: Du kan hitta filer att importera på"
-  resource_fca_page: "Faktaasisstentens sida för faktakontroll av resurser"
-  resource_fca_page_url: "https://faktaassistenten.sh.se/?page_id=179&lang=sv"
-
-#Resource/show
-
-  go_back_to_resources: "Återgå till resurssidan"
-  tutorial: "Tutorial"
-  export_this_resource: "Exportera den här resursen"
-  export_this_claim: "Exportera det här påståendet"
-  export_this_medium: "Exportera det här mediet"
-  export_this_src: "Exportera den här källan"
-  resource_about: "Mer om resursen"
-
-#within helper:
-  reverse_image_search: "Omvänd bildsökning"
-  reverse_video_search:  "Omvänd sökning i videon"
-  using:  " med "
-  view_metadata:  "Visa metadata"
-  open_video:  "Öppna videon"
-  download:  "Ladda ner"
-  use_plugin:  " och använd webbläsarens plugin "
-  search_it:  "Sök efter det"
-  search_desc:  "Sökbeskrivning"
-  check_blacklisted:  "Kontrollera om %{type} är svartlistad"
-  check_rating:  "Kontrollera betyg på %{type}"
-  check_factchecked:  "Kontrollera om anspråk faktiskt kontrollerades"
-  check_reputation:  "Kontrollera webbplatsens rykte"
-  check_whois:  "Få domänens WHOIS-detaljer"
-  check_domain_ranking:  "Få domänens ranking"
-  info_on_domain:  "Få information om domänen"
-  learn_more:  "Läs mer om %{type}"
-  research_source:  "Undersök källan"
-  check_if_satire:  "Se om %{type} är satir eller verklig"
-  read_tips:  "Läs tips"
-
-#Claim_reviews
-  assessment: "Bedömning"
-  not_assessed: "Inte bedömts"
-  reviewer: "Faktagranskare"
-  more_about: "Mer om"
-  showing: "Visar"
-  for: "för"
-  new: "Ny"
-  update: "Uppdatera"
-  show_review: "Visa granskning"
-  show_reviews: "Visa %{reviews} granskninger"
-
-#Controllers
-#common for controllers:
-
-  claim: "påstående"
-  medium: "medium"
-  source: "källa"
-  src: "källa"
-  resource: "resurs"
-  review: "faktagranskning"
-  the_claim: "påståendet"
-  the_medium: "mediet"
-  the_source: "källan"
-  the_src: "källan"
-  the_resource: "resursen"
-  the_review: "Faktagranskningen"
-  this_claim: "det här påståendet"
-  this_medium: "det här mediet"
-  this_source: "den här källan"
-  this_src: "den här källan"
-  this_resource: "den här resursen"
-  this_review: "den här faktagranskningen"
-
-  warning_del_dependents:
-    one: "Om du tar bort den här raderas också en tillhörande faktagranskning."
-    other: "Om du tar bort den här raderas också %{count} tillhörande faktagranskningar."
-  warning_del: "Är du säker på att du vill gå vidare och radera?"
-
-#application_controller.rb
-
-  all: "Alla"
-  you_created: " som du skapade"
-  sort_by: "Sortera efter"
-  sort_by_time: "när den skapats (senaste överst)"
-  sort_by_review_time: "när den faktagranskats (senaste överst)"
-  sort_by_reviews: "faktagranskningar (flest faktagranskningar överst)"
-  sort_by_pos_reviews: "positiva faktagranskningar"
-  sort_by_neg_reviews: "negativa faktagranskningar"
-  been_reviewed: " som har faktagranskats"
-  you_reviewed: " att du har faktagranskat"
-  with_no_reviews: " med inga faktagranskningar ännu"
-  reviewed_by: "Faktagranskats av"
-  showing_reviews_for: "Visar faktagranskning för"
-
-#claims_controller.rb
-
-  tags_added: "Taggar tillagda."
-  tag_added: " tillagd."
-  tag_exist: " har redan lagts till och finns i databasen!"
-  tag_could_not_add: "Kunde inte lägga till "
-
-  claim_imported_successfully: "Import av påståendet lyckades."
-  claim_imported: "Påståendet importerat och ersatte det äldre påståendet med samma titel."
-  claim_not_imported: "Inte importerad! Ett påstående med samma titel finns redan eller skapats av en annan användare."
-  claim_review_imported: "Import av påståendet och faktagranskningen lyckades."
-  claim_review_not_imported: "Faktagranskningen har inte importerats av någon anledning."
-
-#medium_controller.rb
-
-  medium_type_social_media: "Sociala medier / nätverk"
-  medium_type_news: "Nyhetswebbplats"
-  medium_type_im: "Direktmeddelanden / chat"
-  medium_type_video: "Webbplats för videodelning"
-  medium_type_blog: "Bloggplattform"
-  medium_type_other: "Övrigt"
-
-  medium_imported_successfully: "Import av mediet lyckades."
-  medium_imported: "Import och ersatte äldre medium med samma namn."
-  medium_not_imported: "Inte importerad! Ett medium med samma namn finns redan eller skapats av en annan användare."
-  medium_review_imported: "Import av mediet och faktagranskningen lyckades."
-  medium_review_not_imported: "Mediet har inte importerats av någon anledning."
-
-#src_controller.rb
-
-  src_type_social_person: "Person"
-  src_type_establishment: "Institution"
-  src_type_website: "Hemsida"
-  src_type_other: "Övrigt"
-  src_type_not_sure: "Vet inte"
-
-  src_imported_successfully: "Import av källan lyckades."
-  src_imported: "Källan importerat och ersatte den äldre källan med samma namn."
-  src_not_imported: "Inte importerad! En källa med samma namn finns redan eller skapats av en annan användare)."
-  src_review_imported: "Import av källan och faktagranskningen lyckades."
-  src_review_not_imported: "Källan har inte importerats av någon anledning."
-
-#resources_controller.rb
-
-  rsrc_imported: "importerad och ersatt äldre resurs med samma namn."
-  rsrc_imported_successfully: " importerats."
-  rsrc_not_imported: " inte importerad (resurs med samma namn finns redan)."
-
-#X_review/steps
-
-#general
-  note: "Obs:"
-  note_provide_rationale: "Det rekommenderas starkt (men är ej obligatoriskt) att du anger en grund för din bedömning i rutan nedan."
-  not_all_qs_needed: "Du behöver inte svara på alla frågor.<br>Om du är redo att bedöma påståendet, kan du gå direkt till 'Din bedömning' i menyn."
-  add_additional_resource: "Lägg till en ytterligare resurs till denna fråga"
-  check_current_resources1: "Du kan också kolla på tillgängliga "
-  check_current_resources2: " och koppla någon av dem till den här frågan genom att lägga till följande referenskod när du redigerar resursen"
-  no_associated_resource: "Inga resurser har kopplats till denna fråga."
-  add_resource_to_q: "Lägg till en resurs till denna fråga."
-  associate_to_q: "Du kan också koppla en befintlig resurs som du har skapat till ovanstående fråga genom att lägga till följande referenskod till "
-  review_steps: "Steg för faktagranskning"
-  next_step: "Nästa steg"
-  previous_step: "Föregående steg"
-  finish: "Avsluta"
-  reviewing: "Faktagranskning av"
-  copy_url: "Kopiera URL"
-  optional_note: "Ytterligare anteckningar"
-  calculated_score: "Beräknad poäng"
-  calculated_score_q_short: "Beräknad poäng"
-  review_verdict_q_short: "Granskningsbedömning"
-  review_description_q_short: "Din bedömning"
-  calculated_score_q_long: "%{review_score}"
-  review_verdict_q_long: "Med tanke på den givna poängen, vad är din bedömning?"
-  review_description_q_long: "Förklara varför du har gjort den här bedömningen."
-  review_sharing_mode_q_long: "Vill du dela din granskning?"
-  claim_review_field: "ClaimReview-schema (inbäddat i offentlig artikel)"
-  published_article_url: "Byt ut \"url \" -värdet under claimReviewed: raden nedan (om ännu inte angiven) med rätt URL till den offentliga artikeln!<br>Om koden är trasig kan du alltid uppdatera den genom att ta bort hela innehållet nedan och skicka igen."
-
-#medium_review/steps
-  reviewing_the_medium_title: "Faktagranska mediet"
-  assessing_medium_rel_title: "Utvärdering av mediets tillförlitlighet"
-
-  medium_is_blacklisted_q_short: "Kontrollera svartlista"
-  medium_failed_factcheck_before_q_short: "Fact-check history"
-  medium_has_poor_security_q_short: "Teknisk säkerhet"
-  medium_whois_info_discrepency_q_short: "Whois-avvikelse"
-  medium_hosting_discrepency_q_short: "Kontakt / adressavvikelse"
-  medium_is_biased_q_short: "Känd bias"
-  medium_is_poorly_ranked_q_short: "Dålig ranking"
-  medium_is_not_liable_q_short: "Brist på ansvarsvillkor"
-  medium_lacks_flagging_means_q_short: "Brist på flaggning betyder"
-  medium_other_problems_q_short: "Andra problem"
-
-  medium_is_blacklisted_q_long: "Finns mediet på någon offentlig lista med falska nyhetswebbplatser?"
-  medium_failed_factcheck_before_q_long: "Har mediet misslyckats med en faktakontroll tidigare?"
-  medium_has_poor_security_q_long: "Har mediet dåliga tekniska säkerhets- / säkerhetsstandarder (innehåller virus, bedrägerier, skadlig programvara etc.) eller saknar krypterad kommunikation (SSL-certifikat)?"
-  medium_whois_info_discrepency_q_long: "Är informationen i Whois-posten (inklusive företagsnamn, fysisk adress, företagsstatus osv.) oroande?"
-  medium_hosting_discrepency_q_long: "Finns det en oro för den plats där fysisk data lagras och företaget som hanterar sin fysiska infrastruktur och om det är värd tillsammans med andra mindre webbplatser?"
-  medium_is_biased_q_long: "Är mediet känt för att vara partiskt (politiskt, socialt, religiöst, etc.)?"
-  medium_is_poorly_ranked_q_long: "Rankas mediet lågt i trovärdighet av andra?"
-  medium_is_not_liable_q_long: "Undviker mediet några ansvarsvillkor (t.ex. eftersom innehållet är användargenererat)?"
-  medium_lacks_flagging_means_q_long: "Saknar mediet medel för att flagga eller rapportera publicerat innehåll?"
-  medium_other_problems_q_long: "Finns det några andra stora problem som kan göra detta medium opålitligt? Om ja, förkla i anteckningen nedan."
-
-  medium_is_blacklisted_options_yes: "<b>Ja!</b> Den är svartlistad eller markerad som en 'falsk nyhetswebbplats'"
-  medium_failed_factcheck_before_options_yes: "<b>Ja!</b> Det misslyckades minst en gång innan"
-  medium_has_poor_security_options_yes: "<b>Ja!</b> Det har vissa problem med säkerheten"
-  medium_whois_info_discrepency_options_yes: "<b>Ja!</b> Det finns vissa problem eller avvikelser"
-  medium_hosting_discrepency_options_yes: "<b>Ja!</b> Det finns ett problem med platsinformationen"
-  medium_is_biased_options_yes: "<b>Ja!</b> Det verkar finnas en viss konsekvent partiskhet"
-  medium_is_poorly_ranked_options_yes: "<b>Ja!</b> Det rankas dåligt"
-  medium_is_not_liable_options_yes: "<b>Ja!</b> Det undviker helt klart ansvar"
-  medium_lacks_flagging_means_options_yes: "<b>Ja!</b> Det saknar ett sätt att rapportera / flagga innehåll"
-  medium_other_problems_options_yes: "<b>Ja!</b> Det finns andra problem också"
-  medium_review_verdict_options_yes: ""
-  medium_review_description_options_yes: ""
-  medium_is_blacklisted_options_no: "<b>Nej!</b> Den finns inte på någon svartlista"
-  medium_failed_factcheck_before_options_no: "<b>Nej!</b> Det misslyckades aldrig med en faktakontroll förut"
-  medium_has_poor_security_options_no: "<b>Nej!</b> Det verkar helt säkert"
-  medium_whois_info_discrepency_options_no: "<b>Nej!</b> Det ser ut som information matchar förväntningarna"
-  medium_hosting_discrepency_options_no: "<b>Nej!</b> Platsinformationen verkar OK"
-  medium_is_biased_options_no: "<b>Nej!</b> Det verkar inte finnas någon konsekvent partiskhet"
-  medium_is_poorly_ranked_options_no: "<b>Nej!</b> Det är inte dåligt rankat"
-  medium_is_not_liable_options_no: "<b>Nej!</b> Det krävs ansvar"
-  medium_lacks_flagging_means_options_no: "<b>Nej!</b> Det har ett sätt att rapportera / flagga innehåll"
-  medium_other_problems_options_no: "<b>Nej!</b> Det verkar inte vara några andra problem"
-
-#src_review/steps
-  reviewing_the_src_title: "Granska källan"
-  assessing_src_rel_title: "Utvärdera källans pålitlighet"
-
-  src_credentials_q_short: "Källa-referenser"
-  src_factcheck_history_q_short: "Faktakolla historik"
-  src_quality_of_writing_q_short: "Kvalitet på tidigare skrift"
-  src_connected_to_biased_entities_q_short: "Ansluten till partiska enheter"
-  src_difficulty_to_verify_auth_q_short: "Svårighet att verifiera äktheten"
-  src_other_problems_q_short: "Andra problem"
-
-  src_credentials_q_long: "Saknar källan professionell affiliering?"
-  src_factcheck_history_q_long: "Har källan misslyckats med en faktakontroll tidigare?"
-  src_quality_of_writing_q_long: "Har källan en historia av dåliga uttalanden, skrifter, inlägg och tweets, etc.?"
-  src_connected_to_biased_entities_q_long: "Är källans närvaro på sociala medier kanske en bot eller stöds av ett nätverk av botar?"
-  src_difficulty_to_verify_auth_q_long: "Var det svårt att hitta information om källan med tillgängliga kataloger online?"
-  src_other_problems_q_long: "Finns det några andra stora problem som kan göra denna källa opålitlig? Om ja, förklara mer i kommentaren nedan."
-
-  src_credentials_q_options_yes: "<b>Ja!</b> Källan saknar professionell affiliering"
-  src_factcheck_history_q_options_yes: "<b>Ja!</b> Det har misslyckats med faktakontroller tidigare"
-  src_quality_of_writing_q_options_yes: "<b>Ja!</b> Dess skrifter är ganska dåliga"
-  src_connected_to_biased_entities_q_options_yes: "<b>Ja!</b> Det verkar vara en bot eller dra nytta av bots i sociala medier"
-  src_difficulty_to_verify_auth_q_options_yes: "<b>Ja!</b> Det var svårt att hitta information om källan"
-  src_other_problems_q_options_yes: "<b>Ja!</b> det verkar finnas andra problem"
-
-  src_credentials_q_options_no: "<b>Nej!</b> Källan har professionella referenser"
-  src_factcheck_history_q_options_no: "<b>Nej!</b> Det verkar inte ha misslyckats med en faktagranskning tidigare"
-  src_quality_of_writing_q_options_no: "<b>Nej!</b> Källan verkar producera kvalitativa texter"
+  search: Sök
+  search_desc: Sökbeskrivning
+  search_it: Sök efter det
+  see_your_review: 'Kontrollera din granskningen av '
+  share_claim: Vill du dela detta publikt?
+  share_medium: Vill du dela detta medium med andra?
+  share_setting: Delas det med andra medlemmar
+  share_setting_brief: Dela
+  share_src: Vill du dela den här källan med andra medlemmar?
+  show: Visa
+  show_all: "[Visa alla]"
+  show_review: Visa granskning
+  show_reviews: Visa %{reviews} granskninger
+  showing: Visar
+  showing_reviews_for: Visar faktagranskning för
+  sign_in: Logga in
+  sign_in_with: Logga in med
+  sign_out: Logga ut
+  sign_up: Registrera dig
+  skip_question: Hoppa över fråga
+  sort_by: Sortera efter
+  sort_by_neg_reviews: negativa faktagranskningar
+  sort_by_pos_reviews: positiva faktagranskningar
+  sort_by_review_time: när den faktagranskats (senaste överst)
+  sort_by_reviews: faktagranskningar (flest faktagranskningar överst)
+  sort_by_time: när den skapats (senaste överst)
+  source: källa
+  source_r: Du faktagranskar källan
+  sources: Källor
+  src: källa
+  src_claim: Vem är källan (skapare, författare, författare) som producerade påståendet? Lämna tomt om det är okänt eller osäker.
+  src_connected_to_biased_entities_q_long: Är källans närvaro på sociala medier kanske en bot eller stöds av ett nätverk av botar?
   src_connected_to_biased_entities_q_options_no: "<b>Nej!</b> Det verkar vara en riktig persons konto med naturligt stöd"
+  src_connected_to_biased_entities_q_options_yes: "<b>Ja!</b> Det verkar vara en bot eller dra nytta av bots i sociala medier"
+  src_connected_to_biased_entities_q_short: Ansluten till partiska enheter
+  src_credentials_q_long: Saknar källan professionell affiliering?
+  src_credentials_q_options_no: "<b>Nej!</b> Källan har professionella referenser"
+  src_credentials_q_options_yes: "<b>Ja!</b> Källan saknar professionell affiliering"
+  src_credentials_q_short: Källa-referenser
+  src_difficulty_to_verify_auth_q_long: Var det svårt att hitta information om källan med tillgängliga kataloger online?
   src_difficulty_to_verify_auth_q_options_no: "<b>Nej!</b> Information om källan är lättillgänglig"
+  src_difficulty_to_verify_auth_q_options_yes: "<b>Ja!</b> Det var svårt att hitta information om källan"
+  src_difficulty_to_verify_auth_q_short: Svårighet att verifiera äktheten
+  src_factcheck_history_q_long: Har källan misslyckats med en faktakontroll tidigare?
+  src_factcheck_history_q_options_no: "<b>Nej!</b> Det verkar inte ha misslyckats med en faktagranskning tidigare"
+  src_factcheck_history_q_options_yes: "<b>Ja!</b> Det har misslyckats med faktakontroller tidigare"
+  src_factcheck_history_q_short: Faktakolla historik
+  src_import: Importera en källa
+  src_import_note: Här kan du ladda upp en json-fil för en källa som tidigare exporterades via den 'exportera' funktionen
+  src_imported: Källan importerat och ersatte den äldre källan med samma namn.
+  src_imported_successfully: Import av källan lyckades.
+  src_not_imported: Inte importerad! En källa med samma namn finns redan eller skapats av en annan användare).
+  src_option_include_review: Inkludera den senaste associerade faktagranskningen automatiskt
+  src_option_overwrite: Skriv över tidigare källa med samma titel
+  src_other_problems_q_long: Finns det några andra stora problem som kan göra denna källa opålitlig? Om ja, förklara mer i kommentaren nedan.
   src_other_problems_q_options_no: "<b>Nej!</b> Det finns inga andra problem"
+  src_other_problems_q_options_yes: "<b>Ja!</b> det verkar finnas andra problem"
+  src_other_problems_q_short: Andra problem
+  src_quality_of_writing_q_long: Har källan en historia av dåliga uttalanden, skrifter, inlägg och tweets, etc.?
+  src_quality_of_writing_q_options_no: "<b>Nej!</b> Källan verkar producera kvalitativa texter"
+  src_quality_of_writing_q_options_yes: "<b>Ja!</b> Dess skrifter är ganska dåliga"
+  src_quality_of_writing_q_short: Kvalitet på tidigare skrift
+  src_r: Du faktagranskar källan
+  src_review_imported: Import av källan och faktagranskningen lyckades.
+  src_review_not_imported: Källan har inte importerats av någon anledning.
+  src_select_file: 'Välj json-fil och klicka sedan på import:'
+  src_select_url: 'eller importera från URL:'
+  src_t: Du lägger till en källa
+  src_t_edit: Du redigerar en källa
+  src_type: Vilken typ är den här källan?
+  src_type_establishment: Institution
+  src_type_not_sure: Vet inte
+  src_type_other: Övrigt
+  src_type_social_person: Person
+  src_type_website: Hemsida
+  src_url: URL (t.ex. officiell webbplats-URL, officiell Facebook-profil-URL, officiell Twitter-URL-profil, etc.)
+  srcs: Källor
+  start_review: Börja faktagranska direkt efter inlämning
+  step_1: 1. Lägg till ett påstående
+  step_1_d: Vill du ta reda på sanningshalten om en text, video eller bildkontext? Starta faktagranskningen genom att lägga till ett påstående.
+  step_2: 2. Gör faktakoll
+  step_2_d: Använd våra checklistor och verktyg för en robust faktakontroll.
+  step_3: 3. Publicera säkert på blockkedjan
+  step_3_d: När en faktragranskning delats på blockkedjan, kan ingen mixtra med den.
+  submit: Skicka in
+  tag_added: " tillagd."
+  tag_cloud: Tag Cloud
+  tag_could_not_add: 'Kunde inte lägga till '
+  tag_exist: " har redan lagts till och finns i databasen!"
+  tag_exists: taggen finns redan
+  tags: Taggar
+  tags_added: Taggar tillagda.
+  tags_claim: Taggar
+  text_claim: Innehåller påståendet en text?
+  the_claim: påståendet
+  the_medium: mediet
+  the_resource: resursen
+  the_review: Faktagranskningen
+  the_source: källan
+  the_src: källan
+  this_claim: det här påståendet
+  this_medium: det här mediet
+  this_resource: den här resursen
+  this_review: den här faktagranskningen
+  this_source: den här källan
+  this_src: den här källan
+  title_claim: Titel av påståendet
+  title_medium: Namn av mediet
+  title_src: Name av källan
+  tools_d: Har vi missat några? Skicka en länk så lägger vi till verktyget här.
+  tools_for_journalists: Verktyg för journalister
+  tools_t: Vi har samlat några av de bästa verktygen
+  'true': Sant
+  trustworthiness: pålitlighet
+  trustworthy: pålitligt
+  tutorial: Tutorial
+  type_new_tags: Skriv in nya taggar separerade med komma
+  unreliable: opålitligt
+  untrustworthy: opålitligt
+  update: Uppdatera
+  updated_at: Uppdaterad vid
+  url: URL
+  use_plugin: " och använd webbläsarens plugin "
+  using: " med "
+  valid: giltigt
+  validity: giltighet
+  video_claim: Innehåller påståendet en video?
+  video_tutorial: Också, kolla in våra <a href='https://www.youtube.com/playlist?list=PLlUC5-5Z5z2uGN-yqC9w9IvslWwhlb_zX' target=_blank>instruktionsfilmer</a>
+  view_metadata: Visa metadata
+  warning_del: Är du säker på att du vill gå vidare och radera?
+  warning_del_dependents:
+    one: Om du tar bort den här raderas också en tillhörande faktagranskning.
+    other: Om du tar bort den här raderas också %{count} tillhörande faktagranskningar.
+  warning_msg1: Är du säker på att du vill gå vidare och ta bort %{type}?
+  warning_msg2: Är du säker på att du vill gå vidare och ta bort %{type} och dess faktagranskningar?
+  website_title: Galileo – faktaassistenten
+  welcome: Välkommen
+  welcome_msg: Välkommen till Galileo – din faktaassistent!
+  with_no_reviews: " med inga faktagranskningar ännu"
+  yes_answer: Ja
+  yes_share: Ja, dela med alla
+  you_created: " som du skapade"
+  you_reviewed: " att du har faktagranskat"
 
-#claim_review/steps
-  reviewing_img_claim_title: "Granska bilden"
-  reviewing_vid_claim_title: "Granska video"
-  reviewing_txt_claim_title: "Granska textinnehållet"
-  calculating_score_claim_title: "Beräknad poäng"
-  assessing_claim_rel_title: "Din bedömning av påståendet"
-
-  claim_img_review_started_q_short: "Starta bildgranskning"
-  claim_img_old_q_short: "Tidigare användning"
-  claim_img_forensic_discrepency_q_short: "Bildmanipulation"
-  claim_img_metadata_discrepency_q_short: "Metadata"
-  claim_img_logical_discrepency_q_short: "Avvikande attribut"
-  claim_vid_review_started_q_short: "Starta granskning av video"
-  claim_vid_old_q_short: "Vilseledande sammanhang"
-  claim_vid_forensic_discrepency_q_short: "Video manipulation"
-  claim_vid_metadata_discrepency_q_short: "Avvikelse av metadata för video"
-  claim_vid_audio_discrepency_q_short: "Ljudmanipulation"
-  claim_vid_logical_discrepency_q_short: "Ytterligare ledtrådar"
-  claim_txt_review_started_q_short: "Starta textgranskning"
-  claim_txt_unreliable_news_content_q_short: "Seriositet"
-  claim_txt_insufficient_verifiable_srcs_q_short: "Tidigare faktakontroll"
-  claim_txt_has_clickbait_q_short: "Clickbait-titel"
-  claim_txt_poor_language_q_short: "Kvalitet i språk"
-  claim_txt_crowds_distance_discrepency_q_short: "Felaktigheter"
-  claim_txt_author_offers_little_evidence_q_short: "Källhänvisningar"
-  claim_txt_reliable_sources_disapprove_q_short: "Andra problem"
-
-  claim_img_review_started_q_long: "Påståendet innehåller en bild, vill du granska den?"
-  claim_img_old_q_long: "Har bilden använts tidigare i ett annat sammanhang?"
-  claim_img_forensic_discrepency_q_long: "Har bilden doktorerats eller manipulerats (med hjälp av verktyg som Paint.Net eller Photoshop)?"
-  claim_img_metadata_discrepency_q_long: "Har bilden metadata som visar geografisk plats, datum, programvara eller annan information som strider mot vad som förväntas?"
-  claim_img_logical_discrepency_q_long: "Visar bilden andra problem eller tecken som inte lägger till eller är vettiga som felaktig belysning, skuggriktning eller storlek, ovanliga färger, kopierade / upprepade objekt?"
-  claim_vid_review_started_q_long: "Påståendet innehåller en video, vill du granska den?"
-  claim_vid_old_q_long: "Har videon publicerats eller använts ur sammanhanget per omvänd bildsökning av stillbilder?"
-  claim_vid_forensic_discrepency_q_long: "Har någon av filmerna i videoklippet doctorerats eller manipulerats per observerade ramar?"
-  claim_vid_metadata_discrepency_q_long: "Har videon metadata som visar geografisk plats, datum, programvara eller annan information som strider mot vad som förväntas?"
-  claim_vid_audio_discrepency_q_long: "Har videon genomgått någon ljudmanipulation? Finns det avvikelser i rösterna / ljudet i videon (t.ex. missanpassning mellan karaktär och hans röst)?"
-  claim_vid_logical_discrepency_q_long: "Finns det några andra problem eller tecken som inte läggs upp (t.ex. ledtrådar i landskapet, gator, landmärken eller röster i bakgrunden som indikerar en viss skillnad i fråga om tid, plats eller identitet för de inblandade individerna)?"
-  claim_txt_review_started_q_long: "Påståendet innehåller text, vill du granska den?"
-  claim_txt_unreliable_news_content_q_long: "Är påståendet kanske en del av satire, åsikt, marknadsföring, parodi eller annan osynlig typ av innehåll?"
-  claim_txt_insufficient_verifiable_srcs_q_long: "Misslyckades påståendet faktakontroller eftersom det saknar tillräckliga verifierbara källor eller innehåller dis / felinformation?"
-  claim_txt_has_clickbait_q_long: "Använder artikeln en clickbait-titel?"
-  claim_txt_poor_language_q_long: "Har texten dåligt språk eftersom det är språkligt inkoherent eller innehåller grammatiska / stavfel?"
-  claim_txt_crowds_distance_discrepency_q_long: "Inkluderar påståendet ett falskt uttalande om publikstorlekar eller avstånd, eller statistik, namn eller annan information som bara är sakligen fel?"
-  claim_txt_author_offers_little_evidence_q_long: "Misslyckades författaren / producenten av detta påstående att tillhandahålla tillräckliga bevis för att bevisa det?"
-  claim_txt_reliable_sources_disapprove_q_long: "Lider påståendet av andra problem?"
-
-  claim_img_review_started_q_options_yes: "<b>Ja!</b> Jag vill granska det"
-  claim_img_old_q_options_yes: "<b>Ja!</b> Det har använts i ett annat sammanhang tidigare"
-  claim_img_forensic_discrepency_q_options_yes: "<b>Ja!</b> Det verkar ha manipulerats"
-  claim_img_metadata_discrepency_q_options_yes: "<b>Ja!</b> Metadata visade viss skillnad"
-  claim_img_logical_discrepency_q_options_yes: "<b>Ja!</b> Det fanns några andra problem eller tecken som inte gav mening"
-  claim_vid_review_started_q_options_yes: "<b>Ja!</b> Jag vill granska videon"
-  claim_vid_old_q_options_yes: "<b>Ja!</b> Det har använts i ett annat sammanhang tidigare"
-  claim_vid_forensic_discrepency_q_options_yes: "<b>Ja!</b> Det verkar ha manipulerats"
-  claim_vid_metadata_discrepency_q_options_yes: "<b>Ja!</b> Metadata visade viss skillnad"
-  claim_vid_audio_discrepency_q_options_yes: "<b>Ja!</b> Det verkar ha varit en viss ljudmanipulation"
-  claim_vid_logical_discrepency_q_options_yes: "<b>Ja!</b> Det fanns några andra problem eller tecken som inte gav mening"
-  claim_txt_review_started_q_options_yes: "<b>Ja!</b> Jag vill granska det"
-  claim_txt_unreliable_news_content_q_options_yes: "<b>Ja!</b> Ser ut som innehållet är tänkt att inte vara allvarligt"
-  claim_txt_insufficient_verifiable_srcs_q_options_yes: "<b>Ja!</b> Det har faktakontrollerats och visat sig vara falskt"
-  claim_txt_has_clickbait_q_options_yes: "<b>Ja!</b> Titeln verkar visa tecken på att vara clickbait"
-  claim_txt_poor_language_q_options_yes: "<b>Ja!</b> Det ser ut som det är dåligt skrivet"
-  claim_txt_crowds_distance_discrepency_q_options_yes: "<b>Ja!</b> Det finns några sakliga felaktigheter"
-  claim_txt_author_offers_little_evidence_q_options_yes: "<b>Ja!</b> Det finns inga tillräckliga bevis för att bevisa påståendet"
-  claim_txt_reliable_sources_disapprove_q_options_yes: "<b>Ja!</b> Det fanns andra problem"
-
-  claim_img_review_started_q_options_no: "<b>Nej!</b> Jag vill hoppa över detta steg och bara göra en egen bedömning"
-  claim_img_old_q_options_no: "<b>Nej!</b> Det verkar användas i rätt sammanhang"
-  claim_img_forensic_discrepency_q_options_no: "<b>Nej!</b> Det verkar vara i dess manipulerade"
-  claim_img_metadata_discrepency_q_options_no: "<b>Nej!</b> Det fanns inga metadata eller det visade ingen diskrepans"
-  claim_img_logical_discrepency_q_options_no: "<b>Nej!</b> Allt verkar vara bra"
-  claim_vid_review_started_q_options_no: "<b>Nej!</b> Jag vill hoppa över detta steg och bara göra en egen bedömning"
-  claim_vid_old_q_options_no: "<b>Nej!</b> Det verkar användas i rätt sammanhang"
-  claim_vid_forensic_discrepency_q_options_no: "<b>Nej!</b> Det verkar vara i dess manipulerade"
-  claim_vid_metadata_discrepency_q_options_no: "<b>Nej!</b> Metadata visade inte någon skillnad"
-  claim_vid_audio_discrepency_q_options_no: "<b>Nej!</b> Ljudet verkar bra"
-  claim_vid_logical_discrepency_q_options_no: "<b>Nej!</b> Allt verkar vara bra"
-  claim_txt_review_started_q_options_no: "<b>Nej!</b> Jag vill hoppa över recensionen och bara göra en bedömning"
-  claim_txt_unreliable_news_content_q_options_no: "<b>Nej!</b> Det verkar vara allvarligt"
-  claim_txt_insufficient_verifiable_srcs_q_options_no: "<b>Nej!</b> Det har faktakontrollerats och visat sig vara sant"
-  claim_txt_has_clickbait_q_options_no: "<b>Nej!</b> Det verkar inte vara clickbait"
-  claim_txt_poor_language_q_options_no: "<b>Nej!</b> Det verkar vara välskrivet"
-  claim_txt_crowds_distance_discrepency_q_options_no: "<b>Nej!</b> Jag bekräftade att det inte finns några sakliga felaktigheter"
-  claim_txt_author_offers_little_evidence_q_options_no: "<b>Nej!</b> Kravet har tillräckligt med bevis"
-  claim_txt_reliable_sources_disapprove_q_options_no: "<b>Nej!</b> Jag hittade inga andra problem i påståendet"
+#Added after i18n-task test
+  added_on_date: Tillagd den
+  added_to_blockchain: Tillagd i blockchain
+  blockchain_options: Blockchain-alternativ
+  blockchain_tx: Blockchain-transaktion
+  conditions: Villkor för faktakontroller
+  confirm_email_link: Bekräfta e-postlänken
+  expiry_date: utgångsdatum
+  yes: Ja
+  no: Nej
+  no_conditions: Inga villkor
+  no_reward: Ingen belöning
+  not_added_to_blockchain: Inte läggs till i blockchain
+  no_expiry_date: Inget utgångsdatum
+  resource_reference: Resursreferens
+  reward_amount: belöningsbelopp
+  save_to_blockchain: Spara i blockchain
+  user_url: Användar-URL (profil etc.)
+  warning_msg: Är du säker?

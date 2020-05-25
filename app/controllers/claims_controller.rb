@@ -136,12 +136,11 @@ class ClaimsController < ApplicationController
         url_to_api=ENV["BLOCKCHAIN_API_URL"]
         require 'open-uri'
         require 'net/http'
-        params = {'f' => 'add', 'factcheck' => blockchain_entry() }
+        params = {'f' => 'add', 'claim' => blockchain_entry() }
         url = URI.parse(url_to_api)
         resp = Net::HTTP.post_form(url, params)
         file_contents=resp.body.to_s
 
-  #      file_contents= URI.open(myfile) {|f| f.read }
         txid=file_contents.scan(/txid \[([a-zA-Z0-9]+)\]/).last.first
         if (txid.length<5 || resp.code!="200" || resp.message!="OK") then txid="-1"; end
         @save_to_blockchain=txid
@@ -457,7 +456,7 @@ class ClaimsController < ApplicationController
 
     def claim_params
       if (!params[:overwrite].present?)
-        params.require(:claim).permit(:id, :title, :medium_name, :src_name, :url, :description, :has_image, :has_video, :has_text, :sharing_mode, :url_preview, :tag_list, :tag, { tag_ids: [] }, :tag_ids, :start_review, :add_to_blockchain, :expiry_date, :bounty_amount, :conditions)
+        params.require(:claim).permit(:id, :title, :medium_name, :src_name, :url, :description, :has_image, :has_video, :has_text, :sharing_mode, :url_preview, :tag_list, :tag, { tag_ids: [] }, :tag_ids, :start_review, :add_to_blockchain, :expiry_date, :reward_amount, :conditions)
 #      else
 #        params.require(:claim).permit(:id, :title, :medium_name, :src_name, :url, :description, :has_image, :has_video, :has_text, :sharing_mode, :url_preview, :tag_list, :tag, { tag_ids: [] }, :tag_ids, :file, :include_review, :overwrite)
       end

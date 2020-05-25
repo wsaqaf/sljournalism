@@ -1,0 +1,1 @@
+export CHANNEL_NAME=mychannel

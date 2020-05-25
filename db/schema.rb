@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_05_20_113135) do
+ActiveRecord::Schema.define(version: 2020_05_23_095945) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -99,7 +99,7 @@ ActiveRecord::Schema.define(version: 2020_05_20_113135) do
     t.integer "sharing_mode"
     t.integer "add_to_blockchain"
     t.datetime "expiry_date"
-    t.integer "bounty_amount"
+    t.integer "reward_amount"
     t.string "conditions"
     t.datetime "time_added_to_blockchain"
     t.string "blockchain_tx"

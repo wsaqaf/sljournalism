@@ -46,6 +46,7 @@ gem 'simple_token_authentication', '~> 1.0'
 gem 'momentjs-rails', '>= 2.9.0'
 gem 'bootstrap4-datetime-picker-rails'
 gem 'bootstrap-datepicker-rails'
+gem 'chosen-rails'
 
 group :development, :test do
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
@@ -74,5 +75,6 @@ group :development do
 #  gem "guard", ">= 2.2.2", :require => false
 #  gem "guard-livereload",  :require => false
 #  gem "rack-livereload"
+  gem "i18n-tasks"
   gem "rb-fsevent",        :require => false
 end

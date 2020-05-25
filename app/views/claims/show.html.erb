@@ -68,14 +68,14 @@
     <% if !@claim.expiry_date.nil? %>
       <%= @claim.expiry_date %>
     <% else %>
-        <%= t('not_expiry_date') %>
+        <%= t('no_expiry_date') %>
     <% end %>
   </h6>
-  <h6><%= t('bounty_amount') %>:
-    <% if !@claim.bounty_amount.nil? %>
-      <%= @claim.bounty_amount %>
+  <h6><%= t('reward_amount') %>:
+    <% if !@claim.reward_amount.nil? %>
+      <%= @claim.reward_amount %>
     <% else %>
-        <%= t('no_bounty') %>
+        <%= t('no_reward') %>
     <% end %>
   </h6>
   <h6><%= t('conditions') %>:
