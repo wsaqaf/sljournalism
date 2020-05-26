@@ -7,6 +7,7 @@ import (
 	"strconv"
 	"time"
 	"hash/fnv"
+	"math"
   "github.com/hyperledger/fabric-chaincode-go/shim"
   pb "github.com/hyperledger/fabric-protos-go/peer"
 )
@@ -15,109 +16,96 @@ import (
 type SimpleChaincode struct {
 }
 
-type client struct {
+type wallet struct {
 	ObjectType string `json:"docType"` //docType is used to distinguish the various types of objects in state database
+	OwnerID string `json:"ownerID"`
+	OwnerType string `json:"ownerType"` //admin, client or factchecker
 	OrgID string `json:"orgID"`
-	ClientID string `json:"clientID"`
+	OwnerName string `json:"ownerName"`
 	Balance int `json:"wallet"`
-}
-type admin struct {
-	ObjectType string `json:"docType"` //docType is used to distinguish the various types of objects in state database
-	OrgID string `json:"orgID"`
-	adminID string `json:"orgID"`
-	Balance int `json:"wallet"`
-}
-type factchecker struct {
-	ObjectType string `json:"docType"` //docType is used to distinguish the various types of objects in state database
-	OrgID string `json:"orgID"`
-	FactcheckerID string `json:"factcheckerID"`
-	Balance int `json:"wallet"`
-}
-type admin_assessment struct {
-	ObjectType string `json:"docType"` //docType is used to distinguish the various types of objects in state database
-	AssessmentID string `json:"assessmentID"`
-	OrgID string `json:"orgID"`
-	adminID string `json:"orgID"`
-	FactcheckID string `json:"factcheckID"`
-	Assessment string `json:"assessment"` //approve or reject
-	Rationale string `json:"rationale"`
-	DatePublished string `json:"datePublished"`
 }
 type claim struct {
     ObjectType string `json:"docType"` //docType is used to distinguish the various types of objects in state database
 		ClaimID string `json:"claimID"`
+		Status string `json:"Status"` //created,pendingFactcheckAssessment,factchecked,expired
+		StatusUpdateComments string `json:"statusUpdateComments"`
+		StatusUpdatedAt string `json:"statusUpdatedAt"`
 		Org string `json:"org"` //argv[0]
-		Claim_on_orgID string `json:"claim_on_orgID"` //argv[1]
+		ClaimOnOrgID string `json:"claimOnOrgID"` //argv[1]
 		ClientID string `json:"clientID"` //argv[2]
-		Claim_title string `json:"claim_title"` //argv[3]
-		Claim_url_on_org string `json:"claim_url_on_org"` //argv[4]
+		ClaimTitle string `json:"claimTitle"` //argv[3]
+		ClaimURLOnOrg string `json:"claimURLOnOrg"` //argv[4]
 // From this point, arguments are optional
 //This is related to the reward for factchecking
 		DatePublished string `json:"datePublished"` //automated timestamp
 		Deadline string `json:"deadline"` //argv[5]
-    Reward_amount string `json:"reward_amount"` //argv[6]
-		Conditions string `json:"conditions"` //argv[7]
+		MinimumFactchecks string `json:"minimumFactchecks"` //argv[6]
+    RewardAmount string `json:"rewardAmount"` //argv[7]
+		Conditions string `json:"conditions"` //argv[8]
 //This part includes addtional details about the claim
-		Claim_url string `json:"claim_url"` //argv[8]
-    Description string `json:"description"` //argv[9]
-    Claim_source string `json:"claim_source"` //argv[10]
-    Claim_medium string `json:"claim_medium"` //argv[11]
-		Has_image string `json:"has_image"` //argv[12]
-    Has_video string `json:"has_video"` //argv[13]
-    Has_text string `json:"has_text"` //argv[14]
-    Tags string `json:"tags"` //argv[15]
+		ClaimURL string `json:"claimURL"` //argv[9]
+    Description string `json:"description"` //argv[10]
+    ClaimSource string `json:"claimSource"` //argv[11]
+    ClaimMedium string `json:"claimMedium"` //argv[12]
+		HasImage string `json:"hasImage"` //argv[13]
+    HasVideo string `json:"hasVideo"` //argv[14]
+    HasText string `json:"hasText"` //argv[15]
+    Tags string `json:"tags"` //argv[16]
 }
 
 type factcheck struct {
     ObjectType string `json:"docType"` //docType is used to distinguish the various types of objects in state database
 		FactcheckID string `json:"factcheckID"`
+		Status string `json:"Status"` //created,approved,rejected
+		StatusUpdateComments string `json:"statusUpdateComments"`
+		StatusUpdatedAt string `json:"statusUpdatedAt"`
 		Org string `json:"org"` //argv[0]
-    FactcheckID_on_org string `json:"factcheck_on_orgID"` //argv[1]
+    FactcheckIDOnOrg string `json:"factcheckOnOrgID"` //argv[1]
 		FactcheckerID string `json:"factcheckerID"` //argv[2]
 		ClaimID string `json:"claimID"` //argv[3]
-    Rating_label string `json:"rating_label"` //argv[4]
+    RatingLabel string `json:"ratingLabel"` //argv[4]
 // From this point, arguments are optional
 		DatePublished string `json:"datePublished"` //automated timestamp
-		Factcheck_url_on_org string `json:"factcheck_url_on_org"` //argv[5]
-    Worst_rating string `json:"worst_rating"` //argv[6]
-		Best_rating string `json:"best_rating"` //argv[7]
+		FactcheckURLOnOrg string `json:"factcheckURLOnOrg"` //argv[5]
+    WorstRating string `json:"worstRating"` //argv[6]
+		BestRating string `json:"bestRating"` //argv[7]
 		Rating string `json:"rating"` //argv[8]
-		Img_logo string `json:"img_logo"` //argv[9]
-		Img_review_started string `json:"img_review_started"` //argv[10]
-		Img_old string `json:"img_old"` //argv[11]
-		Img_forensidiscrepency string `json:"img_forensidiscrepency"` //argv[12]
-		Img_metadata_discrepency string `json:"img_metadata_discrepency"` //argv[13]
-		Img_logical_discrepency string `json:"img_logical_discrepency"` //argv[14]
-		Note_img_old string `json:"note_img_old"` //argv[15]
-		Note_img_forensidiscrepency string `json:"note_img_forensidiscrepency"` //argv[16]
-		Note_img_metadata_discrepency string `json:"note_img_metadata_discrepency"` //argv[17]
-		Note_img_logical_discrepency string `json:"note_img_logical_discrepency"` //argv[18]
-		Vid_review_started string `json:"vid_review_started"` //argv[19]
-		Vid_old string `json:"vid_old"` //argv[20]
-		Vid_forensidiscrepency string `json:"vid_forensidiscrepency"` //argv[21]
-		Vid_metadata_discrepency string `json:"vid_metadata_discrepency"` //argv[22]
-		Vid_audio_discrepency string `json:"vid_audio_discrepency"` //argv[23]
-		Vid_logical_discrepency string `json:"vid_logical_discrepency"` //argv[24]
-		Note_vid_old string `json:"note_vid_old"` //argv[25]
-		Note_vid_forensidiscrepency string `json:"note_vid_forensidiscrepency"` //argv[26]
-		Note_vid_metadata_discrepency string `json:"note_vid_metadata_discrepency"` //argv[27]
-		Note_vid_audio_discrepency string `json:"note_vid_audio_discrepency"` //argv[28]
-		Note_vid_logical_discrepency string `json:"note_vid_logical_discrepency"` //argv[29]
-		Txt_review_started string `json:"txt_review_started"` //argv[30]
-		Txt_unreliable_news_content string `json:"txt_unreliable_news_content"` //argv[31]
-		Txt_insufficient_verifiable_srcs string `json:"txt_insufficient_verifiable_srcs"` //argv[32]
-		Txt_has_clickbait string `json:"txt_has_clickbait"` //argv[33]
-		Txt_poor_language string `json:"txt_poor_language"` //argv[34]
-		Txt_crowds_distance_discrepency string `json:"txt_crowds_distance_discrepency"` //argv[35]
-		Txt_author_offers_little_evidence string `json:"txt_author_offers_little_evidence"` //argv[36]
-		Txt_reliable_sources_disapprove string `json:"txt_reliable_sources_disapprove"` //argv[37]
-		Note_txt_unreliable_news_content string `json:"note_txt_unreliable_news_content"` //argv[38]
-		Note_txt_insufficient_verifiable_srcs string `json:"note_txt_insufficient_verifiable_srcs"` //argv[39]
-		Note_txt_has_clickbait string `json:"note_txt_has_clickbait"` //argv[40]
-		Note_txt_poor_language string `json:"note_txt_poor_language"` //argv[41]
-		Note_txt_crowds_distance_discrepency string `json:"note_txt_crowds_distance_discrepency"` //argv[42]
-		Note_txt_author_offers_little_evidence string `json:"note_txt_author_offers_little_evidence"` //argv[43]
-		Note_txt_reliable_sources_disapprove string `json:"note_txt_reliable_sources_disapprove"` //argv[44]
+		ImgLogo string `json:"imgLogo"` //argv[9]
+		ImgReviewStarted string `json:"imgReviewStarted"` //argv[10]
+		ImgOld string `json:"imgOld"` //argv[11]
+		ImgForensidiscrepency string `json:"imgForensidiscrepency"` //argv[12]
+		ImgMetadataDiscrepency string `json:"imgMetadataDiscrepency"` //argv[13]
+		ImgLogicalDiscrepency string `json:"imgLogicalDiscrepency"` //argv[14]
+		NoteImgOld string `json:"noteImgOld"` //argv[15]
+		NoteImgForensidiscrepency string `json:"noteImgForensidiscrepency"` //argv[16]
+		NoteImgMetadataDiscrepency string `json:"noteImgMetadataDiscrepency"` //argv[17]
+		NoteImgLogicalDiscrepency string `json:"noteImgLogicalDiscrepency"` //argv[18]
+		VidReviewStarted string `json:"vidReviewStarted"` //argv[19]
+		VidOld string `json:"vidOld"` //argv[20]
+		VidForensidiscrepency string `json:"vidForensidiscrepency"` //argv[21]
+		VidMetadataDiscrepency string `json:"vidMetadataDiscrepency"` //argv[22]
+		VidAudioDiscrepency string `json:"vidAudioDiscrepency"` //argv[23]
+		VidLogicalDiscrepency string `json:"vidLogicalDiscrepency"` //argv[24]
+		NoteVidOld string `json:"noteVidOld"` //argv[25]
+		NoteVidForensidiscrepency string `json:"noteVidForensidiscrepency"` //argv[26]
+		NoteVidMetadataDiscrepency string `json:"noteVidMetadataDiscrepency"` //argv[27]
+		NoteVidAudioDiscrepency string `json:"noteVidAudioDiscrepency"` //argv[28]
+		NoteVidLogicalDiscrepency string `json:"noteVidLogicalDiscrepency"` //argv[29]
+		TxtReviewStarted string `json:"txtReviewStarted"` //argv[30]
+		TxtUnreliableNewsContent string `json:"txtUnreliableNewsContent"` //argv[31]
+		TxtInsufficientVerifiableSrcs string `json:"txtInsufficientVerifiableSrcs"` //argv[32]
+		TxtHasClickbait string `json:"txtHasClickbait"` //argv[33]
+		TxtPoorLanguage string `json:"txtPoorLanguage"` //argv[34]
+		TxtCrowdsDistanceDiscrepency string `json:"txtCrowdsDistanceDiscrepency"` //argv[35]
+		TxtAuthorOffersLittleEvidence string `json:"txtAuthorOffersLittleEvidence"` //argv[36]
+		TxtReliableSourcesDisapprove string `json:"txtReliableSourcesDisapprove"` //argv[37]
+		NoteTxtUnreliableNewsContent string `json:"noteTxtUnreliableNewsContent"` //argv[38]
+		NoteTxtInsufficientVerifiableSrcs string `json:"noteTxtInsufficientVerifiableSrcs"` //argv[39]
+		NoteTxtHasClickbait string `json:"noteTxtHasClickbait"` //argv[40]
+		NoteTxtPoorLanguage string `json:"noteTxtPoorLanguage"` //argv[41]
+		NoteTxtCrowdsDistanceDiscrepency string `json:"noteTxtCrowdsDistanceDiscrepency"` //argv[42]
+		NoteTxtAuthorOffersLittleEvidence string `json:"noteTxtAuthorOffersLittleEvidence"` //argv[43]
+		NoteTxtReliableSourcesDisapprove string `json:"noteTxtReliableSourcesDisapprove"` //argv[44]
 }
 
 // ===================================================================================
@@ -143,11 +131,17 @@ func (t *SimpleChaincode) Invoke(stub shim.ChaincodeStubInterface) pb.Response {
 	fmt.Println("invoke is running " + function)
 
 	// Handle different functions
-	if function == "addClaim" { //create a new factcheck
-		return t.addClaim(stub, args)
-	} else if function == "addFactcheck" { //delete a factcheck
+	if function == "registerWallet" { //register a wallet (for clients, admins and factcheckers)
+		return t.registerWallet(stub, args)
+	} else if function == "addToClientWallet" { //deposit funds to wallet
+			return t.addToClientWallet(stub, args)
+	} else if function == "addClaim" { //delete a claim
+			return t.addClaim(stub, args)
+	} else if function == "addFactcheck" { //add a factcheck
 		return t.addFactcheck(stub, args)
-	} else if function == "readRecord" { //read a factcheck
+	} else if function == "assessFactcheck" { //add a factcheck
+		return t.assessFactcheck(stub, args)
+	} else if function == "readRecord" { //read a claim, factcheck or wallet
 		return t.readRecord(stub, args)
 //	} else if function == "deleteRecord" { //delete a factcheck
 //		return t.deleteRecord(stub, args)
@@ -168,41 +162,53 @@ func (t *SimpleChaincode) Invoke(stub shim.ChaincodeStubInterface) pb.Response {
 	fmt.Println("invoke did not find func: " + function) //error
 	return shim.Error("Received unknown function invocation")
 }
-
-//create a number hash from a unique URL
+// ============================================================
+// hash - creates a unique 20-number ID for different records
+// ============================================================
 func hash(s string) string {
         h := fnv.New64a()
         h.Write([]byte(s))
         return strconv.FormatUint(uint64(h.Sum64()),10)
 }
-
 // ============================================================
-// addClaim - create a new claim, store into chaincode state
+// registerWallet - create a new wallet for a client, admin or factchecker
 // ============================================================
-func (t *SimpleChaincode) addToClientBalance(stub shim.ChaincodeStubInterface, args []string) pb.Response {
+func (t *SimpleChaincode) registerWallet(stub shim.ChaincodeStubInterface, args []string) pb.Response {
 	var err error
 
 	if len(args[0]) <= 0 {
-		return shim.Error("1st argument (client ID) is missing.")
+		return shim.Error("1st argument (type) is missing, it can be 'admin','client', or 'factchecker'")
 	}
 	if len(args[1]) <= 0 {
-		return shim.Error("2nd argument (amount to add) is missing")
+		return shim.Error("2nd argument (org ID) must be provided")
 	}
-	amount, err := strconv.Atoi(arg[1])
-     if err != nil {
-			 	 return shim.Error("Error: " + err.Error())
-     }
-	walletAsBytes, err := stub.GetState(arg[0])
+	if len(args[2]) <= 0 {
+		return shim.Error("3rd argument (user ID) must be provided")
+	}
+	if args[0]!="admin" && args[0]!="client" && args[0]!="factchecker" {
+		return shim.Error("1st argument can either be 'admin','client', or 'factchecker'")
+	}
+
+	var wlt wallet
+	wlt.ObjectType = "wallet"
+  wlt.WalletID = "W"+args[2] //a unique id representig the hash of the url where the claim is found (identifier)
+	wlt.OwnerType = argv[0] //format of UTC datetime: YYYY-MM-DD HH:MM:SS
+	wlt.OrgID = args[1]
+	wlt.OwnerID = args[2]
+	wlt.OwnerName = args[3]
+	wlt.Balance = "0"
+
+	tempAsBytes, err := stub.GetState(wlt.WalletID)
 	if err != nil {
-		return shim.Error("Failed to get client: " + err.Error())
+		return shim.Error("Failed to register wallet: " + err.Error())
+	} else if tempAsBytes != nil {
+		return shim.Error("This wallet already exists: " + wlt.WalletID)
 	}
 
 	err = json.Unmarshal([]byte(walletAsBytes), &walletJSON)
 	if err != nil {
 		return fmt.Sprintf("Failed to unmarshal wallet record: %s", err.Error())
 	}
-
-	walletJSON.Balance = amount+walletJSON.Balance
 
 	walletJSONasBytes, err := json.Marshal(walletJSON)
 	if err != nil {
@@ -213,13 +219,68 @@ func (t *SimpleChaincode) addToClientBalance(stub shim.ChaincodeStubInterface, a
 //	fmt.Println("\n\nas string: "+string(walletJSONasBytes)+"\n\n")
 
 	// === Save claim to state ===
-	err = stub.PutState(walletJSON.ClientID, walletJSONasBytes)
+	err = stub.PutState(walletJSON.WalletID, walletJSONasBytes)
+	if err != nil {
+		return shim.Error(err.Error())
+	}
+
+	return shim.Success([]byte("Registered wallet successfully: "+string(walletJSONasBytes)))
+//	return shim.Success(nil)
+}
+// ============================================================
+// addToClientWallet - deposit an amount to a client's wallet
+// ============================================================
+func (t *SimpleChaincode) addToClientWallet(stub shim.ChaincodeStubInterface, args []string) pb.Response {
+	var err error
+
+	if len(args[0]) <= 0 {
+		return shim.Error("1st argument (wallet ID) is missing.")
+	}
+	if len(args[1]) <= 0 {
+		return shim.Error("2nd argument (amount to add) is missing")
+	}
+
+	amountToAdd, err := Atoi(args[1])
+	if err != nil {
+		return shim.Error("Error: " + err.Error())
+	}
+
+	return addToWallet(stub,"client",args[0],amountToAdd)
+	}
+
+func (t *SimpleChaincode) addToWallet(stub shim.ChaincodeStubInterface, ownerType string, ownerID string, amount int) pb.Response {
+	var err error
+
+	walletAsBytes, err := stub.GetState("W"+ownerID)
+	if err != nil {
+		return shim.Error("Failed to get client: " + err.Error())
+	}
+
+	err = json.Unmarshal([]byte(walletAsBytes), &walletJSON)
+	if err != nil {
+		return fmt.Sprintf("Failed to unmarshal wallet record: %s", err.Error())
+	}
+
+	if walletJSON.OwnerType!=ownerType {
+		return shim.Error("Error: different type used as argument.")
+	}
+	if amount<0 && walletJSON.Balance<amount {
+			return shim.Error("Balance insufficient.")
+		}
+	walletJSON.Balance = walletJSON.Balance+amount
+
+	walletJSONasBytes, err := json.Marshal(walletJSON)
+	if err != nil {
+		return shim.Error(err.Error())
+	}
+
+	// === Save claim to state ===
+	err = stub.PutState(walletJSON.WalletID, walletJSONasBytes)
 	if err != nil {
 		return shim.Error(err.Error())
 	}
 
 	return shim.Success([]byte("Updated balance successfully: "+string(walletJSONasBytes)))
-//	return shim.Success(nil)
 }
 
 // ============================================================
@@ -247,33 +308,39 @@ func (t *SimpleChaincode) addClaim(stub shim.ChaincodeStubInterface, args []stri
 	sz := len(args)
 	for i := sz; i <=15; i++ { args = append(args,"") }
 
-	tmp_i := hash(args[2]+"-"+args[4])
+	tmpI := hash(args[2]+"-"+args[4])
 
 	t := time.Now().UTC()
-	current_time := fmt.Sprintf("%d-%02d-%02d %02d:%02d:%02d",t.Year(), t.Month(), t.Day(),t.Hour(), t.Minute(), t.Second())
+	currentTime := fmt.Sprintf("%d-%02d-%02d %02d:%02d:%02d",t.Year(), t.Month(), t.Day(),t.Hour(), t.Minute(), t.Second())
 
 	var clm claim
 	clm.ObjectType = "claim"
-  clm.ClaimID = "C"+tmp_i //a unique id representig the hash of the url where the claim is found (identifier)
-	clm.DatePublished = current_time //format of UTC datetime: YYYY-MM-DD HH:MM:SS
+  clm.ClaimID = "C"+tmpI //a unique id representig the hash of the url where the claim is found (identifier)
+	clm.Status = "created"
+	clm.StatusUpdatedAt = ""
+	clm.DatePublished = currentTime //format of UTC datetime: YYYY-MM-DD HH:MM:SS
 	clm.Org = args[0]
-	clm.Claim_on_orgID = args[1]
+	clm.ClaimOnOrgID = args[1]
 	clm.ClientID = args[2]
-	clm.Claim_title = args[3]
-	clm.Claim_url_on_org = args[4]
+	clm.ClaimTitle = args[3]
+	clm.ClaimURLOnOrg = args[4]
 // From this point, arguments are optional
 	clm.Deadline = args[5]
-	clm.Reward_amount = args[6]
-	clm.Conditions = args[7]
-	clm.Claim_url = args[8]
-	clm.Description = args[9]
-	clm.Claim_source = args[10]
-	clm.Claim_medium = args[11]
-	clm.Has_image = args[12]
-	clm.Has_video = args[13]
-	clm.Has_text = args[14]
-	clm.Tags = args[15]
+	clm.MinimumFactchecks = args[6]
+	clm.RewardAmount = args[7]
+	clm.Conditions = args[8]
+	clm.ClaimURL = args[9]
+	clm.Description = args[10]
+	clm.ClaimSource = args[11]
+	clm.ClaimMedium = args[12]
+	clm.HasImage = args[13]
+	clm.HasVideo = args[14]
+	clm.HasText = args[15]
+	clm.Tags = args[16]
 
+	if clm.MinimumFactchecks=="" {
+		clm.MinimumFactchecks="1"
+	}
 	// ==== Check if claim already exists and deadline is valid ====
 	if clm.Deadline!="" {
 		ex, err :=time.Parse("2006-01-02 00:00:00",clm.Deadline)
@@ -289,18 +356,12 @@ func (t *SimpleChaincode) addClaim(stub shim.ChaincodeStubInterface, args []stri
 	if err != nil {
 		return shim.Error("Failed to get claim: " + err.Error())
 	} else if claimAsBytes != nil {
-		fmt.Println("This claim already exists: " + clm.ClaimID)
 		return shim.Error("This claim already exists: " + clm.ClaimID)
 	}
 
-	walletAsBytes, err := stub.GetState(arg[2])
+	walletAsBytes, err := stub.GetState("W"+arg[2])
 	if err != nil {
 		return shim.Error("Failed to get factchecker: " + err.Error())
-	}
-
-	walletAsBytes, err := stub.GetState(arg[0])
-	if err != nil {
-		return shim.Error("Failed to get org: " + err.Error())
 	}
 
 	// ==== Create claim object and marshal to JSON ====
@@ -333,10 +394,6 @@ func (t *SimpleChaincode) addClaim(stub shim.ChaincodeStubInterface, args []stri
 //	return shim.Success(nil)
 }
 
-// ===============================================
-// readRecords - read a claim or factcheck from chaincode state
-// ===============================================
-
 // ============================================================
 // addFactcheck - create a new factcheck, store into chaincode state
 // ============================================================
@@ -363,7 +420,7 @@ func (t *SimpleChaincode) addFactcheck(stub shim.ChaincodeStubInterface, args []
 	}
 
 	t := time.Now().UTC()
-	current_time := fmt.Sprintf("%d-%02d-%02d %02d:%02d:%02d",t.Year(), t.Month(), t.Day(),t.Hour(), t.Minute(), t.Second())
+	currentTime := fmt.Sprintf("%d-%02d-%02d %02d:%02d:%02d",t.Year(), t.Month(), t.Day(),t.Hour(), t.Minute(), t.Second())
 
 	// ==== confirm first that the claim exists ====
 
@@ -374,9 +431,9 @@ func (t *SimpleChaincode) addFactcheck(stub shim.ChaincodeStubInterface, args []
 		return fmt.Sprintf("Could not find the claim with id (%s) you are factchecking", arg[3])
 	}
 
-	walletAsBytes, err := stub.GetState(arg[2])
+	walletAsBytes, err := stub.GetState("W"+arg[2])
 	if err != nil {
-		return shim.Error("Failed to get factchecker: " + err.Error())
+		return shim.Error("Failed to get wallet of factchecker: " + err.Error())
 	}
 
 	err = json.Unmarshal([]byte(claimAsBytes), &claimJSON)
@@ -399,65 +456,67 @@ func (t *SimpleChaincode) addFactcheck(stub shim.ChaincodeStubInterface, args []
 
 	fmt.Println("- start init factcheck")
 
-	tmp_i := hash(args[2]+"-"+args[5])
+	tmpI := hash(args[2]+"-"+args[5])
 
 	var fc factcheck
 	fc.ObjectType = "factcheck"
-	fc.FactcheckID = "F"+tmp_i //a unique id representig the hash of the url where the factcheck is found (identifier)
-	fc.DatePublished = current_time
+	fc.FactcheckID = "F"+tmpI //a unique id representig the hash of the url where the factcheck is found (identifier)
+	fc.Status = "created" //can be 'created' or 'factchecked'
+	fc.StatusUpdateComments = ""
+	fc.StatusUpdatedAt = ""
+	fc.DatePublished = currentTime
 	fc.Org = args[0]
-	fc.FactcheckID_on_org = args[1]
+	fc.FactcheckIDOnOrg = args[1]
 	fc.FactcheckerID = args[2]
 	fc.ClaimID = args[3]
-	fc.Rating_label = args[4]
-	fc.Factcheck_url_on_org = args[5]
+	fc.RatingLabel = args[4]
+	fc.FactcheckURLOnOrg = args[5]
 // From this point, arguments are optional
-	fc.Worst_rating = args[6]
-	fc.Best_rating = args[7]
+	fc.WorstRating = args[6]
+	fc.BestRating = args[7]
 	fc.Rating = args[8]
-	fc.Img_logo = args[9]
-	fc.Img_review_started = args[10]
-	fc.Img_old = args[11]
-	fc.Img_forensidiscrepency = args[12]
-	fc.Img_metadata_discrepency = args[13]
-	fc.Img_logical_discrepency = args[14]
-	fc.Note_img_old = args[15]
-	fc.Note_img_forensidiscrepency = args[16]
-	fc.Note_img_metadata_discrepency = args[17]
-	fc.Note_img_logical_discrepency = args[18]
-	fc.Vid_review_started = args[19]
-	fc.Vid_old = args[20]
-	fc.Vid_forensidiscrepency = args[21]
-	fc.Vid_metadata_discrepency = args[22]
-	fc.Vid_audio_discrepency = args[23]
-	fc.Vid_logical_discrepency = args[24]
-	fc.Note_vid_old = args[25]
-	fc.Note_vid_forensidiscrepency = args[26]
-	fc.Note_vid_metadata_discrepency = args[27]
-	fc.Note_vid_audio_discrepency = args[28]
-	fc.Note_vid_logical_discrepency = args[29]
-	fc.Txt_review_started = args[30]
-	fc.Txt_unreliable_news_content = args[31]
-	fc.Txt_insufficient_verifiable_srcs = args[32]
-	fc.Txt_has_clickbait = args[33]
-	fc.Txt_poor_language = args[34]
-	fc.Txt_crowds_distance_discrepency = args[35]
-	fc.Txt_author_offers_little_evidence = args[36]
-	fc.Txt_reliable_sources_disapprove = args[37]
-	fc.Note_txt_unreliable_news_content = args[38]
-	fc.Note_txt_insufficient_verifiable_srcs = args[39]
-	fc.Note_txt_has_clickbait = args[40]
-	fc.Note_txt_poor_language = args[41]
-	fc.Note_txt_crowds_distance_discrepency = args[42]
-	fc.Note_txt_author_offers_little_evidence = args[43]
-	fc.Note_txt_reliable_sources_disapprove = args[44]
+	fc.ImgLogo = args[9]
+	fc.ImgReviewStarted = args[10]
+	fc.ImgOld = args[11]
+	fc.ImgForensidiscrepency = args[12]
+	fc.ImgMetadataDiscrepency = args[13]
+	fc.ImgLogicalDiscrepency = args[14]
+	fc.NoteImgOld = args[15]
+	fc.NoteImgForensidiscrepency = args[16]
+	fc.NoteImgMetadataDiscrepency = args[17]
+	fc.NoteImgLogicalDiscrepency = args[18]
+	fc.VidReviewStarted = args[19]
+	fc.VidOld = args[20]
+	fc.VidForensidiscrepency = args[21]
+	fc.VidMetadataDiscrepency = args[22]
+	fc.VidAudioDiscrepency = args[23]
+	fc.VidLogicalDiscrepency = args[24]
+	fc.NoteVidOld = args[25]
+	fc.NoteVidForensidiscrepency = args[26]
+	fc.NoteVidMetadataDiscrepency = args[27]
+	fc.NoteVidAudioDiscrepency = args[28]
+	fc.NoteVidLogicalDiscrepency = args[29]
+	fc.TxtReviewStarted = args[30]
+	fc.TxtUnreliableNewsContent = args[31]
+	fc.TxtInsufficientVerifiableSrcs = args[32]
+	fc.TxtHasClickbait = args[33]
+	fc.TxtPoorLanguage = args[34]
+	fc.TxtCrowdsDistanceDiscrepency = args[35]
+	fc.TxtAuthorOffersLittleEvidence = args[36]
+	fc.TxtReliableSourcesDisapprove = args[37]
+	fc.NoteTxtUnreliableNewsContent = args[38]
+	fc.NoteTxtInsufficientVerifiableSrcs = args[39]
+	fc.NoteTxtHasClickbait = args[40]
+	fc.NoteTxtPoorLanguage = args[41]
+	fc.NoteTxtCrowdsDistanceDiscrepency = args[42]
+	fc.NoteTxtAuthorOffersLittleEvidence = args[43]
+	fc.NoteTxtReliableSourcesDisapprove = args[44]
 
 	// ==== Check if factcheck already exists ====
 	factcheckAsBytes, err := stub.GetState(fc.FactcheckID)
 	if err != nil {
 		return shim.Error("Failed to get factcheck: " + err.Error())
 	} else if factcheckAsBytes != nil {
-		fmt.Println("This factcheck already exists: " + fc.FactcheckID)
 		return shim.Error("This factcheck already exists: " + fc.FactcheckID)
 	}
 
@@ -479,7 +538,7 @@ func (t *SimpleChaincode) addFactcheck(stub shim.ChaincodeStubInterface, args []
 
 //index1: search factcheck ratings based on org:
 	indexRating := "claimid~rating"
-	ClaimIDratingIndexKey, err1 := stub.CreateCompositeKey(indexRating, []string{fc.ClaimID, fc.Rating_label})
+	ClaimIDratingIndexKey, err1 := stub.CreateCompositeKey(indexRating, []string{fc.ClaimID, fc.RatingLabel})
 	if err1 != nil {
 		return shim.Error(err1.Error())
 	}
@@ -499,6 +558,129 @@ func (t *SimpleChaincode) addFactcheck(stub shim.ChaincodeStubInterface, args []
 	fmt.Println("- end init factcheck")
 	return shim.Success([]byte("Added successfully: "+string(factcheckJSONasBytes)))
 //	return shim.Success(nil)
+}
+
+// ============================================================
+// assessFactcheck - give a particular factcheck an assessment
+// ============================================================
+func (t *SimpleChaincode) assessFactcheck(stub shim.ChaincodeStubInterface, args []string) pb.Response {
+	var err error
+
+	if len(args[0]) <= 0 {
+		return shim.Error("1st argument (FactcheckID) is missing")
+	}
+	if len(args[1]) <= 0 {
+		return shim.Error("2nd argument (adminID) must be provided")
+	}
+	if len(args[2]) <= 0 {
+		return shim.Error("3rd argument (assessment) must be provided, can be 'approved' or 'rejected'")
+	}
+	if args[2]!="approved" && args[2]!="rejected" {
+		return shim.Error("3rd argument can either be 'approved' or 'rejected'")
+	}
+
+	walletAsBytes, err := stub.GetState("W"+arg[1])
+	if err != nil {
+		return shim.Error("Failed to get wallet of admin: " + err.Error())
+	}
+
+	factcheckAsBytes, err := stub.GetState(arg[0])
+	if err != nil {
+		return shim.Error("Failed to get factcheck: " + err.Error())
+	}
+	err = json.Unmarshal([]byte(factcheckAsBytes), &factcheckJSON)
+	if err != nil {
+		return fmt.Sprintf("Failed to unmarshal factcheck record: %s", err.Error())
+	}
+
+	if factcheckJSON.Status!="created" {
+		return shim.Error("This factcheck has already been assessed and was "+factcheckJSON.Status)
+	}
+
+	t := time.Now().UTC()
+	currentTime := fmt.Sprintf("%d-%02d-%02d %02d:%02d:%02d",t.Year(), t.Month(), t.Day(),t.Hour(), t.Minute(), t.Second())
+
+	claimAsBytes, err := stub.GetState(factcheckJSON.claimID)
+	if err != nil {
+		return shim.Error("Failed to get claim: " + err.Error())
+	}
+	err = json.Unmarshal([]byte(claimAsBytes), &claimJSON)
+	if err != nil {
+		return fmt.Sprintf("Failed to unmarshal factcheck record: %s", err.Error())
+	}
+	if claimJSON.Deadline!="" {
+		ex, err :=time.Parse("2006-01-02 00:00:00",claimJSON.Deadline)
+		if err != nil {
+			return shim.Error("Error in parsing deadline: "+err.Error())
+		}
+		if ex.After(t) {
+			return shim.Error("You can only assess factchecks after the passing of the deadline on "+claimJSON.Deadline)
+		}
+	}
+	if claimJSON.Status!="created" {
+			return shim.Error("The claim reward seems to have already been paid on "+claimJSON.StatusUpdatedAt)
+	}
+
+	factcheckJSON.Status = args[2]
+	factcheckJSON.StatusUpdatedAt = currentTime
+	if (len(args[3])>0) {
+		factcheckJSON.StatusUpdateComments=args[3]
+	}
+
+	factcheckJSONasBytes, err := json.Marshal(factcheckJSON)
+	if err != nil {
+		return shim.Error(err.Error())
+	}
+
+	err = stub.PutState(factcheckJSON.FactcheckID, factcheckJSONasBytes)
+	if err != nil {
+		return shim.Error(err.Error())
+	}
+	fmt.Sprintf(shim.Success([]byte("Factcheck assessed successfully: "+string(factcheckJSONasBytes))))
+
+	pendingFactchecks, err := getQueryResultForQueryString(stub,"{\"selector\":{\"claimID\":"+factcheckJSON.ClaimID+"\",\"docType\":\"factcheck\",\"status\":\"created\"},\"fields\":[\"factcheckID\"]}")
+	if err != nil {
+		return shim.Error(err.Error())
+	}
+	if (len(pendingFactchecks)>0) {
+		return fmt.Sprintf("In order to pay the reward, you need to assess the other remaining factchecks:\n", +string(pendingFactchecks))
+	}
+
+	approvedFactchecks, err := getQueryResultForQueryString(stub,"{\"selector\":{\"claimID\":"+factcheckJSON.ClaimID+"\",\"docType\":\"factcheck\",\"status\":\"approved\"},\"fields\":[\"factcheckID\"]}")
+	if err != nil {
+		return shim.Error(err.Error())
+	}
+
+  totalApprovedFactchecks := len(approvedFactchecks)
+	if (claimJSON.RewardAmount>0) {
+			fmt.Sprintf("Settle reward payments:")
+			fullReward :=Atoi(claimJSON.RewardAmount)
+			addToWallet("client","W"+claimJSON.ClientID,-1*fullReward)
+			fmt.Sprintf("Deducting from client "+claimJSON.ClientID+" the reward amount of "+claimJSON.RewardAmount+"")
+			adminShare := math.Floor(fullReward/25)
+			fmt.Sprintf("Rewarding admin "+args[1]+" with "+Itoa(adminShare)+" (25% of "+claimJSON.RewardAmount+")")
+			factcheckerShare := math.Floor((adminShare*3)/totalApprovedFactchecks)
+			fmt.Sprintf("Rewarding "+Itoa(totalApprovedFactchecks)+" factcheckers with "+Itoa(factcheckerShare)+" each!")
+			for index,element := range approvedFactchecks{
+				addToWallet("factchecker","W"+element.FactcheckerID,factcheckerShare)
+			}
+		}
+		claimJSON.Status = "completed"
+		claimJSON.StatusUpdatedAt = currentTime
+
+		claimJSONasBytes, err := json.Marshal(claimJSON)
+		if err != nil {
+			return shim.Error(err.Error())
+		}
+
+		err = stub.PutState(claimJSON.claimID, claimJSONasBytes)
+		if err != nil {
+			return shim.Error(err.Error())
+		}
+		fmt.Sprintf(shim.Success([]byte("Claim successfully factchecked and rewards (if any) settled: "+string(claimJSONasBytes))))
+
+//	return shim.Success(nil)
+
 }
 
 // ===============================================
@@ -652,9 +834,9 @@ func (t *SimpleChaincode) queryRecordsByOrg(stub shim.ChaincodeStubInterface, ar
 	}
 
 	org := args[0]
-	record_type := args[1]
+	recordType := args[1]
 
-	queryString := fmt.Sprintf("{\"selector\":{\"docType\":\"%s\",\"org\":\"%s\"}}", record_type, org)
+	queryString := fmt.Sprintf("{\"selector\":{\"docType\":\"%s\",\"org\":\"%s\"}}", recordType, org)
 
 	queryResults, err := getQueryResultForQueryString(stub, queryString)
 	if err != nil {
