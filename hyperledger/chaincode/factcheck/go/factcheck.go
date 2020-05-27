@@ -27,8 +27,7 @@ type wallet struct {
 type claim struct {
     ObjectType string `json:"docType"` //docType is used to distinguish the various types of objects in state database
 		ClaimID string `json:"claimID"`
-		Status string `json:"Status"` //created,pendingFactcheckAssessment,factchecked,expired
-		StatusUpdateComments string `json:"statusUpdateComments"`
+		Status string `json:"status"` //created,pendingFactcheckAssessment,factchecked,expired
 		StatusUpdatedAt string `json:"statusUpdatedAt"`
 		Org string `json:"org"` //argv[0]
 		ClaimOnOrgID string `json:"claimOnOrgID"` //argv[1]
@@ -39,7 +38,6 @@ type claim struct {
 //This is related to the reward for factchecking
 		DatePublished string `json:"datePublished"` //automated timestamp
 		Deadline string `json:"deadline"` //argv[5]
-		MinimumFactchecks string `json:"minimumFactchecks"` //argv[6]
     RewardAmount string `json:"rewardAmount"` //argv[7]
 		Conditions string `json:"conditions"` //argv[8]
 //This part includes addtional details about the claim
@@ -56,7 +54,7 @@ type claim struct {
 type factcheck struct {
     ObjectType string `json:"docType"` //docType is used to distinguish the various types of objects in state database
 		FactcheckID string `json:"factcheckID"`
-		Status string `json:"Status"` //created,approved,rejected
+		Status string `json:"status"` //created,approved,rejected
 		StatusUpdateComments string `json:"statusUpdateComments"`
 		StatusUpdatedAt string `json:"statusUpdatedAt"`
 		Org string `json:"org"` //argv[0]
@@ -189,7 +187,7 @@ func addToWallet(stub shim.ChaincodeStubInterface, ownerType string, walletID st
 	}
 
 	if walletJSON.OwnerType!=ownerType {
-		return shim.Error("Error: "+ownerType+"s are not allowed to deposit funds.")
+		return shim.Error("Error: Type of owner mismatch. Cannot deposit funds.")
 	}
 	if amount<0 && walletJSON.Balance<amount {
 			return shim.Error("Balance insufficient.")
@@ -334,21 +332,17 @@ func (t *SimpleChaincode) addClaim(stub shim.ChaincodeStubInterface, args []stri
 	clm.ClaimURLOnOrg = args[4]
 // From this point, arguments are optional
 	clm.Deadline = args[5]
-	clm.MinimumFactchecks = args[6]
-	clm.RewardAmount = args[7]
-	clm.Conditions = args[8]
-	clm.ClaimURL = args[9]
-	clm.Description = args[10]
-	clm.ClaimSource = args[11]
-	clm.ClaimMedium = args[12]
-	clm.HasImage = args[13]
-	clm.HasVideo = args[14]
-	clm.HasText = args[15]
-	clm.Tags = args[16]
+	clm.RewardAmount = args[6]
+	clm.Conditions = args[7]
+	clm.ClaimURL = args[8]
+	clm.Description = args[9]
+	clm.ClaimSource = args[10]
+	clm.ClaimMedium = args[11]
+	clm.HasImage = args[12]
+	clm.HasVideo = args[13]
+	clm.HasText = args[14]
+	clm.Tags = args[15]
 
-	if clm.MinimumFactchecks=="" {
-		clm.MinimumFactchecks="1"
-	}
 	// ==== Check if claim already exists and deadline is valid ====
 	if clm.Deadline!="" {
 		ex, err :=time.Parse("2006-01-02 15:04",clm.Deadline)
@@ -600,9 +594,7 @@ func (t *SimpleChaincode) assessFactcheck(stub shim.ChaincodeStubInterface, args
 	type FC []struct {
 		Key    string `json:"key"`
 		Record struct {
-			FactcheckID   string `json:"factcheckID"`
 			FactcheckerID string `json:"factcheckerID"`
-			Org string `json:"org"`
 		} `json:"Record"`
 	}
 
@@ -628,14 +620,14 @@ func (t *SimpleChaincode) assessFactcheck(stub shim.ChaincodeStubInterface, args
 		return shim.Error("3rd argument can either be 'approved' or 'rejected'")
 	}
 
-	encodedID := hash(args[0]+"-"+args[2])
+	AdminID := "A"+hash(args[0]+"-"+args[2])
 
-	AdminWallet, err := stub.GetState("WA"+encodedID)
+	AdminWallet, err := stub.GetState("W"+AdminID)
 	if err != nil {
 		return shim.Error("Failed to get wallet of admin: " + err.Error())
 	}
 	if AdminWallet == nil {
-		return shim.Error("Could not find wallet with ID: W"+encodedID)
+		return shim.Error("Could not find wallet with ID: W"+AdminID)
 	}
 
 	factcheckAsBytes, err := stub.GetState(args[1])
@@ -668,11 +660,11 @@ func (t *SimpleChaincode) assessFactcheck(stub shim.ChaincodeStubInterface, args
 			return shim.Error("Error in parsing deadline: "+err.Error())
 		}
 		if ex.After(tm) {
-			return shim.Error("You can only assess factchecks after the passing of the deadline on "+claimJSON.Deadline)
+			return shim.Error("You can only assess factchecks after the passing of the deadline at "+claimJSON.Deadline)
 		}
 	}
 	if claimJSON.Status!="created" {
-			return shim.Error("The claim reward seems to have already been paid on "+claimJSON.StatusUpdatedAt)
+			return shim.Error("The claim reward seems to have already been paid at "+claimJSON.StatusUpdatedAt)
 	}
 
 	factcheckJSON.Status = args[3]
@@ -688,17 +680,25 @@ func (t *SimpleChaincode) assessFactcheck(stub shim.ChaincodeStubInterface, args
 	if err != nil {
 		return shim.Error(err.Error())
 	}
-	return shim.Success([]byte("Factcheck assessed successfully: "+string(factcheckJSONasBytes)))
+	log:=fmt.Sprintf("Factcheck assessed successfully and was : %s\n%s",args[3],string(factcheckJSONasBytes))
 
-	pendingFactchecks, err := getQueryResultForQueryString(stub,"{\"selector\":{\"claimID\":"+factcheckJSON.ClaimID+"\",\"docType\":\"factcheck\",\"status\":\"created\"},\"fields\":[\"factcheckID\"]}")
+	searchQuery:="{\"selector\":{\"claimID\":\""+factcheckJSON.ClaimID+"\",\"docType\":\"factcheck\",\"status\":\"created\",\"$not\":{\"factcheckID\":\""+factcheckJSON.FactcheckID+"\"}},\"fields\":[\"factcheckID\"]}"
+
+	pendingFactchecks, err := getQueryResultForQueryString(stub,searchQuery)
 	if err != nil {
 		return shim.Error(err.Error())
 	}
-	if (len(pendingFactchecks)>0) {
-		fmt.Sprintf("In order to pay the reward, you need to assess the other remaining factchecks: %s\n", string(pendingFactchecks))
+	log=log+fmt.Sprintf(" Result of query ("+searchQuery+") is: in string:("+string(pendingFactchecks)+")")
+
+	if (len(pendingFactchecks)>5) {
+		return shim.Success([]byte("In order to settle the reward, you need to assess the other remaining factchecks: "+ string(pendingFactchecks)))
 	}
 
-	searchQuery:="{\"selector\":{\"claimID\":"+factcheckJSON.ClaimID+"\",\"docType\":\"factcheck\",\"status\":\"approved\"},\"fields\":[\"factcheckID\",\"Org\",\"factcheckerID\"]}"
+	if (args[3]=="approved") {
+		searchQuery="{\"selector\":{\"$or\":[{\"factcheckID\":\""+factcheckJSON.FactcheckID+"\"},{\"claimID\":\""+factcheckJSON.ClaimID+"\",\"docType\":\"factcheck\",\"status\":\"approved\"}]},\"fields\":[\"factcheckerID\"]}"
+	} else {
+		searchQuery="{\"selector\":{\"claimID\":\""+factcheckJSON.ClaimID+"\",\"docType\":\"factcheck\",\"status\":\"approved\"},\"fields\":[\"factcheckerID\"]}"
+	}
 
 	resultsIterator, err := stub.GetQueryResult(searchQuery)
 	if err != nil {
@@ -711,48 +711,52 @@ func (t *SimpleChaincode) assessFactcheck(stub shim.ChaincodeStubInterface, args
 		return shim.Error(err.Error())
 	}
 
+	log=log+" BUFFER="+buffer.String()
+
 	err = json.Unmarshal([]byte(buffer.String()), &approvedFactchecks)
 	if err != nil {
 		return shim.Error(err.Error())
 	}
 
-  totalApprovedFactchecks := len(approvedFactchecks)
-	fullReward, err :=strconv.Atoi(claimJSON.RewardAmount)
+	var totalApprovedFactchecks int
+	var adminShare int
+	var fullReward int
+	var factcheckerShare int
+
+  totalApprovedFactchecks = len(approvedFactchecks)
+	log=log+" total # of approvedFactchecks: ("+strconv.Itoa(totalApprovedFactchecks)+")"
+	fullReward, err =strconv.Atoi(claimJSON.RewardAmount)
 	if err!=nil {
 		return shim.Error("Failed to parse reward amount: "+err.Error())
 	}
+
 	if (fullReward>0) {
-			fmt.Sprintf("Settle reward payments:")
-			fmt.Sprintf("Deducting from client "+claimJSON.ClientID+" the reward amount of "+claimJSON.RewardAmount+"")
-			clientWalletID:="WC"+hash(claimJSON.Org+"_"+claimJSON.ClientID)
-			addToWallet(stub,"client",clientWalletID,-1*fullReward)
-			adminShare := int(float64(fullReward)/25)
-			adminWalletID:="WA"+encodedID
-			fmt.Sprintf("Rewarding admin Wallet "+adminWalletID+" with "+string(adminShare)+" (25% of "+claimJSON.RewardAmount+")")
-			addToWallet(stub,"admin",adminWalletID,-1*fullReward)
-			factcheckerShare := int((float64(adminShare)*3)/float64(totalApprovedFactchecks))
-			fmt.Sprintf("Rewarding "+string(totalApprovedFactchecks)+" factcheckers with "+string(factcheckerShare)+" each!")
-			factcheckerWalletID:=""
-
+			log=log+fmt.Sprintf("Settle reward payments:")
+			log=log+fmt.Sprintf("Deducting from client wallet WC"+claimJSON.ClientID+" the reward amount of ("+strconv.Itoa(fullReward)+")")
+			addToWallet(stub,"client","WC"+claimJSON.ClientID,-1*fullReward)
+			adminShare = fullReward/4
+			log=log+fmt.Sprintf("Rewarding admin Wallet WA"+AdminID+" with "+strconv.Itoa(adminShare)+" (25 percent of "+claimJSON.RewardAmount+")")
+			addToWallet(stub,"admin","WA"+AdminID,adminShare)
+			factcheckerShare = (fullReward-adminShare)/totalApprovedFactchecks
+			log=log+fmt.Sprintf("Rewarding "+strconv.Itoa(totalApprovedFactchecks)+" factcheckers with "+strconv.Itoa(factcheckerShare)+" each!")
 			for i := 0; i <totalApprovedFactchecks; i++ {
-				factcheckerWalletID="WF"+hash(approvedFactchecks[i].Record.Org+"_"+approvedFactchecks[i].Record.FactcheckerID)
-				fmt.Sprintf("Rewarding Factchecker #"+strconv.Itoa(i+1)+" "+approvedFactchecks[i].Record.FactcheckerID+" in org "+" "+approvedFactchecks[i].Record.Org)
-				addToWallet(stub,"factchecker",factcheckerWalletID,factcheckerShare)
+				log=log+fmt.Sprintf("Rewarding Factchecker #"+strconv.Itoa(i+1)+" to wallet WF"+approvedFactchecks[i].Record.FactcheckerID+" ")
+				addToWallet(stub,"factchecker","WF"+approvedFactchecks[i].Record.FactcheckerID,factcheckerShare)
 			}
-		}
-		claimJSON.Status = "completed"
-		claimJSON.StatusUpdatedAt = currentTime
+	}
+	claimJSON.Status = "completed"
+	claimJSON.StatusUpdatedAt = currentTime
 
-		claimJSONasBytes, err := json.Marshal(claimJSON)
-		if err != nil {
-			return shim.Error(err.Error())
-		}
+	claimJSONasBytes, err := json.Marshal(claimJSON)
+	if err != nil {
+		return shim.Error(err.Error())
+	}
 
-		err = stub.PutState(claimJSON.ClaimID, claimJSONasBytes)
-		if err != nil {
-			return shim.Error(err.Error())
-		}
-		return shim.Success([]byte("Claim successfully factchecked and rewards (if any) settled: "+string(claimJSONasBytes)))
+	err = stub.PutState(claimJSON.ClaimID, claimJSONasBytes)
+	if err != nil {
+		return shim.Error(err.Error())
+	}
+	return shim.Success([]byte(log+"\nClaim successfully factchecked and rewards (if any) settled: "+string(claimJSONasBytes)))
 }
 
 // ===============================================
