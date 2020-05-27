@@ -7,7 +7,6 @@ import (
 	"strconv"
 	"time"
 	"hash/fnv"
-	"math"
   "github.com/hyperledger/fabric-chaincode-go/shim"
   pb "github.com/hyperledger/fabric-protos-go/peer"
 )
@@ -18,6 +17,7 @@ type SimpleChaincode struct {
 
 type wallet struct {
 	ObjectType string `json:"docType"` //docType is used to distinguish the various types of objects in state database
+	WalletID string `json:"walletID"`
 	OwnerID string `json:"ownerID"`
 	OwnerType string `json:"ownerType"` //admin, client or factchecker
 	OrgID string `json:"orgID"`
@@ -73,21 +73,21 @@ type factcheck struct {
 		ImgLogo string `json:"imgLogo"` //argv[9]
 		ImgReviewStarted string `json:"imgReviewStarted"` //argv[10]
 		ImgOld string `json:"imgOld"` //argv[11]
-		ImgForensidiscrepency string `json:"imgForensidiscrepency"` //argv[12]
+		ImgForensiDiscrepency string `json:"imgForensiDiscrepency"` //argv[12]
 		ImgMetadataDiscrepency string `json:"imgMetadataDiscrepency"` //argv[13]
 		ImgLogicalDiscrepency string `json:"imgLogicalDiscrepency"` //argv[14]
 		NoteImgOld string `json:"noteImgOld"` //argv[15]
-		NoteImgForensidiscrepency string `json:"noteImgForensidiscrepency"` //argv[16]
+		NoteImgForensiDiscrepency string `json:"noteImgForensiDiscrepency"` //argv[16]
 		NoteImgMetadataDiscrepency string `json:"noteImgMetadataDiscrepency"` //argv[17]
 		NoteImgLogicalDiscrepency string `json:"noteImgLogicalDiscrepency"` //argv[18]
 		VidReviewStarted string `json:"vidReviewStarted"` //argv[19]
 		VidOld string `json:"vidOld"` //argv[20]
-		VidForensidiscrepency string `json:"vidForensidiscrepency"` //argv[21]
+		VidForensiDiscrepency string `json:"vidForensiDiscrepency"` //argv[21]
 		VidMetadataDiscrepency string `json:"vidMetadataDiscrepency"` //argv[22]
 		VidAudioDiscrepency string `json:"vidAudioDiscrepency"` //argv[23]
 		VidLogicalDiscrepency string `json:"vidLogicalDiscrepency"` //argv[24]
 		NoteVidOld string `json:"noteVidOld"` //argv[25]
-		NoteVidForensidiscrepency string `json:"noteVidForensidiscrepency"` //argv[26]
+		NoteVidForensiDiscrepency string `json:"noteVidForensiDiscrepency"` //argv[26]
 		NoteVidMetadataDiscrepency string `json:"noteVidMetadataDiscrepency"` //argv[27]
 		NoteVidAudioDiscrepency string `json:"noteVidAudioDiscrepency"` //argv[28]
 		NoteVidLogicalDiscrepency string `json:"noteVidLogicalDiscrepency"` //argv[29]
@@ -170,99 +170,26 @@ func hash(s string) string {
         h.Write([]byte(s))
         return strconv.FormatUint(uint64(h.Sum64()),10)
 }
-// ============================================================
-// registerWallet - create a new wallet for a client, admin or factchecker
-// ============================================================
-func (t *SimpleChaincode) registerWallet(stub shim.ChaincodeStubInterface, args []string) pb.Response {
+
+func addToWallet(stub shim.ChaincodeStubInterface, ownerType string, walletID string, amount int) pb.Response {
 	var err error
+	var walletJSON wallet
 
-	if len(args[0]) <= 0 {
-		return shim.Error("1st argument (type) is missing, it can be 'admin','client', or 'factchecker'")
-	}
-	if len(args[1]) <= 0 {
-		return shim.Error("2nd argument (org ID) must be provided")
-	}
-	if len(args[2]) <= 0 {
-		return shim.Error("3rd argument (user ID) must be provided")
-	}
-	if args[0]!="admin" && args[0]!="client" && args[0]!="factchecker" {
-		return shim.Error("1st argument can either be 'admin','client', or 'factchecker'")
-	}
-
-	var wlt wallet
-	wlt.ObjectType = "wallet"
-  wlt.WalletID = "W"+args[2] //a unique id representig the hash of the url where the claim is found (identifier)
-	wlt.OwnerType = argv[0] //format of UTC datetime: YYYY-MM-DD HH:MM:SS
-	wlt.OrgID = args[1]
-	wlt.OwnerID = args[2]
-	wlt.OwnerName = args[3]
-	wlt.Balance = "0"
-
-	tempAsBytes, err := stub.GetState(wlt.WalletID)
-	if err != nil {
-		return shim.Error("Failed to register wallet: " + err.Error())
-	} else if tempAsBytes != nil {
-		return shim.Error("This wallet already exists: " + wlt.WalletID)
-	}
-
-	err = json.Unmarshal([]byte(walletAsBytes), &walletJSON)
-	if err != nil {
-		return fmt.Sprintf("Failed to unmarshal wallet record: %s", err.Error())
-	}
-
-	walletJSONasBytes, err := json.Marshal(walletJSON)
-	if err != nil {
-		return shim.Error(err.Error())
-	}
-
-//	fmt.Println("\n\nas bytes: "+walletJSONasBytes+"\n\n")
-//	fmt.Println("\n\nas string: "+string(walletJSONasBytes)+"\n\n")
-
-	// === Save claim to state ===
-	err = stub.PutState(walletJSON.WalletID, walletJSONasBytes)
-	if err != nil {
-		return shim.Error(err.Error())
-	}
-
-	return shim.Success([]byte("Registered wallet successfully: "+string(walletJSONasBytes)))
-//	return shim.Success(nil)
-}
-// ============================================================
-// addToClientWallet - deposit an amount to a client's wallet
-// ============================================================
-func (t *SimpleChaincode) addToClientWallet(stub shim.ChaincodeStubInterface, args []string) pb.Response {
-	var err error
-
-	if len(args[0]) <= 0 {
-		return shim.Error("1st argument (wallet ID) is missing.")
-	}
-	if len(args[1]) <= 0 {
-		return shim.Error("2nd argument (amount to add) is missing")
-	}
-
-	amountToAdd, err := Atoi(args[1])
-	if err != nil {
-		return shim.Error("Error: " + err.Error())
-	}
-
-	return addToWallet(stub,"client",args[0],amountToAdd)
-	}
-
-func (t *SimpleChaincode) addToWallet(stub shim.ChaincodeStubInterface, ownerType string, ownerID string, amount int) pb.Response {
-	var err error
-
-	walletAsBytes, err := stub.GetState("W"+ownerID)
+	walletAsBytes, err := stub.GetState(walletID)
 	if err != nil {
 		return shim.Error("Failed to get client: " + err.Error())
 	}
+	if walletAsBytes==nil {
+		return shim.Error("The wallet " +walletID+" was not found.")
+	}
 
 	err = json.Unmarshal([]byte(walletAsBytes), &walletJSON)
 	if err != nil {
-		return fmt.Sprintf("Failed to unmarshal wallet record: %s", err.Error())
+		return shim.Error("Failed to unmarshal wallet record: "+ err.Error())
 	}
 
 	if walletJSON.OwnerType!=ownerType {
-		return shim.Error("Error: different type used as argument.")
+		return shim.Error("Error: "+ownerType+"s are not allowed to deposit funds.")
 	}
 	if amount<0 && walletJSON.Balance<amount {
 			return shim.Error("Balance insufficient.")
@@ -273,14 +200,91 @@ func (t *SimpleChaincode) addToWallet(stub shim.ChaincodeStubInterface, ownerTyp
 	if err != nil {
 		return shim.Error(err.Error())
 	}
-
-	// === Save claim to state ===
 	err = stub.PutState(walletJSON.WalletID, walletJSONasBytes)
 	if err != nil {
 		return shim.Error(err.Error())
 	}
-
 	return shim.Success([]byte("Updated balance successfully: "+string(walletJSONasBytes)))
+}
+
+// ============================================================
+// registerWallet - create a new wallet for a client, admin or factchecker
+// ============================================================
+func (t *SimpleChaincode) registerWallet(stub shim.ChaincodeStubInterface, args []string) pb.Response {
+	var err error
+
+	var groupSymbol="F"
+
+	if len(args[0]) <= 0 {
+		return shim.Error("1st argument (type) is missing, it can be 'admin','client', or 'factchecker'")
+	}
+	if args[0]!="admin" && args[0]!="client" && args[0]!="factchecker" {
+		return shim.Error("1st argument can either be 'admin','client', or 'factchecker'")
+	}
+	if len(args[1]) <= 0 {
+		return shim.Error("2nd argument (org ID) must be provided")
+	}
+	if len(args[2]) <= 0 {
+		return shim.Error("3rd argument (user ID) must be provided")
+	}
+	if len(args[3])<=0 {
+		args[3]=""
+	}
+	if args[0]=="admin" { groupSymbol="A"
+	} else if args[0]=="client" { groupSymbol="C"
+	}
+
+	encodedID := hash(args[1]+"-"+args[2])
+
+	var wlt wallet
+	wlt.ObjectType = "wallet"
+  wlt.WalletID = "W"+groupSymbol+encodedID //a unique id representig the hash of the url where the claim is found (identifier)
+	wlt.OwnerType = args[0] //format of UTC datetime: YYYY-MM-DD HH:MM:SS
+	wlt.OrgID = args[1]
+	wlt.OwnerID = encodedID
+	wlt.OwnerName = args[3]
+	wlt.Balance = 0
+
+	walletAsBytes, err := stub.GetState(wlt.WalletID)
+	if err != nil {
+		return shim.Error("Failed to register wallet: " + err.Error())
+	} else if walletAsBytes != nil {
+		return shim.Error("This wallet already exists: " + wlt.WalletID)
+	}
+
+	walletJSONasBytes, err := json.Marshal(wlt)
+	if err != nil {
+		return shim.Error(err.Error())
+	}
+
+	err = stub.PutState(wlt.WalletID, walletJSONasBytes)
+	if err != nil {
+		return shim.Error(err.Error())
+	}
+
+	return shim.Success([]byte("Registered wallet successfully: "+string(walletJSONasBytes)))
+}
+
+// ============================================================
+// addToClientWallet - deposit an amount to a client's wallet
+// ============================================================
+func (t *SimpleChaincode) addToClientWallet(stub shim.ChaincodeStubInterface, args []string) pb.Response {
+//	var err error
+
+	if len(args[0]) <= 0 {
+		return shim.Error("1st argument (wallet ID) is missing.")
+	}
+	if len(args[1]) <= 0 {
+		return shim.Error("2nd argument (amount to add) is missing")
+	}
+
+	amountToAdd, err := strconv.Atoi(args[1])
+	if err != nil {
+		return shim.Error("Error: " + err.Error())
+	}
+
+	fmt.Println(args[0]+args[1])
+	return addToWallet(stub,"client",args[0],amountToAdd)
 }
 
 // ============================================================
@@ -288,6 +292,9 @@ func (t *SimpleChaincode) addToWallet(stub shim.ChaincodeStubInterface, ownerTyp
 // ============================================================
 func (t *SimpleChaincode) addClaim(stub shim.ChaincodeStubInterface, args []string) pb.Response {
 	var err error
+	var clientWalletJSON wallet
+
+	groupSymbol := "C" //Only clients are allowed to add claims
 
 	if len(args[0]) <= 0 {
 		return shim.Error("1st argument (claim org) is missing")
@@ -308,20 +315,21 @@ func (t *SimpleChaincode) addClaim(stub shim.ChaincodeStubInterface, args []stri
 	sz := len(args)
 	for i := sz; i <=15; i++ { args = append(args,"") }
 
-	tmpI := hash(args[2]+"-"+args[4])
+	encodedID := hash(args[0]+"-"+args[2]+"-"+args[4])
+	encodedID2 := hash(args[0]+"-"+args[2])
 
-	t := time.Now().UTC()
-	currentTime := fmt.Sprintf("%d-%02d-%02d %02d:%02d:%02d",t.Year(), t.Month(), t.Day(),t.Hour(), t.Minute(), t.Second())
+	tm := time.Now().UTC()
+	currentTime := fmt.Sprintf("%d-%02d-%02d %02d:%02d:%02d",tm.Year(), tm.Month(), tm.Day(),tm.Hour(), tm.Minute(), tm.Second())
 
 	var clm claim
 	clm.ObjectType = "claim"
-  clm.ClaimID = "C"+tmpI //a unique id representig the hash of the url where the claim is found (identifier)
+  clm.ClaimID = "C"+encodedID //a unique id representig the hash of the url where the claim is found (identifier)
 	clm.Status = "created"
 	clm.StatusUpdatedAt = ""
 	clm.DatePublished = currentTime //format of UTC datetime: YYYY-MM-DD HH:MM:SS
 	clm.Org = args[0]
 	clm.ClaimOnOrgID = args[1]
-	clm.ClientID = args[2]
+	clm.ClientID = encodedID2 // a composite hash created from args[0] (org) and args[2] (user id)
 	clm.ClaimTitle = args[3]
 	clm.ClaimURLOnOrg = args[4]
 // From this point, arguments are optional
@@ -343,13 +351,37 @@ func (t *SimpleChaincode) addClaim(stub shim.ChaincodeStubInterface, args []stri
 	}
 	// ==== Check if claim already exists and deadline is valid ====
 	if clm.Deadline!="" {
-		ex, err :=time.Parse("2006-01-02 00:00:00",clm.Deadline)
+		ex, err :=time.Parse("2006-01-02 15:04",clm.Deadline)
 		if err != nil {
 			return shim.Error("Error in parsing deadline: "+err.Error())
 		}
-		if ex.Before(t) {
+		if ex.Before(tm) {
 			return shim.Error("Deadline cannot be in the past.")
 		}
+	}
+
+	clientWalletAsBytes, err := stub.GetState("W"+groupSymbol+clm.ClientID)
+	if err != nil {
+		return shim.Error("Failed to get client wallet: " + err.Error())
+	}
+	if clientWalletAsBytes == nil {
+		return shim.Error("Could not find the client's wallet: W"+clm.ClaimID)
+	}
+
+	if (len(clm.RewardAmount)>0) {
+			rewardAmnt,err := strconv.Atoi(clm.RewardAmount)
+				if err != nil {
+			return shim.Error("Error in parsing reward amount: "+err.Error())
+			err = json.Unmarshal([]byte(clientWalletAsBytes), &clientWalletJSON)
+			if err != nil {
+				return shim.Error("Failed to unmarshal wallet record: "+ err.Error())
+			}
+			if clientWalletJSON.Balance<rewardAmnt {
+				return shim.Error("The wallet balance is insufficient: "+ err.Error())
+			}
+		}
+	} else {
+		clm.RewardAmount="0"
 	}
 
 	claimAsBytes, err := stub.GetState(clm.ClaimID)
@@ -359,21 +391,11 @@ func (t *SimpleChaincode) addClaim(stub shim.ChaincodeStubInterface, args []stri
 		return shim.Error("This claim already exists: " + clm.ClaimID)
 	}
 
-	walletAsBytes, err := stub.GetState("W"+arg[2])
-	if err != nil {
-		return shim.Error("Failed to get factchecker: " + err.Error())
-	}
-
-	// ==== Create claim object and marshal to JSON ====
 	claimJSONasBytes, err := json.Marshal(clm)
 	if err != nil {
 		return shim.Error(err.Error())
 	}
 
-//	fmt.Println("\n\nas bytes: "+claimJSONasBytes+"\n\n")
-//	fmt.Println("\n\nas string: "+string(claimJSONasBytes)+"\n\n")
-
-	// === Save claim to state ===
 	err = stub.PutState(clm.ClaimID, claimJSONasBytes)
 	if err != nil {
 		return shim.Error(err.Error())
@@ -391,7 +413,6 @@ func (t *SimpleChaincode) addClaim(stub shim.ChaincodeStubInterface, args []stri
 	// ==== claim saved and indexed. Return success ====
 	fmt.Println("- end init claim")
 	return shim.Success([]byte("Added successfully: "+string(claimJSONasBytes)))
-//	return shim.Success(nil)
 }
 
 // ============================================================
@@ -399,6 +420,9 @@ func (t *SimpleChaincode) addClaim(stub shim.ChaincodeStubInterface, args []stri
 // ============================================================
 func (t *SimpleChaincode) addFactcheck(stub shim.ChaincodeStubInterface, args []string) pb.Response {
 	var err error
+	var claimJSON claim
+
+	groupSymbol := "F" //only factcheckers are allowed to add factchecks
 
 	if len(args[0]) <= 0 {
 		return shim.Error("1st argument (factcheck org) is missing")
@@ -419,34 +443,39 @@ func (t *SimpleChaincode) addFactcheck(stub shim.ChaincodeStubInterface, args []
 		return shim.Error("6th argument (factcheck URL on Org website) is missing")
 	}
 
-	t := time.Now().UTC()
-	currentTime := fmt.Sprintf("%d-%02d-%02d %02d:%02d:%02d",t.Year(), t.Month(), t.Day(),t.Hour(), t.Minute(), t.Second())
+	encodedID2 := hash(args[0]+"-"+args[2])
+
+	tm := time.Now().UTC()
+	currentTime := fmt.Sprintf("%d-%02d-%02d %02d:%02d:%02d",tm.Year(), tm.Month(), tm.Day(),tm.Hour(), tm.Minute(), tm.Second())
 
 	// ==== confirm first that the claim exists ====
 
 	claimAsBytes, err := stub.GetState(args[3])
 	if err != nil {
-		return fmt.Sprintf("Error: %s", err.Error())
+		return shim.Error("Error: "+ err.Error())
 	} else if claimAsBytes == nil {
-		return fmt.Sprintf("Could not find the claim with id (%s) you are factchecking", arg[3])
+		return shim.Error("Could not find the claim with id ("+args[3]+") you are factchecking")
 	}
 
-	walletAsBytes, err := stub.GetState("W"+arg[2])
+	FactcheckerWallet, err := stub.GetState("W"+groupSymbol+encodedID2)
 	if err != nil {
 		return shim.Error("Failed to get wallet of factchecker: " + err.Error())
 	}
+	if FactcheckerWallet==nil {
+		return shim.Error("Could not find the wallet of factchecker: " + err.Error())
+		}
 
 	err = json.Unmarshal([]byte(claimAsBytes), &claimJSON)
 	if err != nil {
-		return fmt.Sprintf("Failed to unmarshal claim record: %s", err.Error())
+		return shim.Error("Failed to unmarshal claim record: "+ err.Error())
 	}
 
 	if claimJSON.Deadline!="" {
-		ex, err :=time.Parse("2006-01-02 00:00:00",claimJSON.Deadline)
+		ex, err :=time.Parse("2006-01-02 15:04",claimJSON.Deadline)
 		if err != nil {
 			return shim.Error("Error in parsing deadline: "+err.Error())
 		}
-		if ex.Before(t) {
+		if ex.Before(tm) {
 			return shim.Error("Deadline has already passed.")
 		}
 	}
@@ -456,18 +485,18 @@ func (t *SimpleChaincode) addFactcheck(stub shim.ChaincodeStubInterface, args []
 
 	fmt.Println("- start init factcheck")
 
-	tmpI := hash(args[2]+"-"+args[5])
+	encodedID := hash(args[0]+"-"+args[2]+"-"+args[5])
 
 	var fc factcheck
 	fc.ObjectType = "factcheck"
-	fc.FactcheckID = "F"+tmpI //a unique id representig the hash of the url where the factcheck is found (identifier)
+	fc.FactcheckID = "F"+encodedID //a unique id representig the hash of the url where the factcheck is found (identifier)
 	fc.Status = "created" //can be 'created' or 'factchecked'
 	fc.StatusUpdateComments = ""
 	fc.StatusUpdatedAt = ""
 	fc.DatePublished = currentTime
 	fc.Org = args[0]
 	fc.FactcheckIDOnOrg = args[1]
-	fc.FactcheckerID = args[2]
+	fc.FactcheckerID = encodedID2 //args[2] is the unique user id in the org
 	fc.ClaimID = args[3]
 	fc.RatingLabel = args[4]
 	fc.FactcheckURLOnOrg = args[5]
@@ -478,21 +507,21 @@ func (t *SimpleChaincode) addFactcheck(stub shim.ChaincodeStubInterface, args []
 	fc.ImgLogo = args[9]
 	fc.ImgReviewStarted = args[10]
 	fc.ImgOld = args[11]
-	fc.ImgForensidiscrepency = args[12]
+	fc.ImgForensiDiscrepency = args[12]
 	fc.ImgMetadataDiscrepency = args[13]
 	fc.ImgLogicalDiscrepency = args[14]
 	fc.NoteImgOld = args[15]
-	fc.NoteImgForensidiscrepency = args[16]
+	fc.NoteImgForensiDiscrepency = args[16]
 	fc.NoteImgMetadataDiscrepency = args[17]
 	fc.NoteImgLogicalDiscrepency = args[18]
 	fc.VidReviewStarted = args[19]
 	fc.VidOld = args[20]
-	fc.VidForensidiscrepency = args[21]
+	fc.VidForensiDiscrepency = args[21]
 	fc.VidMetadataDiscrepency = args[22]
 	fc.VidAudioDiscrepency = args[23]
 	fc.VidLogicalDiscrepency = args[24]
 	fc.NoteVidOld = args[25]
-	fc.NoteVidForensidiscrepency = args[26]
+	fc.NoteVidForensiDiscrepency = args[26]
 	fc.NoteVidMetadataDiscrepency = args[27]
 	fc.NoteVidAudioDiscrepency = args[28]
 	fc.NoteVidLogicalDiscrepency = args[29]
@@ -565,55 +594,80 @@ func (t *SimpleChaincode) addFactcheck(stub shim.ChaincodeStubInterface, args []
 // ============================================================
 func (t *SimpleChaincode) assessFactcheck(stub shim.ChaincodeStubInterface, args []string) pb.Response {
 	var err error
+	var factcheckJSON factcheck
+	var claimJSON claim
+
+	type FC []struct {
+		Key    string `json:"key"`
+		Record struct {
+			FactcheckID   string `json:"factcheckID"`
+			FactcheckerID string `json:"factcheckerID"`
+			Org string `json:"org"`
+		} `json:"Record"`
+	}
+
+	var approvedFactchecks FC
 
 	if len(args[0]) <= 0 {
-		return shim.Error("1st argument (FactcheckID) is missing")
+		return shim.Error("1st argument (Org name) is missing")
 	}
 	if len(args[1]) <= 0 {
-		return shim.Error("2nd argument (adminID) must be provided")
+		return shim.Error("2nd argument (FactcheckID) is missing")
 	}
 	if len(args[2]) <= 0 {
-		return shim.Error("3rd argument (assessment) must be provided, can be 'approved' or 'rejected'")
+		return shim.Error("3rd argument (user ID in org) must be provided")
 	}
-	if args[2]!="approved" && args[2]!="rejected" {
+	if len(args[3]) <= 0 {
+		return shim.Error("4th argument (assessment) must be provided, can be 'approved' or 'rejected'")
+	}
+	if len(args[4]) <= 0 { 	//args[3] is optional and can be a rationale behind the particular assessment given
+		args[4]=""
+	}
+
+	if args[3]!="approved" && args[3]!="rejected" {
 		return shim.Error("3rd argument can either be 'approved' or 'rejected'")
 	}
 
-	walletAsBytes, err := stub.GetState("W"+arg[1])
+	encodedID := hash(args[0]+"-"+args[2])
+
+	AdminWallet, err := stub.GetState("WA"+encodedID)
 	if err != nil {
 		return shim.Error("Failed to get wallet of admin: " + err.Error())
 	}
+	if AdminWallet == nil {
+		return shim.Error("Could not find wallet with ID: W"+encodedID)
+	}
 
-	factcheckAsBytes, err := stub.GetState(arg[0])
+	factcheckAsBytes, err := stub.GetState(args[1])
 	if err != nil {
 		return shim.Error("Failed to get factcheck: " + err.Error())
 	}
 	err = json.Unmarshal([]byte(factcheckAsBytes), &factcheckJSON)
 	if err != nil {
-		return fmt.Sprintf("Failed to unmarshal factcheck record: %s", err.Error())
+		return shim.Error("Failed to unmarshal factcheck record: "+ err.Error())
 	}
 
 	if factcheckJSON.Status!="created" {
 		return shim.Error("This factcheck has already been assessed and was "+factcheckJSON.Status)
 	}
 
-	t := time.Now().UTC()
-	currentTime := fmt.Sprintf("%d-%02d-%02d %02d:%02d:%02d",t.Year(), t.Month(), t.Day(),t.Hour(), t.Minute(), t.Second())
+	tm := time.Now().UTC()
+	currentTime := fmt.Sprintf("%d-%02d-%02d %02d:%02d:%02d",tm.Year(), tm.Month(), tm.Day(),tm.Hour(), tm.Minute(), tm.Second())
 
-	claimAsBytes, err := stub.GetState(factcheckJSON.claimID)
+	claimAsBytes, err := stub.GetState(factcheckJSON.ClaimID)
 	if err != nil {
 		return shim.Error("Failed to get claim: " + err.Error())
 	}
 	err = json.Unmarshal([]byte(claimAsBytes), &claimJSON)
 	if err != nil {
-		return fmt.Sprintf("Failed to unmarshal factcheck record: %s", err.Error())
+		return shim.Error("Failed to unmarshal factcheck record: "+ err.Error())
 	}
 	if claimJSON.Deadline!="" {
-		ex, err :=time.Parse("2006-01-02 00:00:00",claimJSON.Deadline)
+		ex, err :=time.Parse("2006-01-02 15:04",claimJSON.Deadline)
 		if err != nil {
 			return shim.Error("Error in parsing deadline: "+err.Error())
 		}
-		if ex.After(t) {
+		if ex.After(tm) {
 			return shim.Error("You can only assess factchecks after the passing of the deadline on "+claimJSON.Deadline)
 		}
 	}
@@ -621,11 +675,9 @@ func (t *SimpleChaincode) assessFactcheck(stub shim.ChaincodeStubInterface, args
 			return shim.Error("The claim reward seems to have already been paid on "+claimJSON.StatusUpdatedAt)
 	}
 
-	factcheckJSON.Status = args[2]
+	factcheckJSON.Status = args[3]
 	factcheckJSON.StatusUpdatedAt = currentTime
-	if (len(args[3])>0) {
-		factcheckJSON.StatusUpdateComments=args[3]
-	}
+	factcheckJSON.StatusUpdateComments=args[4]
 
 	factcheckJSONasBytes, err := json.Marshal(factcheckJSON)
 	if err != nil {
@@ -636,33 +688,56 @@ func (t *SimpleChaincode) assessFactcheck(stub shim.ChaincodeStubInterface, args
 	if err != nil {
 		return shim.Error(err.Error())
 	}
-	fmt.Sprintf(shim.Success([]byte("Factcheck assessed successfully: "+string(factcheckJSONasBytes))))
+	return shim.Success([]byte("Factcheck assessed successfully: "+string(factcheckJSONasBytes)))
 
 	pendingFactchecks, err := getQueryResultForQueryString(stub,"{\"selector\":{\"claimID\":"+factcheckJSON.ClaimID+"\",\"docType\":\"factcheck\",\"status\":\"created\"},\"fields\":[\"factcheckID\"]}")
 	if err != nil {
 		return shim.Error(err.Error())
 	}
 	if (len(pendingFactchecks)>0) {
-		return fmt.Sprintf("In order to pay the reward, you need to assess the other remaining factchecks:\n", +string(pendingFactchecks))
+		fmt.Sprintf("In order to pay the reward, you need to assess the other remaining factchecks: %s\n", string(pendingFactchecks))
 	}
 
-	approvedFactchecks, err := getQueryResultForQueryString(stub,"{\"selector\":{\"claimID\":"+factcheckJSON.ClaimID+"\",\"docType\":\"factcheck\",\"status\":\"approved\"},\"fields\":[\"factcheckID\"]}")
+	searchQuery:="{\"selector\":{\"claimID\":"+factcheckJSON.ClaimID+"\",\"docType\":\"factcheck\",\"status\":\"approved\"},\"fields\":[\"factcheckID\",\"Org\",\"factcheckerID\"]}"
+
+	resultsIterator, err := stub.GetQueryResult(searchQuery)
+	if err != nil {
+		return shim.Error(err.Error())
+	}
+	defer resultsIterator.Close()
+
+	buffer, err := constructQueryResponseFromIterator(resultsIterator)
+	if err != nil {
+		return shim.Error(err.Error())
+	}
+
+	err = json.Unmarshal([]byte(buffer.String()), &approvedFactchecks)
 	if err != nil {
 		return shim.Error(err.Error())
 	}
 
   totalApprovedFactchecks := len(approvedFactchecks)
-	if (claimJSON.RewardAmount>0) {
+	fullReward, err :=strconv.Atoi(claimJSON.RewardAmount)
+	if err!=nil {
+		return shim.Error("Failed to parse reward amount: "+err.Error())
+	}
+	if (fullReward>0) {
 			fmt.Sprintf("Settle reward payments:")
-			fullReward :=Atoi(claimJSON.RewardAmount)
-			addToWallet("client","W"+claimJSON.ClientID,-1*fullReward)
 			fmt.Sprintf("Deducting from client "+claimJSON.ClientID+" the reward amount of "+claimJSON.RewardAmount+"")
-			adminShare := math.Floor(fullReward/25)
-			fmt.Sprintf("Rewarding admin "+args[1]+" with "+Itoa(adminShare)+" (25% of "+claimJSON.RewardAmount+")")
-			factcheckerShare := math.Floor((adminShare*3)/totalApprovedFactchecks)
-			fmt.Sprintf("Rewarding "+Itoa(totalApprovedFactchecks)+" factcheckers with "+Itoa(factcheckerShare)+" each!")
-			for index,element := range approvedFactchecks{
-				addToWallet("factchecker","W"+element.FactcheckerID,factcheckerShare)
+			clientWalletID:="WC"+hash(claimJSON.Org+"_"+claimJSON.ClientID)
+			addToWallet(stub,"client",clientWalletID,-1*fullReward)
+			adminShare := int(float64(fullReward)/25)
+			adminWalletID:="WA"+encodedID
+			fmt.Sprintf("Rewarding admin Wallet "+adminWalletID+" with "+string(adminShare)+" (25% of "+claimJSON.RewardAmount+")")
+			addToWallet(stub,"admin",adminWalletID,-1*fullReward)
+			factcheckerShare := int((float64(adminShare)*3)/float64(totalApprovedFactchecks))
+			fmt.Sprintf("Rewarding "+string(totalApprovedFactchecks)+" factcheckers with "+string(factcheckerShare)+" each!")
+			factcheckerWalletID:=""
+
+			for i := 0; i <totalApprovedFactchecks; i++ {
+				factcheckerWalletID="WF"+hash(approvedFactchecks[i].Record.Org+"_"+approvedFactchecks[i].Record.FactcheckerID)
+				fmt.Sprintf("Rewarding Factchecker #"+strconv.Itoa(i+1)+" "+approvedFactchecks[i].Record.FactcheckerID+" in org "+" "+approvedFactchecks[i].Record.Org)
+				addToWallet(stub,"factchecker",factcheckerWalletID,factcheckerShare)
 			}
 		}
 		claimJSON.Status = "completed"
@@ -673,14 +748,11 @@ func (t *SimpleChaincode) assessFactcheck(stub shim.ChaincodeStubInterface, args
 			return shim.Error(err.Error())
 		}
 
-		err = stub.PutState(claimJSON.claimID, claimJSONasBytes)
+		err = stub.PutState(claimJSON.ClaimID, claimJSONasBytes)
 		if err != nil {
 			return shim.Error(err.Error())
 		}
-		fmt.Sprintf(shim.Success([]byte("Claim successfully factchecked and rewards (if any) settled: "+string(claimJSONasBytes))))
-
-//	return shim.Success(nil)
-
+		return shim.Success([]byte("Claim successfully factchecked and rewards (if any) settled: "+string(claimJSONasBytes)))
 }
 
 // ===============================================
@@ -846,10 +918,9 @@ func (t *SimpleChaincode) queryRecordsByOrg(stub shim.ChaincodeStubInterface, ar
 }
 
 func (t *SimpleChaincode) queryRecords(stub shim.ChaincodeStubInterface, args []string) pb.Response {
-	//   0
-	// "queryString"
-	if len(args) < 2 {
-		return shim.Error("Incorrect number of arguments. Expecting a search query")
+
+	if len(args[0]) <= 0 {
+		return shim.Error("Search query missing!")
 	}
 
 	queryString := args[0]

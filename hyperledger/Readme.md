@@ -13,14 +13,33 @@ curl -sSL https://bit.ly/2ysbOFE | bash -s
 
 Here are examples:
 
-ex1: Add claim:
-peer chaincode invoke -o orderer.example.com:7050 --tls true --cafile /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem -C $CHANNEL_NAME -n mycc --peerAddresses peer0.org1.example.com:7051 --tlsRootCertFiles /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/ca.crt --peerAddresses peer0.org2.example.com:9051 --tlsRootCertFiles /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org2.example.com/peers/peer0.org2.example.com/tls/ca.crt -c '{"Args":["addClaim","org1","1", "2","Hydroxychloroquine helps protect from COVID19","http://factcheck1.org/claimreview_a","2020-05-23 00:00:00","2020-05-30 00:00:00","300","Has to meet highest standards","http://twitter.com/123232","Some details about the claim","@realDonaldTrump","Twitter","1","1","1","Tweet,Trump,US politics" ]}' --waitForEvent
+1) Register admin,client and factchecker wallets:
 
-ex2: Add factcheck
-peer chaincode invoke -o orderer.example.com:7050 --tls true --cafile /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem -C $CHANNEL_NAME -n mycc --peerAddresses peer0.org1.example.com:7051 --tlsRootCertFiles /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/ca.crt --peerAddresses peer0.org2.example.com:9051 --tlsRootCertFiles /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org2.example.com/peers/peer0.org2.example.com/tls/ca.crt -c '{"Args":["addFactcheck","org1","32","6","C282689iia43462b", "false","http://factcheck1.org/claimreview_a"]}' --waitForEvent
+peer chaincode invoke -o orderer.example.com:7050 --tls true --cafile /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem -C $CHANNEL_NAME -n mycc --peerAddresses peer0.org1.example.com:7051 --tlsRootCertFiles /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/ca.crt --peerAddresses peer0.org2.example.com:9051 --tlsRootCertFiles /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org2.example.com/peers/peer0.org2.example.com/tls/ca.crt -c '{"Args":["registerWallet","admin","org1","1", "The Admin"]}' --waitForEvent
+peer chaincode invoke -o orderer.example.com:7050 --tls true --cafile /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem -C $CHANNEL_NAME -n mycc --peerAddresses peer0.org1.example.com:7051 --tlsRootCertFiles /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/ca.crt --peerAddresses peer0.org2.example.com:9051 --tlsRootCertFiles /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org2.example.com/peers/peer0.org2.example.com/tls/ca.crt -c '{"Args":["registerWallet","client","org1","2", "The Client"]}' --waitForEvent
+peer chaincode invoke -o orderer.example.com:7050 --tls true --cafile /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem -C $CHANNEL_NAME -n mycc --peerAddresses peer0.org1.example.com:7051 --tlsRootCertFiles /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/ca.crt --peerAddresses peer0.org2.example.com:9051 --tlsRootCertFiles /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org2.example.com/peers/peer0.org2.example.com/tls/ca.crt -c '{"Args":["registerWallet","factchecker","org1","3", "The Factchecker"]}' --waitForEvent
 
-ex3: QueryByRange for records (get all claims):
+4) Fund client wallet:
+
+peer chaincode invoke -o orderer.example.com:7050 --tls true --cafile /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem -C $CHANNEL_NAME -n mycc --peerAddresses peer0.org1.example.com:7051 --tlsRootCertFiles /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/ca.crt --peerAddresses peer0.org2.example.com:9051 --tlsRootCertFiles /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org2.example.com/peers/peer0.org2.example.com/tls/ca.crt -c '{"Args":["addToClientWallet","W54774795968317678792","1000"]}' --waitForEvent
+
+
+5) Add claim:
+
+peer chaincode invoke -o orderer.example.com:7050 --tls true --cafile /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem -C $CHANNEL_NAME -n mycc --peerAddresses peer0.org1.example.com:7051 --tlsRootCertFiles /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/ca.crt --peerAddresses peer0.org2.example.com:9051 --tlsRootCertFiles /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org2.example.com/peers/peer0.org2.example.com/tls/ca.crt -c '{"Args":["addClaim","org1","1","2","Hydroxychloroquine cures COVID19","http://factcheck1.org/claimreview_a", "2020-05-26 20:00:00","1","300","Provide sufficient evidence to support your factcheck results","http://twitter.com/123232","Trump claims that this Hydroxychloroquine can help cure COVID19 or mitigate its impact.","realDonaldTrump","Twitter","0","0","1","[twitter, Hydroxychloroquine, coronavirus, cure]"]}' --waitForEvent
+
+6) Add factcheck
+peer chaincode invoke -o orderer.example.com:7050 --tls true --cafile /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem -C $CHANNEL_NAME -n mycc --peerAddresses peer0.org1.example.com:7051 --tlsRootCertFiles /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/ca.crt --peerAddresses peer0.org2.example.com:9051 --tlsRootCertFiles /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org2.example.com/peers/peer0.org2.example.com/tls/ca.crt -c '{"Args":["addFactcheck","org1","32","5","C2027802911990016760", "false","http://factcheck1.org/claimreview_a"]}' --waitForEvent
+
+7) Assess factchecks
+
+8) QueryByRange
+- for records (get all wallets):
+docker exec -i cli peer chaincode query -C mychannel -n mycc -c '{"Args":["getRecordsByRange","W0","W99999999999999999999"]}'
+- for records (get all claims):
 docker exec -i cli peer chaincode query -C mychannel -n mycc -c '{"Args":["getRecordsByRange","C0","C99999999999999999999"]}'
+- for records (get all factchecks):
+docker exec -i cli peer chaincode query -C mychannel -n mycc -c '{"Args":["getRecordsByRange","F0","F99999999999999999999"]}'
 
 ex4:(get all factchecks):
 docker exec -i cli peer chaincode query -C mychannel -n mycc -c '{"Args":["getRecordsByRange","F0","F99999999999999999999"]}'
@@ -33,6 +52,9 @@ docker exec -i cli peer chaincode query -C mychannel -n mycc -c '{"Args":["query
 
 ex7: QueryRecords for a record with certain characteristics, e.g., :
 docker exec -i cli peer chaincode query -C mychannel -n mycc -c '{"Args":["queryRecordsByOrg","org1","factcheck"]}'
+
+ex7: QueryRecords for a record with certain characteristics, e.g., :
+docker exec -i cli peer chaincode query -C mychannel -n mycc -c '{"Args":["queryRecords","{\"selector\":{\"docType\":\"wallet\"},\"fields\":[\"ownerName\",\"orgID\",\"ownerType\"]}"]}'
 
 
 Notes:
