@@ -735,8 +735,8 @@ func (t *SimpleChaincode) assessFactcheck(stub shim.ChaincodeStubInterface, args
 			log=log+fmt.Sprintf("Deducting from client wallet WC"+claimJSON.ClientID+" the reward amount of ("+strconv.Itoa(fullReward)+")")
 			addToWallet(stub,"client","WC"+claimJSON.ClientID,-1*fullReward)
 			adminShare = fullReward/4
-			log=log+fmt.Sprintf("Rewarding admin Wallet WA"+AdminID+" with "+strconv.Itoa(adminShare)+" (25 percent of "+claimJSON.RewardAmount+")")
-			addToWallet(stub,"admin","WA"+AdminID,adminShare)
+			log=log+fmt.Sprintf("Rewarding admin Wallet W"+AdminID+" with "+strconv.Itoa(adminShare)+" (25 percent of "+claimJSON.RewardAmount+")")
+			addToWallet(stub,"admin","W"+AdminID,adminShare)
 			factcheckerShare = (fullReward-adminShare)/totalApprovedFactchecks
 			log=log+fmt.Sprintf("Rewarding "+strconv.Itoa(totalApprovedFactchecks)+" factcheckers with "+strconv.Itoa(factcheckerShare)+" each!")
 			for i := 0; i <totalApprovedFactchecks; i++ {
