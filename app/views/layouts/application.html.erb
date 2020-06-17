@@ -26,18 +26,19 @@
           <ul class="nav navbar-nav ml-auto">
             <% if user_signed_in? %>
             <li class="nav-item">
-              <% if !request.fullpath.include? "claims" or request.fullpath.include? "claims/new" then %>
-            <li class="nav-item"><%= link_to t('claims'), claims_path %></li>
+              <% if !request.fullpath.include? "claims" or request.fullpath.include? "claims/new" %>
+                <li class="nav-item"><%= link_to t('claims'), claims_path %></li>
             <% else %>
-            <li class="nav-item"><%= link_to t('claims'), claims_path, style: 'text-decoration:underline' %></li>
-
+                <li class="nav-item"><%= link_to t('claims'), claims_path, style: 'text-decoration:underline' %></li>
             <% end %>
 
-            <% if !request.fullpath.include? "claims/new" then %>
-            <li class="nav-item"><%= link_to t('add_new'), new_claim_path %></li>
-            <% else %>
-            <li class="nav-item"><%= link_to t('add_new'), new_claim_path, style: 'text-decoration:underline' %>
-            </li>
+            <% if (current_user.role=="client" || ENV["BLOCKCHAIN_ENABLED"]!="yes") %>
+              <% if !request.fullpath.include? "claims/new" then %>
+              <li class="nav-item"><%= link_to t('add_new'), new_claim_path %></li>
+              <% else %>
+              <li class="nav-item"><%= link_to t('add_new'), new_claim_path, style: 'text-decoration:underline' %>
+              </li>
+              <% end %>
             <% end %>
 
         <% if !request.fullpath.include? "medi" then %>

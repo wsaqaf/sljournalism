@@ -474,6 +474,10 @@ func (t *SimpleChaincode) addFactcheck(stub shim.ChaincodeStubInterface, args []
 		}
 	}
 
+	if claimJSON.Status!="created" {
+			return shim.Error("This claim is marked as 'completed' and no longer needs factchecks.")
+	}
+
 	sz := len(args)
 	for i := sz; i <=44; i++ { args = append(args,"") }
 
@@ -633,7 +637,10 @@ func (t *SimpleChaincode) assessFactcheck(stub shim.ChaincodeStubInterface, args
 	factcheckAsBytes, err := stub.GetState(args[1])
 	if err != nil {
 		return shim.Error("Failed to get factcheck: " + err.Error())
+	} else if factcheckAsBytes == nil {
+		return shim.Error("Could not find the factcheck with id ("+args[1]+")!")
 	}
+
 	err = json.Unmarshal([]byte(factcheckAsBytes), &factcheckJSON)
 	if err != nil {
 		return shim.Error("Failed to unmarshal factcheck record: "+ err.Error())
@@ -664,7 +671,7 @@ func (t *SimpleChaincode) assessFactcheck(stub shim.ChaincodeStubInterface, args
 		}
 	}
 	if claimJSON.Status!="created" {
-			return shim.Error("The claim reward seems to have already been paid at "+claimJSON.StatusUpdatedAt)
+			return shim.Error("The claim seems to have already been factchecked and marked as 'completed' at "+claimJSON.StatusUpdatedAt)
 	}
 
 	factcheckJSON.Status = args[3]
@@ -744,19 +751,24 @@ func (t *SimpleChaincode) assessFactcheck(stub shim.ChaincodeStubInterface, args
 				addToWallet(stub,"factchecker","WF"+approvedFactchecks[i].Record.FactcheckerID,factcheckerShare)
 			}
 	}
-	claimJSON.Status = "completed"
-	claimJSON.StatusUpdatedAt = currentTime
 
-	claimJSONasBytes, err := json.Marshal(claimJSON)
-	if err != nil {
-		return shim.Error(err.Error())
-	}
+	if (args[3]=="approved" || claimJSON.Deadline!="") {
+		claimJSON.Status = "completed"
+		claimJSON.StatusUpdatedAt = currentTime
 
-	err = stub.PutState(claimJSON.ClaimID, claimJSONasBytes)
-	if err != nil {
-		return shim.Error(err.Error())
+		claimJSONasBytes, err := json.Marshal(claimJSON)
+		if err != nil {
+			return shim.Error(err.Error())
+		}
+
+		err = stub.PutState(claimJSON.ClaimID, claimJSONasBytes)
+		if err != nil {
+			return shim.Error(err.Error())
+		}
+		return shim.Success([]byte(log+"\nClaim successfully factchecked and rewards (if any) settled: "+string(claimJSONasBytes)))
 	}
-	return shim.Success([]byte(log+"\nClaim successfully factchecked and rewards (if any) settled: "+string(claimJSONasBytes)))
+	return shim.Success([]byte(log+"\nFactcheck rejected! Only when a factcheck is approved would this claim (without a deadline) be completed."))
+
 }
 
 // ===============================================

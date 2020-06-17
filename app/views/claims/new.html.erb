@@ -74,7 +74,7 @@
                 <br><b><%= f.check_box :start_review, :checked => true %> <%= t('start_review') %></b><br>
             </li>
 
-      <% if (current_user.role=="client" || current_user.role=="admin") && !ENV["BLOCKCHAIN_API_URL"].blank? %>
+      <% if (current_user.role=="client" || current_user.role=="admin") && ENV["BLOCKCHAIN_ENABLED"]=="yes" %>
               <div class="collapse" id="collapseExample1">
                 <li class="mt-4">
                   <p><%= f.check_box :add_to_blockchain, :checked => true %> <%= t('save_to_blockchain') %></p>

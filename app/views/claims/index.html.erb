@@ -29,7 +29,7 @@
   </div>
   <% if params[:blockchain_resp].present?
         if params[:blockchain_resp].length>3 %>
-          <font color=green>Successfully added to the blockchain with transaction: <%= params[:blockchain_resp] %></font>
+          <font color=green><%= t('added_to_blockchain_w_tx',tx:params[:blockchain_resp]) %></font>
         <% end
   end %>
 </div>
