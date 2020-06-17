@@ -27,6 +27,7 @@ gem 'hirb'
 gem 'link_thumbnailer'
 gem 'wicked'
 gem 'pagy'
+gem 'sanitize', '>= 5.2.1'
 gem 'onebox'
 gem 'jquery-turbolinks'
 gem 'rails-i18n'
@@ -47,8 +48,6 @@ gem 'momentjs-rails', '>= 2.9.0'
 gem 'bootstrap4-datetime-picker-rails'
 gem 'bootstrap-datepicker-rails'
 gem 'chosen-rails'
-
-gem "sanitize", ">= 5.2.1"
 
 group :development, :test do
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
