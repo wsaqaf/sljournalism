@@ -532,7 +532,8 @@ sv:
 #Added after i18n-task test
   added_on_date: Tillagd den
   added_to_blockchain: Tillagd i blockchain
-  added_to_blockchain_w_tx: Tillagd till blockchain med transaktion (%{tx})
+  added_to_blockchain_w_tx: Tillagd till blockchain med transaktion [%{tx}]
+  added_to_blockchain_failed: Misslyckades med att lägga till det i blockchain
   blockchain_options: Blockchain-alternativ
   blockchain_tx: Blockchain-transaktion
   conditions: Villkor för faktakontroller

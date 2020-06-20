@@ -263,3 +263,25 @@ function copyToClipboard(element) {
   document.execCommand("copy");
   $temp.remove();
 }
+
+function wallet(rel_url,url1,usr,to_add,add_to_blockchain)
+ {
+  var add_more="0";
+  if (to_add === "1") { add_more=$("#addbalance"+usr).val(); }
+  $("#wallet"+usr).html("<img src='"+rel_url+"/assets/loading.gif' width=50><br>");
+  $.ajax(
+   {
+    url: url1,
+    type: "get",
+    dataType: "text",
+    data: { "getbalance": "1", "addtobalance": add_more, "add_to_blockchain": add_to_blockchain },
+    success: function(result)
+      {
+        if (result.length > 0)
+          {
+            $("#wallet"+usr).html(result+" ");
+            $("#hidden"+usr).show();
+          }
+      }
+   });
+}

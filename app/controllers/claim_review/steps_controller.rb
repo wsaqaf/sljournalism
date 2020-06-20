@@ -284,8 +284,8 @@ end
         @claim_review_schema=build_claim_review_schema()
         if (@save_to_blockchain.length>3)
           redirect_to claims_path(:blockchain_resp => @save_to_blockchain)
-        elsif (@save_to_blockchain.length>3)
-          redirect_to claim_claim_review_step_path(@claim.id,@claim_review.id,:s22)+"?blockchain_resp=-1";
+        elsif (@save_to_blockchain.length=="-1")
+          redirect_to claim_claim_review_step_path(@claim.id,@claim_review.id,:s22)+"?blockchain_resp=-1&error=ERROR";
         else
           redirect_to claims_path
         end

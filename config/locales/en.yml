@@ -517,7 +517,8 @@ en:
 #Added after i18n-task test
   added_on_date: Added on
   added_to_blockchain: Added to blockchain
-  added_to_blockchain_w_tx: Successfully added to the blockchain with transaction (%{tx})
+  added_to_blockchain_w_tx: Successfully added to the blockchain with transaction [%{tx}]
+  added_to_blockchain_failed: Failed to add to the blockchain [%{error}]
   blockchain_options: Blockchain Options
   blockchain_tx: Blockchain transaction
   conditions: Conditions for factcheckers

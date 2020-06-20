@@ -30,8 +30,13 @@
   <% if params[:blockchain_resp].present?
         if params[:blockchain_resp].length>3 %>
           <font color=green><%= t('added_to_blockchain_w_tx',tx:params[:blockchain_resp]) %></font>
+        <% else %>
+        <font color=red><%= t('added_to_blockchain_failed',error:params[:error]) %></font>
         <% end
   end %>
+</div>
+<div class="container text-center p2">
+  <%= link_to t('add')+" "+t('or')+" "+t('import')+" "+t('claim').capitalize, new_claim_path,:class=>'btn btn btn-secondary',:style=>'' %>
 </div>
 <hr>
 <% @claims.each do |claim| %>

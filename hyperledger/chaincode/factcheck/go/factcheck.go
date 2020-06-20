@@ -21,8 +21,9 @@ type wallet struct {
 	OwnerID string `json:"ownerID"`
 	OwnerType string `json:"ownerType"` //admin, client or factchecker
 	OrgID string `json:"orgID"`
+	OwnerIDInOrg string `json:"ownerIDInOrg"`
 	OwnerName string `json:"ownerName"`
-	Balance int `json:"wallet"`
+	Balance int `json:"balance"`
 }
 type claim struct {
     ObjectType string `json:"docType"` //docType is used to distinguish the various types of objects in state database
@@ -240,6 +241,7 @@ func (t *SimpleChaincode) registerWallet(stub shim.ChaincodeStubInterface, args 
 	wlt.OwnerType = args[0] //format of UTC datetime: YYYY-MM-DD HH:MM:SS
 	wlt.OrgID = args[1]
 	wlt.OwnerID = encodedID
+	wlt.OwnerIDInOrg = args[2]
 	wlt.OwnerName = args[3]
 	wlt.Balance = 0
 

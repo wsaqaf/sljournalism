@@ -1,8 +1,17 @@
+<div class="mb-5">
+  <div class="container">
+  <div style="float:right"><%= link_to "Add new user", new_admin_user_path,:class=>'btn btn btn-secondary',:style=>'' %></div>
+<% if params[:blockchain_resp].present?
+      if params[:blockchain_resp].length>3 %>
+        <font color=green><%= t('added_to_blockchain_w_tx',tx:params[:blockchain_resp]) %></font><hr>
+      <% else %>
+      <font color=red><%= t('added_to_blockchain_failed', error:params[:error]) %></font><hr>
+      <% end
+end %>
 <% @users.each do |user| %>
 <div class="container">
   <div class="row">
     <div class="offset-1" style="width:900px">
-
       <h5><%== user.name %></h5>
       <ul>
       <li>Email: <%== user.email %></li>
@@ -16,7 +25,22 @@
       <% end %>
       <% if user.details && !user.details.empty? %>
         <li>Bio: <%== user.details %></li>
-        edit
+      <% end %>
+      <% if ENV['BLOCKCHAIN_ENABLED'] %>
+        <% if user.blockchain_tx.present?  %>
+              <small><a href=javascript:wallet("<%= config.relative_url_root.to_s %>","<%= config.relative_url_root.to_s+"/admin/users/"+user.id.to_s %>","<%= user.id.to_s %>","0")>Show wallet balance</a><br>
+                <div id="wallet<%= user.id.to_s %>"></div>
+                <div id="hidden<%= user.id.to_s %>" style="display: none;">
+                  <% if ENV['BLOCKCHAIN_ENABLED'] && user.role=="client"  %>
+                    Add units to wallet: <input id="addbalance<%= user.id.to_s %>" type="text" width=3>
+                    <button name="walletButton" type="button" value="Add" onclick=wallet("<%= config.relative_url_root.to_s %>","<%= config.relative_url_root.to_s+"/admin/users/"+user.id.to_s %>","<%= user.id.to_s %>","1"); return false;>Add</button>
+                  <% end %>
+                </div>
+              </small>
+        <% else %>
+          <small><a href=javascript:wallet("<%= config.relative_url_root.to_s %>","<%= config.relative_url_root.to_s+"/admin/users/"+user.id.to_s %>","<%= user.id.to_s %>","0","1")>Add to blockchain</a><br>
+          <div id="wallet<%= user.id.to_s %>"></div></small>
+        <% end %>
       <% end %>
       <%= link_to 'Edit user profile', edit_admin_user_path(user.id) %>
       </ul>
@@ -25,4 +49,5 @@
     <hr>
   </div>
 <% end %>
-<center><%= link_to "Add new user", new_admin_user_path,:class=>'btn btn btn-secondary',:style=>'' %></center>
+</div>
+</div>
