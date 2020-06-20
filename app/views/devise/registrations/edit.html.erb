@@ -8,6 +8,20 @@
       <p><%= t('devise.account.awaiting_confirmation') %>: <%= resource.unconfirmed_email %></p>
     <% end %>
 
+    <% if ENV['BLOCKCHAIN_ENABLED'] && current_user.blockchain_tx.present?  %>
+          <hr>
+          <small><a href=javascript:wallet("<%= config.relative_url_root.to_s %>","<%= config.relative_url_root.to_s+"/admin/users/"+current_user.id.to_s %>","<%= current_user.id.to_s %>","0")>Show wallet balance</a><br>
+            <div id="wallet<%= current_user.id.to_s %>"></div>
+            <div id="hidden<%= current_user.id.to_s %>" style="display: none;">
+              <% if ENV['BLOCKCHAIN_ENABLED'] && current_user.role=="client"  %>
+                Add units to wallet: <input id="addbalance<%= current_user.id.to_s %>" type="text" width=3>
+                <button name="walletButton" type="button" value="<% t('add') %>" onclick=wallet("<%= config.relative_url_root.to_s %>","<%= config.relative_url_root.to_s+"/admin/users/"+current_user.id.to_s %>","<%= current_user.id.to_s %>","1"); return false;>Add</button>
+              <% end %>
+            </div>
+          </small>
+          <hr>
+      <% end %>
+
     <%= f.input :name,
                 label: t('devise.account.name'),
                 required: true,

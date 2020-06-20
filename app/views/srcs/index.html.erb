@@ -154,10 +154,6 @@
 <% end %>
 <div class="container">
   <% if @total_count>10 then %> <%== pagy_bootstrap_nav(@pagy) %> <% end %>
-  <hr>
-  <div class="container text-center p2">
-    <%= link_to t('add')+" "+t('or')+" "+t('import')+" "+t('src').capitalize, new_src_path,:class=>'btn btn btn-secondary',:style=>'' %>
-  </div>
 </div>
 <% else %>
   <%= t('go_sign_in_part1') %> <b><%= link_to t('sign_in'), new_user_session_path %></b>.

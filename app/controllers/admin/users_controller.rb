@@ -1,4 +1,11 @@
 class Admin::UsersController < Admin::BaseController
+  before_action :ensure_admin_user!, only: [:index, :create, :update, :new, :destroy]
+
+  def ensure_admin_user!
+    unless current_user and current_user.admin?
+      redirect_to root_path
+    end
+  end
 
   def index
     @users = User.all.order(Arel.sql("updated_at DESC"))
@@ -66,7 +73,7 @@ class Admin::UsersController < Admin::BaseController
 
   def show
     if (ENV['BLOCKCHAIN_ENABLED'] && params[:add_to_blockchain])
-      if (@user = User.where(id: params[:id]).first)
+      if (@user = User.where(id: params[:id]).first && current_user.role=="admin")
           argmnt="{\"Args\":[\"registerWallet\",\""+@user.role+"\",\""+ENV['BLOCKCHAIN_ORGID']+"\",\""+@user.id.to_s+"\", \""+@user.name+"\"]}"
           cmnd="docker exec -it cli peer chaincode invoke -o orderer.example.com:7050 --tls true --cafile /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem -C mychannel -n mycc --peerAddresses peer0.org1.example.com:7051 --tlsRootCertFiles /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/ca.crt --peerAddresses peer0.org2.example.com:9051 --tlsRootCertFiles /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org2.example.com/peers/peer0.org2.example.com/tls/ca.crt -c '"+argmnt+"' --waitForEvent"
 #puts ("\n=============\nRunning:\n"+cmnd+"\n--\n")
@@ -98,12 +105,12 @@ class Admin::UsersController < Admin::BaseController
       redirect_to admin_users_path
       return
     end
-    if (ENV['BLOCKCHAIN_ENABLED'] && (params[:getbalance].present? || params[:addtobalance].present?))
+    if (ENV['BLOCKCHAIN_ENABLED'] && (params[:getbalance].present? || (params[:addtobalance].present? && (current_user.role=="admin" || (current_user.role=="client" && current_user.id=params[:id])))))
       argmnt='{"Args":["queryRecords","{\"selector\":{\"docType\":\"wallet\",\"ownerIDInOrg\":\"'+params[:id]+'\",\"orgID\":\"'+ENV['BLOCKCHAIN_ORGID']+'\"},\"fields\":[\"balance\"]}"]}'
       cmnd="docker exec -it cli peer chaincode query -C mychannel -n mycc -c '"+argmnt+"'"
-      puts ("\n=============\nRunning:\n"+cmnd+"\n--\n")
+#puts ("\n=============\nRunning:\n"+cmnd+"\n--\n")
       output=%x(#{cmnd})
-      puts("Result:\n"+output+"\n==\n")
+#puts("Result:\n"+output+"\n==\n")
       balance=-1
       begin
           wallet_id=output.match(/"Key":"(.+?)"/)[1]

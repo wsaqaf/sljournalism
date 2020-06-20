@@ -1,6 +1,6 @@
 <div class="mb-5">
   <div class="container">
-  <div style="float:right"><%= link_to "Add new user", new_admin_user_path,:class=>'btn btn btn-secondary',:style=>'' %></div>
+  <div style="float:right"><%= link_to t("add_new_user"), new_admin_user_path,:class=>'btn btn btn-secondary',:style=>'' %></div>
 <% if params[:blockchain_resp].present?
       if params[:blockchain_resp].length>3 %>
         <font color=green><%= t('added_to_blockchain_w_tx',tx:params[:blockchain_resp]) %></font><hr>
@@ -14,35 +14,35 @@ end %>
     <div class="offset-1" style="width:900px">
       <h5><%== user.name %></h5>
       <ul>
-      <li>Email: <%== user.email %></li>
-      <li>Created at: <%== user.created_at %></li>
+      <li><%= t('devise.account.email') %>: <%== user.email %></li>
+      <li><%= t('created_at') %>: <%== user.created_at %></li>
       <% if user.affiliation && !user.affiliation.empty? %>
-        <li>Affiliation: <%== user.affiliation %></li>
+        <li><%= t('devise.account.affiliation') %>: <%== user.affiliation %></li>
       <% end %>
       <li><%== user.role %></li>
       <% if user.url && !user.url.empty? %>
         <li>URL: <%== user.url %></li>
       <% end %>
       <% if user.details && !user.details.empty? %>
-        <li>Bio: <%== user.details %></li>
+        <li><%= t('devise.account.details') %>: <%== user.details %></li>
       <% end %>
       <% if ENV['BLOCKCHAIN_ENABLED'] %>
         <% if user.blockchain_tx.present?  %>
-              <small><a href=javascript:wallet("<%= config.relative_url_root.to_s %>","<%= config.relative_url_root.to_s+"/admin/users/"+user.id.to_s %>","<%= user.id.to_s %>","0")>Show wallet balance</a><br>
+              <small><a href=javascript:wallet("<%= config.relative_url_root.to_s %>","<%= config.relative_url_root.to_s+"/admin/users/"+user.id.to_s %>","<%= user.id.to_s %>","0")><%= t('show_wallet_balance') %></a><br>
                 <div id="wallet<%= user.id.to_s %>"></div>
                 <div id="hidden<%= user.id.to_s %>" style="display: none;">
                   <% if ENV['BLOCKCHAIN_ENABLED'] && user.role=="client"  %>
-                    Add units to wallet: <input id="addbalance<%= user.id.to_s %>" type="text" width=3>
-                    <button name="walletButton" type="button" value="Add" onclick=wallet("<%= config.relative_url_root.to_s %>","<%= config.relative_url_root.to_s+"/admin/users/"+user.id.to_s %>","<%= user.id.to_s %>","1"); return false;>Add</button>
+                    <br><%= t('add_to_wallet') %>: <input id="addbalance<%= user.id.to_s %>" type="text" width=3>
+                    <button name="walletButton" type="button" value="<% t('add') %>" onclick=wallet("<%= config.relative_url_root.to_s %>","<%= config.relative_url_root.to_s+"/admin/users/"+user.id.to_s %>","<%= user.id.to_s %>","1"); return false;><%= t('add') %></button>
                   <% end %>
                 </div>
               </small>
         <% else %>
-          <small><a href=javascript:wallet("<%= config.relative_url_root.to_s %>","<%= config.relative_url_root.to_s+"/admin/users/"+user.id.to_s %>","<%= user.id.to_s %>","0","1")>Add to blockchain</a><br>
+          <small><a href=javascript:wallet("<%= config.relative_url_root.to_s %>","<%= config.relative_url_root.to_s+"/admin/users/"+user.id.to_s %>","<%= user.id.to_s %>","0","1")><%= t('add_to_blockchain') %></a><br>
           <div id="wallet<%= user.id.to_s %>"></div></small>
         <% end %>
       <% end %>
-      <%= link_to 'Edit user profile', edit_admin_user_path(user.id) %>
+      <%= link_to t('edit_profile'), edit_admin_user_path(user.id) %>
       </ul>
     </div>
     </div>

@@ -126,9 +126,13 @@ class ClaimsController < ApplicationController
   end
 
   def new
+    if (!ENV['BLOCKCHAIN_ENABLED'] || current_user.role=="client")
       @claim = current_user.claims.build
       @srcs = Src.all.map{ |c| [c.name, c.id]}
       @media = Medium.all.map{ |m| [m.name, m.id]}
+    else
+      redirect_to claims_path
+    end
   end
 
   def save_to_the_blockchain

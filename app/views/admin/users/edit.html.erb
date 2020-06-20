@@ -39,7 +39,7 @@
               <div id="hidden<%= @user.id.to_s %>" style="display: none;">
                 <% if ENV['BLOCKCHAIN_ENABLED'] && @user.role=="client"  %>
                   Add units to wallet: <input id="addbalance<%= @user.id.to_s %>" type="text" width=3>
-                  <button name="walletButton" type="button" value="Add" onclick=wallet("<%= config.relative_url_root.to_s %>","<%= config.relative_url_root.to_s+"/admin/users/"+@user.id.to_s %>","<%= @user.id.to_s %>","1"); return false;>Add</button>
+                  <button name="walletButton" type="button" value="<% t('add') %>" onclick=wallet("<%= config.relative_url_root.to_s %>","<%= config.relative_url_root.to_s+"/admin/users/"+@user.id.to_s %>","<%= @user.id.to_s %>","1"); return false;>Add</button>
                 <% end %>
               </div>
             </small>

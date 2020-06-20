@@ -35,9 +35,13 @@
         <% end
   end %>
 </div>
-<div class="container text-center p2">
-  <%= link_to t('add')+" "+t('or')+" "+t('import')+" "+t('claim').capitalize, new_claim_path,:class=>'btn btn btn-secondary',:style=>'' %>
-</div>
+<div class="container text-center p2" id="add_claims">
+<% if (ENV['BLOCKCHAIN_ENABLED'] && current_user.role!="client") %>
+  <i>In blockchain mode, only <b>Clients</b> can add claims!</i>
+<% else %>
+    <%= link_to t('add')+" "+t('or')+" "+t('import')+" "+t('claim').capitalize, new_claim_path,:class=>'btn btn btn-secondary',:style=>'', :disabled => (ENV['BLOCKCHAIN_ENABLED'] && current_user.role!="client") %>
+  </div>
+<% end %>
 <hr>
 <% @claims.each do |claim| %>
 <!-- <%= react_component("Post", {title: claim.title}) %> -->
@@ -167,10 +171,6 @@
   <% end %>
   <div class="container">
     <% if @total_count>10 then %> <%== pagy_bootstrap_nav(@pagy) %> <% end %>
-    <hr>
-    <div class="container text-center p2">
-      <%= link_to t('add')+" "+t('or')+" "+t('import')+" "+t('claim').capitalize, new_claim_path,:class=>'btn btn btn-secondary',:style=>'' %>
-    </div>
   </div>
   <% else %>
     <%= t('go_sign_in_part1') %> <b><%= link_to t('sign_in'), new_user_session_path %></b>.

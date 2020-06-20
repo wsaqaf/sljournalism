@@ -14,6 +14,7 @@ sv:
   add_new_medium: Lägg till ett nytt medium
   add_new_resource: Lägg till en ny resurs för faktakoll
   add_new_src: Lägg till en ny källa
+  add_new_user: Lägg till en ny användare
   add_resource_to_q: Lägg till en resurs till denna fråga.
   add_review: Lägg till faktagranskning
   add_tags: Lägg till taggar
@@ -550,3 +551,8 @@ sv:
   save_to_blockchain: Spara i blockchain
   user_url: Användar-URL (profil etc.)
   warning_msg: Är du säker?
+
+#Blockchain related
+  add_to_wallet: Lägg till enheter i plånboken
+  add_to_blockhain: Lägg till blockchain
+  show_wallet_balance: Visa plånbokbalans

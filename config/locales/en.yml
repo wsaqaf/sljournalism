@@ -14,6 +14,7 @@ en:
   add_new_medium: Add a new medium
   add_new_resource: Add a new resource
   add_new_src: Add a new source
+  add_new_user: Add a new user
   add_resource_to_q: Add a resource to this question.
   add_review: Add review
   add_tags: Add tags
@@ -523,7 +524,7 @@ en:
   blockchain_tx: Blockchain transaction
   conditions: Conditions for factcheckers
   confirm_email_link: Confirm email link
-  expiry_date: Expiry date
+  expiry_date: Expiry date (leave blank if there is no deadline)
   yes: Yes
   no: No
   no_conditions: No Conditions
@@ -535,3 +536,8 @@ en:
   save_to_blockchain: Save to the blockchain
   user_url: User URL (profile, etc.)
   warning_msg: Are you sure?
+
+#Blockchain related
+  add_to_wallet: Add units to wallet
+  add_to_blockhain: Add to blockchain
+  show_wallet_balance: Show wallet balance
