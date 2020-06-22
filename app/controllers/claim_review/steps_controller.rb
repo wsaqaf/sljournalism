@@ -233,40 +233,99 @@ class ClaimReview::StepsController < ApplicationController
     render_wizard
   end
 
-def save_to_the_blockchain
-    begin
-      url_to_api=ENV["BLOCKCHAIN_API_URL"]
-      require 'open-uri'
-      require 'net/http'
-      params = {'f' => 'add', 'factcheck' => blockchain_entry() }
-      url = URI.parse(url_to_api)
-      resp = Net::HTTP.post_form(url, params)
-      file_contents=resp.body.to_s
+  def save_to_the_blockchain
+      assessments={1=>"False",2=>"Mostly False",3=>"Mixed",4=>"Mostly True",5=>"True"}
 
-#      file_contents= URI.open(myfile) {|f| f.read }
-      txid=file_contents.scan(/txid \[([a-zA-Z0-9]+)\]/).last.first
-      if (txid.length<5 || resp.code!="200" || resp.message!="OK") then txid="-1"; end
-      @save_to_blockchain=txid
-    rescue
-      @save_to_blockchain="-1"
-    end
-end
+      argmnt='{"Args":["addFactcheck","'+
+      ENV['BLOCKCHAIN_ORGID']+'","'+
+      @claim_review.id.to_s+'","'+
+      current_user.id.to_s+'","'+
+      @claim.blockchain_id.to_s+'", "'+
+      assessments[@claim_review.review_verdict]+'","'+
+      request.base_url+config.relative_url_root+'/claims'+@claim.id.to_s+'/claim_reviews/'+@claim_review.id.to_s+'","'+
+      '1","5","'+
+      @claim_review.review_verdict.to_s+'", "'+
+      request.base_url+config.relative_url_root+'/assets/'+@claim_review.review_verdict.to_s+'.png'+'","'+
+      @claim_review.img_review_started.to_s+'","'+
+      @claim_review.img_old.to_s+'","'+
+      @claim_review.img_forensic_discrepency.to_s+'","'+
+      @claim_review.img_metadata_discrepency.to_s+'","'+
+      @claim_review.img_logical_discrepency.to_s+'","'+
+      @claim_review.note_img_old.to_s+'","'+
+      @claim_review.note_img_forensic_discrepency.to_s.gsub(/\r\n?/, ";").gsub(/"/, "")+'","'+
+      @claim_review.note_img_metadata_discrepency.to_s.gsub(/\r\n?/, ";").gsub(/"/, "")+'","'+
+      @claim_review.note_img_logical_discrepency.to_s.gsub(/\r\n?/, ";").gsub(/"/, "")+'","'+
+      @claim_review.vid_review_started.to_s+'","'+
+      @claim_review.vid_old.to_s+'","'+
+      @claim_review.vid_forensic_discrepency.to_s+'","'+
+      @claim_review.vid_metadata_discrepency.to_s+'","'+
+      @claim_review.vid_audio_discrepency.to_s+'","'+
+      @claim_review.vid_logical_discrepency.to_s+'","'+
+      @claim_review.note_vid_old.to_s.gsub(/\r\n?/, ";").gsub(/"/, "")+'","'+
+      @claim_review.note_vid_forensic_discrepency.to_s.gsub(/\r\n?/, ";").gsub(/"/, "")+'","'+
+      @claim_review.note_vid_metadata_discrepency.to_s.gsub(/\r\n?/, ";").gsub(/"/, "")+'","'+
+      @claim_review.note_vid_audio_discrepency.to_s.gsub(/\r\n?/, ";").gsub(/"/, "")+'","'+
+      @claim_review.note_vid_logical_discrepency.to_s.gsub(/\r\n?/, ";").gsub(/"/, "")+'","'+
+      @claim_review.txt_review_started.to_s+'","'+
+      @claim_review.txt_unreliable_news_content.to_s+'","'+
+      @claim_review.txt_insufficient_verifiable_srcs.to_s+'","'+
+      @claim_review.txt_has_clickbait.to_s+'","'+
+      @claim_review.txt_poor_language.to_s+'","'+
+      @claim_review.txt_crowds_distance_discrepency.to_s+'","'+
+      @claim_review.txt_author_offers_little_evidence.to_s+'","'+
+      @claim_review.txt_reliable_sources_disapprove.to_s+'","'+
+      @claim_review.note_txt_unreliable_news_content.to_s.gsub(/\r\n?/, ";").gsub(/"/, "")+'","'+
+      @claim_review.note_txt_insufficient_verifiable_srcs.to_s.gsub(/\r\n?/, ";").gsub(/"/, "")+'","'+
+      @claim_review.note_txt_has_clickbait.to_s.gsub(/\r\n?/, ";").gsub(/"/, "")+'","'+
+      @claim_review.note_txt_poor_language.to_s.gsub(/\r\n?/, ";").gsub(/"/, "")+'","'+
+      @claim_review.note_txt_crowds_distance_discrepency.to_s.gsub(/\r\n?/, ";").gsub(/"/, "")+'","'+
+      @claim_review.note_txt_author_offers_little_evidence.to_s.gsub(/\r\n?/, ";").gsub(/"/, "")+'","'+
+      @claim_review.note_txt_reliable_sources_disapprove.to_s.gsub(/\r\n?/, ";").gsub(/"/, "")+'"]}'
+
+      cmnd="docker exec -it cli peer chaincode invoke -o orderer.example.com:7050 --tls true --cafile /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem -C mychannel -n mycc --peerAddresses peer0.org1.example.com:7051 --tlsRootCertFiles /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/ca.crt --peerAddresses peer0.org2.example.com:9051 --tlsRootCertFiles /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org2.example.com/peers/peer0.org2.example.com/tls/ca.crt -c '"+argmnt+"' --waitForEvent"
+
+puts ("\n=============\nRunning:\n"+cmnd+"\n--\n")
+      output=%x(#{cmnd})
+puts("Result:\n"+output+"\n==\n")
+      begin
+        tx_no=output.match(/ txid \[(.+?)\]/)[1]
+        success_confirmation=output.match(/Chaincode invoke successful\. result\: status\:200 payload\:"(.+)"/)[1]
+        if (success_confirmation.length>1)
+          @save_to_blockchain=tx_no
+          @claim_review.blockchain_id=output.match(/factcheckID.+?(F.+?)\\/)[1]
+          @claim_review.add_to_blockchain=1
+          @claim_review.blockchain_tx=@save_to_blockchain
+          @claim_review.time_added_to_blockchain=Time.now.utc.to_s[0...-7]
+          @claim_review.save
+        else
+          @save_to_blockchain="-1"
+        end
+      rescue
+          @save_to_blockchain="-1"
+#          @claim_review.destroy
+      end
+      return output
+  end
 
   def update
       @claim_review = ClaimReview.find(params[:claim_review_id])
       if current_user.id!=@claim_review.user_id then redirect_to claim_path(@claim); return end
-
       begin
         @claim_review.update(claim_review_params(step).merge(user_id: current_user.id))
         if (step=="s22")
-            if @save_to_blockchain=="1"
-              save_to_the_blockchain()
-            end
+          if (params[:claim_review][:add_to_blockchain] && ENV['BLOCKCHAIN_ENABLED'] && current_user.role=="factchecker")
+                output=save_to_the_blockchain()
+                if (@save_to_blockchain.length>3)
+                  redirect_to claims_path(:blockchain_resp => @save_to_blockchain, :response => output)
+                elsif (@save_to_blockchain.length=="-1")
+                  redirect_to claims_path(:blockchain_resp => @save_to_blockchain, :error => output)
+                end
+              return
+          end
         end
       rescue
         return
       end
-
       if (params['commit']==t('previous_step'))
           redirect_to previous_wizard_path+'?s=prev'
           return
@@ -285,7 +344,7 @@ end
         if (@save_to_blockchain.length>3)
           redirect_to claims_path(:blockchain_resp => @save_to_blockchain)
         elsif (@save_to_blockchain.length=="-1")
-          redirect_to claim_claim_review_step_path(@claim.id,@claim_review.id,:s22)+"?blockchain_resp=-1&error=ERROR";
+          redirect_to claims_path(:blockchain_resp => @save_to_blockchain, :error => output)
         else
           redirect_to claims_path
         end
@@ -381,7 +440,7 @@ when "s19"
 when "s21"
   [:review_verdict, :review_description, :note_review_description]
 when "s22"
-  [:review_sharing_mode, :note_review_sharing_mode]
+  [:review_sharing_mode, :note_review_sharing_mode, :add_to_blockchain]
 
 ########StepsToDo#########
       end

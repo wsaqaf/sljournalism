@@ -36,32 +36,34 @@ class Claim < ApplicationRecord
   validates :has_video, presence: true
   validates :has_text, presence: true
 
+  validates :reward_amount, :numericality => { :greater_than_or_equal_to => 0, :less_than_or_equal_to => 1000000 }
+
   def medium_name
       medium.try(:name)
-    end
-
-    def medium_name=(name)
-      self.medium = Medium.create_with(user_id: User.current_user.id).find_or_create_by(name: name) if name.present?
-      begin
-        self.medium.update(sharing_mode: 1)
-      rescue
-      end
-    end
-
-    def src_name
-      src.try(:name)
-    end
-
-    def src_name=(name)
-      self.src = Src.create_with(user_id: User.current_user.id).find_or_create_by(name: name) if name.present?
-      begin
-        self.src.update(sharing_mode: 1)
-      rescue
-      end
-    end
-
-    def self.language_options
-      {"Svenska" => "sv", "English" => "en"}
-    end
-
   end
+
+  def medium_name=(name)
+    self.medium = Medium.create_with(user_id: User.current_user.id).find_or_create_by(name: name) if name.present?
+    begin
+      self.medium.update(sharing_mode: 1)
+    rescue
+    end
+  end
+
+  def src_name
+    src.try(:name)
+  end
+
+  def src_name=(name)
+    self.src = Src.create_with(user_id: User.current_user.id).find_or_create_by(name: name) if name.present?
+    begin
+      self.src.update(sharing_mode: 1)
+    rescue
+    end
+  end
+
+  def self.language_options
+    {"Svenska" => "sv", "English" => "en"}
+  end
+
+end

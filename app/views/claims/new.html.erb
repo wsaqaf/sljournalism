@@ -7,20 +7,25 @@
 <div class="container">
   <div class="row">
     <div class="col-12 col-md-8 offset-md-2">
+      <% if params[:blockchain_resp].present?
+            if params[:blockchain_resp]=="-1" %>
+              <font color=red><%= t('added_to_blockchain_failed',error: params[:error]) %></font>
+            <% end %>
+      <% end %>
       <% if params[:import_err].present? %>
         <center><font color="red"><%== t('invalid_json') %></font></center><br>
       <% end %>
       <fieldset>
         <div class="form-claim">
           <%= form_for @claim, :html => { :onsubmit => "do_submit('claim')" } do |f| %>
-          <% if f.object.errors.any? %>
-          <div class="alert alert-warning">
-            <% f.object.errors.full_messages.each do |error| %>
-            <p class="m-0"><%= error %></p>
+            <% if f.object.errors.any? %>
+            <div class="alert alert-warning">
+              <% f.object.errors.full_messages.each do |error| %>
+                <p class="m-0"><%= error %></p>
+              <% end %>
+            </div>
             <% end %>
-          </div>
-          <% end %>
-          <ul>
+            <ul>
             <li><label><%= t('give_claim_title') %></label>
               <%= f.text_field :title, class: 'form-control', :autocomplete=>"off" %>
             </li>
@@ -76,9 +81,8 @@
               </li>
             <% end %>
       <% if (current_user.role=="client" && ENV["BLOCKCHAIN_ENABLED"] && current_user.blockchain_tx.present?) %>
-              <div class="collapse" id="collapseExample1">
                 <li class="mt-4">
-                  <p><%= f.check_box :add_to_blockchain, :checked => true, :disabled => true %> <%= t('save_to_blockchain') %></p>
+                  <p style="display:none"><%= f.check_box :add_to_blockchain, :checked => true %> <%= t('save_to_blockchain') %></p>
                   <small><a href=javascript:wallet("<%= config.relative_url_root.to_s %>","<%= config.relative_url_root.to_s+"/admin/users/"+current_user.id.to_s %>","<%= current_user.id.to_s %>","0")><%= t('show_wallet_balance') %></a><br>
                     <div id="wallet<%= current_user.id.to_s %>"></div>
                     <div id="hidden<%= current_user.id.to_s %>" style="display: none;">
@@ -90,8 +94,8 @@
                   </small>
                 </li>
                   <li>
-                  <label><%= t('expiry_date') %></label>
-                  <%= f.date_select :expiry_date, hide_label: true, :include_blank => true, :default => nil %>
+                  <label><%= t('expiry_date') %> <i><%= t('blank_deadline') %></i></label>
+                  <%= f.date_select :expiry_date, :start_year => Time.now.getutc.year, :end_year => Time.now.getutc.year+1, hide_label: true, :include_blank => true, :default => nil %>
 
                 </li>
                 <li>
@@ -103,14 +107,7 @@
                   <label><%= t('conditions') %></label>
                   <%= f.text_area(:conditions, size: '50x10', class: 'field-long field-textarea') %>
                 </li>
-              </div>
               <br>
-              <p class="text-center">
-                <a class="btn btn-outline-secondary" data-toggle="collapse" href="#collapseExample1" role="button"
-                  aria-expanded="false" aria-controls="collapseExample1">
-                  + <%= t('blockchain_options') %>
-                </a>
-              </p>
           <% end %>
 
           <div class="collapse" id="collapseExample">

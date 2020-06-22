@@ -12,7 +12,6 @@
 //
 //= require rails-ujs
 //= require jquery
-//= require jquery_ujs
 //= require jquery-ui
 //= require popper
 //= require tether
@@ -281,6 +280,28 @@ function wallet(rel_url,url1,usr,to_add,add_to_blockchain)
           {
             $("#wallet"+usr).html(result+" ");
             $("#hidden"+usr).show();
+          }
+      }
+   });
+}
+
+function assess(rel_url,url1)
+ {
+  var assessment=$('#blockchain_assessment option:selected').val()
+  var rationale=$('textarea#assessment_rationale').val();
+  $("#assessment").html("<img src='"+rel_url+"/assets/loading.gif' width=50><br>");
+  $.ajax(
+   {
+    url: url1,
+    type: "get",
+    dataType: "text",
+    data: { "blockchain_assessment": assessment, "blockchain_assessment_rationale": rationale },
+    success: function(result)
+      {
+        if (result.length > 0)
+          {
+            $("#assessment").html(result+" ");
+            $("#assessment_div").hide();
           }
       }
    });

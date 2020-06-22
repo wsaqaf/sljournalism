@@ -276,7 +276,6 @@ en:
   most: 'Most '
   new: New
   next_step: Next Step
-  no_answer: 'No'
   no_associated_resource: No resources have been associated with this question.
   no_results: No results were returned.
   no_share: No keep it private to me only
@@ -510,7 +509,6 @@ en:
   welcome: Welcome
   welcome_msg: Welcome to Fact Check Assistant!
   with_no_reviews: " with no reviews yet"
-  yes_answer: 'Yes'
   yes_share: Yes share with everyone
   you_created: " that you created"
   you_reviewed: " that you reviewed"
@@ -524,9 +522,12 @@ en:
   blockchain_tx: Blockchain transaction
   conditions: Conditions for factcheckers
   confirm_email_link: Confirm email link
-  expiry_date: Expiry date (leave blank if there is no deadline)
-  yes: Yes
-  no: No
+  expiry_date: Expiry date
+  blank_deadline: Leave blank if there is no deadline
+  yes_answer: Yes
+  no_answer: No
+  yes_answer_option: 'Yes'
+  no_answer_option: 'No'
   no_conditions: No Conditions
   no_reward: No reward
   not_added_to_blockchain: Not added to the blockchain
@@ -541,3 +542,10 @@ en:
   add_to_wallet: Add units to wallet
   add_to_blockhain: Add to blockchain
   show_wallet_balance: Show wallet balance
+  detailed_response: Detailed blockchain response
+  only_clients_can_add_claims: <i>In blockchain mode, only <b>Clients</b> can add claims!</i>
+  assess_factcheck: Assess the quality of this claim review
+  assessment: Assessment
+  accepted: Accepted
+  rejected: Rejected
+  assessment_rationale: Rationale behind this assessment

@@ -540,14 +540,13 @@ sv:
   conditions: Villkor för faktakontroller
   confirm_email_link: Bekräfta e-postlänken
   expiry_date: utgångsdatum
-  yes: Ja
-  no: Nej
+  blank_deadline: Lämna tomt om det inte finns någon tidsfrist
   no_conditions: Inga villkor
   no_reward: Ingen belöning
   not_added_to_blockchain: Inte läggs till i blockchain
   no_expiry_date: Inget utgångsdatum
   resource_reference: Resursreferens
-  reward_amount: belöningsbelopp
+  reward_amount: Belöningsbelopp
   save_to_blockchain: Spara i blockchain
   user_url: Användar-URL (profil etc.)
   warning_msg: Är du säker?
@@ -556,3 +555,10 @@ sv:
   add_to_wallet: Lägg till enheter i plånboken
   add_to_blockhain: Lägg till blockchain
   show_wallet_balance: Visa plånbokbalans
+  detailed_response: Detaljerat blockchain-svar
+  only_clients_can_add_claims: <i> I blockchain-läge kan bara <b> Clients </b> lägga till anspråk! </i>
+  assess_factcheck: Utvärdera kvaliteten på denna granskning av anspråk
+  assessment: Bedömning
+  accepted: Godkänd
+  rejected: Avvisad
+  assessment_rationale: Motivering bakom denna bedömning

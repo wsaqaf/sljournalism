@@ -31,6 +31,7 @@ class Admin::UsersController < Admin::BaseController
           tx_no=output.match(/ txid \[(.+?)\]/)[1]
           success_confirmation=output.match(/Chaincode invoke successful\. result\: status\:200 payload\:"(.+)"/)[1]
           if (success_confirmation.length>1)
+            @user.blockchain_id=output.match(/walletID.+?(W.+?)\\/)[1]
             @save_to_blockchain=tx_no
             @user.add_to_blockchain=1
             @user.blockchain_tx=@save_to_blockchain
@@ -73,7 +74,8 @@ class Admin::UsersController < Admin::BaseController
 
   def show
     if (ENV['BLOCKCHAIN_ENABLED'] && params[:add_to_blockchain])
-      if (@user = User.where(id: params[:id]).first && current_user.role=="admin")
+      @user = User.where(id: params[:id]).first
+      if (@user && current_user.role=="admin")
           argmnt="{\"Args\":[\"registerWallet\",\""+@user.role+"\",\""+ENV['BLOCKCHAIN_ORGID']+"\",\""+@user.id.to_s+"\", \""+@user.name+"\"]}"
           cmnd="docker exec -it cli peer chaincode invoke -o orderer.example.com:7050 --tls true --cafile /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem -C mychannel -n mycc --peerAddresses peer0.org1.example.com:7051 --tlsRootCertFiles /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/ca.crt --peerAddresses peer0.org2.example.com:9051 --tlsRootCertFiles /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org2.example.com/peers/peer0.org2.example.com/tls/ca.crt -c '"+argmnt+"' --waitForEvent"
 #puts ("\n=============\nRunning:\n"+cmnd+"\n--\n")
@@ -83,6 +85,7 @@ class Admin::UsersController < Admin::BaseController
             tx_no=output.match(/ txid \[(.+?)\]/)[1]
             success_confirmation=output.match(/Chaincode invoke successful\. result\: status\:200 payload\:"(.+)"/)[1]
             if (success_confirmation.length>1)
+              @user.blockchain_id=output.match(/walletID.+?(W.+?)\\/)[1]
               @save_to_blockchain=tx_no
               @user.add_to_blockchain=1
               @user.blockchain_tx=@save_to_blockchain

@@ -1,6 +1,26 @@
 class ClaimsController < ApplicationController
   before_action :check_if_signed_in, only: [:show, :edit, :update, :destroy, :new, :create]
   before_action :find_claim, only: [:show, :edit, :update, :destroy]
+  before_action :blockchain_check1, only: [:new, :create]
+  before_action :blockchain_check2, only: [:edit, :update, :destroy]
+
+  def blockchain_check1
+    if (current_user.role!="client" && ENV['BLOCKCHAIN_ENABLED'])
+      redirect_to claims_path
+    end
+  end
+
+  def blockchain_check2
+    unless ENV['BLOCKCHAIN_ENABLED']
+      redirect_to claims_path
+    end
+  end
+
+  def on_blockchain2
+    unless ENV['BLOCKCHAIN_ENABLED']
+      redirect_to claims_path
+    end
+  end
 
   def index
     if params[:import_note].present?
@@ -136,32 +156,55 @@ class ClaimsController < ApplicationController
   end
 
   def save_to_the_blockchain
+      medium=""
+      src=""
+      if (@claim.medium_id) then medium=Medium.find(@claim.medium_id).name end
+      if (@claim.src_id) then src=Src.find(@claim.src_id).name end
+      argmnt="{\"Args\":[\"addClaim\",\""+
+      ENV['BLOCKCHAIN_ORGID']+"\",\""+
+      @claim.id.to_s+"\",\""+
+      current_user.id.to_s+"\", \""+
+      @claim.title.gsub(/"/, "")+"\",\""+
+      request.base_url+config.relative_url_root+"/claims"+@claim.id.to_s+"\",\""+
+      @claim.expiry_date.to_s[0...-7]+"\",\""+
+      @claim.reward_amount.to_s+"\",\""+
+      @claim.conditions.gsub(/\r\n?/, ";").gsub(/"/, "")+"\",\""+
+      @claim.url+"\",\""+
+      @claim.description.gsub(/\r\n?/, ";").gsub(/"/, "")+"\",\""+
+      medium+"\",\""+
+      src+"\",\""+
+      @claim.has_image.to_s+"\",\""+
+      @claim.has_video.to_s+"\",\""+
+      @claim.has_text.to_s+"\",\""+
+      @claim.tags.map(&:claim_name).join(', ')+
+      "\"]}"
+
+      cmnd="docker exec -it cli peer chaincode invoke -o orderer.example.com:7050 --tls true --cafile /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem -C mychannel -n mycc --peerAddresses peer0.org1.example.com:7051 --tlsRootCertFiles /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/ca.crt --peerAddresses peer0.org2.example.com:9051 --tlsRootCertFiles /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org2.example.com/peers/peer0.org2.example.com/tls/ca.crt -c '"+argmnt+"' --waitForEvent"
+puts ("\n=============\nRunning:\n"+cmnd+"\n--\n")
+      output=%x(#{cmnd})
+puts("Result:\n"+output+"\n==\n")
       begin
-        url_to_api=ENV["BLOCKCHAIN_API_URL"]
-        require 'open-uri'
-        require 'net/http'
-        params = {'f' => 'add', 'claim' => blockchain_entry() }
-        url = URI.parse(url_to_api)
-        resp = Net::HTTP.post_form(url, params)
-        file_contents=resp.body.to_s
-
-        txid=file_contents.scan(/txid \[([a-zA-Z0-9]+)\]/).last.first
-        if (txid.length<5 || resp.code!="200" || resp.message!="OK") then txid="-1"; end
-        @save_to_blockchain=txid
+        tx_no=output.match(/ txid \[(.+?)\]/)[1]
+        success_confirmation=output.match(/Chaincode invoke successful\. result\: status\:200 payload\:"(.+)"/)[1]
+        if (success_confirmation.length>1)
+          @claim.blockchain_id=output.match(/claimID.+?(C.+?)\\/)[1]
+          @save_to_blockchain=tx_no
+          @claim.add_to_blockchain=1
+          @claim.blockchain_tx=@save_to_blockchain
+          @claim.time_added_to_blockchain=Time.now.utc.to_s[0...-7]
+          @claim.save
+        else
+          @save_to_blockchain="-1"
+        end
       rescue
-        @save_to_blockchain="-1"
+          @save_to_blockchain="-1"
+          @claim.destroy
       end
+      return output
   end
-
-  def blockchain_entry()
-
-    entry="\""+Rails.configuration.institution.to_s+"\",\""+@claim.title+"\",\""+assessments[@claim_review.review_verdict]+"\",\""+request.base_url+config.relative_url_root+"/claims"+@claim.id.to_s+"\",\""+@claim.created_at.to_s+"\",\""+src+"\",\""+medium+"\",\"1\",\"5\",\""+@claim_review.review_verdict.to_s+"\",\""+request.base_url+config.relative_url_root+"/logo.png"+"\",\""+@claim.url+"\",\""+@claim.description.to_s+"\",\""+@claim.tags.map(&:claim_name).join(', ')+"\",\""+@claim.has_image.to_s+"\",\""+@claim.has_video.to_s+"\",\""+@claim.has_text.to_s+"\",\""+@claim_review.updated_at.to_s+"\",\""+User.find(@claim.user_id).name.to_s+"\",\""+@claim_review.img_review_started.to_s+"\",\""+@claim_review.img_old.to_s+"\",\""+@claim_review.img_forensic_discrepency.to_s+"\",\""+@claim_review.img_metadata_discrepency.to_s+"\",\""+@claim_review.img_logical_discrepency.to_s+"\",\""+@claim_review.note_img_old.to_s+"\",\""+@claim_review.note_img_forensic_discrepency.to_s+"\",\""+@claim_review.note_img_metadata_discrepency.to_s+"\",\""+@claim_review.note_img_logical_discrepency.to_s+"\",\""+@claim_review.vid_review_started.to_s+"\",\""+@claim_review.vid_old.to_s+"\",\""+@claim_review.vid_forensic_discrepency.to_s+"\",\""+@claim_review.vid_metadata_discrepency.to_s+"\",\""+@claim_review.vid_audio_discrepency.to_s+"\",\""+@claim_review.vid_logical_discrepency.to_s+"\",\""+@claim_review.note_vid_old.to_s+"\",\""+@claim_review.note_vid_forensic_discrepency.to_s+"\",\""+@claim_review.note_vid_metadata_discrepency.to_s+"\",\""+@claim_review.note_vid_audio_discrepency.to_s+"\",\""+@claim_review.note_vid_logical_discrepency.to_s+"\",\""+@claim_review.txt_review_started.to_s+"\",\""+@claim_review.txt_unreliable_news_content.to_s+"\",\""+@claim_review.txt_insufficient_verifiable_srcs.to_s+"\",\""+@claim_review.txt_has_clickbait.to_s+"\",\""+@claim_review.txt_poor_language.to_s+"\",\""+@claim_review.txt_crowds_distance_discrepency.to_s+"\",\""+@claim_review.txt_author_offers_little_evidence.to_s+"\",\""+@claim_review.txt_reliable_sources_disapprove.to_s+"\",\""+@claim_review.note_txt_unreliable_news_content.to_s+"\",\""+@claim_review.note_txt_insufficient_verifiable_srcs.to_s+"\",\""+@claim_review.note_txt_has_clickbait.to_s+"\",\""+@claim_review.note_txt_poor_language.to_s+"\",\""+@claim_review.note_txt_crowds_distance_discrepency.to_s+"\",\""+@claim_review.note_txt_author_offers_little_evidence+"\",\""+@claim_review.note_txt_reliable_sources_disapprove+"\""
-
-    return entry
-  end
-
 
   def create
+#byebug
     start_review=0
     if (!params[:claim].nil?)
       start_review=params[:claim][:start_review]
@@ -170,7 +213,7 @@ class ClaimsController < ApplicationController
     @import_note=""
     if (params[:claims_json].present?)
       massport
-    elsif (!params[:claim].nil? && (params[:claim][:url] || params[:claim][:file]))
+    elsif (!params[:claim].nil? && (!params[:claim][:url].empty? || params[:claim][:file]))
       if (params[:claim][:include_review].present?)
         if (params[:claim][:file].present?)
           myfile=params[:claim][:file]
@@ -298,21 +341,20 @@ class ClaimsController < ApplicationController
         end
       end
     else
-      if (claim_params['add_to_blockchain'])
-            save_to_the_blockchain()
-            if (@save_to_blockchain.length>3)
-                @claim.blockchain_tx=@save_to_blockchain
-                @claim.time_added_to_blockchain=Time.now.utc.to_s
-                @claim = current_user.claims.build(claim_params)
-                @claim.save
+      if (claim_params['add_to_blockchain'] && ENV['BLOCKCHAIN_ENABLED'] && current_user.role=="client")
+          @claim = current_user.claims.build(claim_params)
+          if (@claim.save)
+            output=save_to_the_blockchain()
+            if (@save_to_blockchain=="-1")
+              redirect_to new_claim_path(:blockchain_resp => @save_to_blockchain, :error => output)
+            else
+              redirect_to claims_path(:blockchain_resp => @save_to_blockchain, :response => output)
             end
-            redirect_to claims_path(:blockchain_resp => @save_to_blockchain)
+          end
+          return
       end
-
       @claim = current_user.claims.build(claim_params)
       if @claim.save
-
-
         if start_review==1
           @claim_review = ClaimReview.new
           @claim_review.claim_id=@claim.id

@@ -40,4 +40,4 @@ s_index,sec_number,stage_number,stage_title,q_short,q_title,first_in_sec,is_requ
 21,s21,5,assessing_claim_rel_title,,optional_note,,0,note_review_description,textarea,,,,
 22,s22,6,share_setting,share_setting_brief,review_sharing_mode_q_long,1,1,review_sharing_mode,radio,"yes_share,no_share",1 -1,,
 22,s22,6,share_setting,,claim_review_field,,0,note_review_sharing_mode,textarea,,,,
-22,s22,6,share_setting,share_setting_brief,add_to_blockchain_q_long,,0,add_to_blockchain,radio,"yes,no",1 0,,
+22,s22,6,share_setting,share_setting_brief,add_to_blockchain_q_long,,0,add_to_blockchain,radio,"yes_answer,no_answer",1 0,,

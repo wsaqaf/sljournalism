@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_06_20_071626) do
+ActiveRecord::Schema.define(version: 2020_06_22_025033) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -80,6 +80,12 @@ ActiveRecord::Schema.define(version: 2020_06_20_071626) do
     t.integer "add_to_blockchain"
     t.datetime "time_added_to_blockchain"
     t.string "blockchain_tx"
+    t.string "blockchain_id"
+    t.integer "blockchain_assessment"
+    t.string "blockchain_assessment_rationale"
+    t.string "blockchain_assessment_admin_id"
+    t.datetime "blockchain_assessment_time"
+    t.string "blockchain_assessment_tx"
     t.index ["review_verdict"], name: "index_claim_reviews_on_review_verdict"
   end
 
@@ -103,6 +109,8 @@ ActiveRecord::Schema.define(version: 2020_06_20_071626) do
     t.string "conditions"
     t.datetime "time_added_to_blockchain"
     t.string "blockchain_tx"
+    t.string "blockchain_id"
+    t.string "status_on_blockchain"
     t.index ["medium_id"], name: "index_claims_on_medium_id"
     t.index ["title"], name: "index_claims_on_title"
     t.index ["url"], name: "index_claims_on_url"
@@ -264,6 +272,7 @@ ActiveRecord::Schema.define(version: 2020_06_20_071626) do
     t.integer "add_to_blockchain"
     t.datetime "time_added_to_blockchain"
     t.string "blockchain_tx"
+    t.string "blockchain_id"
     t.index ["authentication_token"], name: "index_users_on_authentication_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
