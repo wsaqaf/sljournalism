@@ -6,21 +6,13 @@
 <br><%= t('created_at') %>: <%= @claim_review.created_at %>
                    <br><%= t('updated_at') %>: <%= @claim_review.updated_at %>
 
-                    <% if (@claim_review.user_id == current_user.id || current_user.role=="admin") && !ENV['BLOCKCHAIN_ENABLED']  %>
+                    <% if !ENV['BLOCKCHAIN_ENABLED'] && (@claim_review.user_id == current_user.id || current_user.role=="admin")  %>
                       <br><br><%= link_to t('edit_review'), claim_claim_reviews_path(@claim.id), method: :create %> -
                       <%= link_to t('del_review'), claim_claim_review_path(@claim.id,@claim_review), method: :delete, data: { confirm: t('warning_del') } %>
                     <% end %>
 
                    </p>
               </h6>
-
-              <% if params[:blockchain_resp].present?
-                    if params[:blockchain_resp].length>3 %>
-                      <font color=green><%= t('added_to_blockchain_w_tx',tx:params[:blockchain_resp]) %></font>
-                    <% else %>
-                    <font color=red><%= t('added_to_blockchain_failed',error:params[:error]) %></font>
-                    <% end
-              end %>
 
               <%= form_for @claim_review, method: :put, url: claim_claim_review_path(@claim,@claim_review) do |f| %>
               <% if f.object.errors.any? %>
@@ -33,313 +25,276 @@
               <fieldset>
                   <ul>
 
-                  <% if (@claim_review.user_id==current_user.id or (@claim_review.review_sharing_mode==1 || current_user.role=="admin")) and !@claim_review.img_old.blank? %>
+                  <% if (@claim_review.user_id==current_user.id or @claim_review.review_sharing_mode==1 or current_user.role=="admin") and !@claim_review.img_old.blank? %>
                       <li><b>*</b> <%== t('claim_img_old_q_long') %>
-                      <br><b><%= f.select :img_old, options_for_select([['Select',''],[t('claim_img_old_q_options_yes').sub('<b>','').sub('</b>',''), -1],[t('claim_img_old_q_options_no').sub('<b>','').sub('</b>',''), 1],[t('not_sure').sub('<b>','').sub('</b>',''), 0]], :selected => @claim_review.img_old), {}, disabled: (@claim_review.user_id!=current_user.id || ENV['BLOCKCHAIN_ENABLED']) %></b>
+                      <br><b><%= f.select :img_old, options_for_select([['Select',''],[t('claim_img_old_q_options_yes').sub('<b>','').sub('</b>',''), -1],[t('claim_img_old_q_options_no').sub('<b>','').sub('</b>',''), 1],[t('not_sure').sub('<b>','').sub('</b>',''), 0]], :selected => @claim_review.img_old), {}, disabled: ENV['BLOCKCHAIN_ENABLED'] || @claim_review.user_id!=current_user.id %></b>
                       <br><hr>
                       </li>
                   <% end %>
 
-                  <% if (@claim_review.user_id==current_user.id or (@claim_review.review_sharing_mode==1 || current_user.role=="admin")) and !@claim_review.note_img_old.blank? %>
+                  <% if (@claim_review.user_id==current_user.id or @claim_review.review_sharing_mode==1 or current_user.role=="admin") and !@claim_review.note_img_old.blank? %>
                       <li><b>*</b> <%== t('optional_note') %>
-                      <br><b><%= f.text_area(:note_img_old, size: '50x10', class: 'field-long field-textarea', value:@claim_review.note_img_old, disabled: (@claim_review.user_id!=current_user.id || ENV['BLOCKCHAIN_ENABLED'])) %></b>
+                      <br><b><%= f.text_area(:note_img_old, size: '50x10', class: 'field-long field-textarea', value:@claim_review.note_img_old, disabled: ENV['BLOCKCHAIN_ENABLED'] || @claim_review.user_id!=current_user.id) %></b>
                       <br><hr>
                       </li>
                   <% end %>
 
-                  <% if (@claim_review.user_id==current_user.id or (@claim_review.review_sharing_mode==1 || current_user.role=="admin")) and !@claim_review.img_forensic_discrepency.blank? %>
+                  <% if (@claim_review.user_id==current_user.id or @claim_review.review_sharing_mode==1 or current_user.role=="admin") and !@claim_review.img_forensic_discrepency.blank? %>
                       <li><b>*</b> <%== t('claim_img_forensic_discrepency_q_long') %>
-                      <br><b><%= f.select :img_forensic_discrepency, options_for_select([['Select',''],[t('claim_img_forensic_discrepency_q_options_yes').sub('<b>','').sub('</b>',''), -1],[t('claim_img_forensic_discrepency_q_options_no').sub('<b>','').sub('</b>',''), 1],[t('not_sure').sub('<b>','').sub('</b>',''), 0]], :selected => @claim_review.img_forensic_discrepency), {}, disabled: (@claim_review.user_id!=current_user.id || ENV['BLOCKCHAIN_ENABLED']) %></b>
+                      <br><b><%= f.select :img_forensic_discrepency, options_for_select([['Select',''],[t('claim_img_forensic_discrepency_q_options_yes').sub('<b>','').sub('</b>',''), -1],[t('claim_img_forensic_discrepency_q_options_no').sub('<b>','').sub('</b>',''), 1],[t('not_sure').sub('<b>','').sub('</b>',''), 0]], :selected => @claim_review.img_forensic_discrepency), {}, disabled: ENV['BLOCKCHAIN_ENABLED'] || @claim_review.user_id!=current_user.id %></b>
                       <br><hr>
                       </li>
                   <% end %>
 
-                  <% if (@claim_review.user_id==current_user.id or (@claim_review.review_sharing_mode==1 || current_user.role=="admin")) and !@claim_review.note_img_forensic_discrepency.blank? %>
+                  <% if (@claim_review.user_id==current_user.id or @claim_review.review_sharing_mode==1 or current_user.role=="admin") and !@claim_review.note_img_forensic_discrepency.blank? %>
                       <li><b>*</b> <%== t('optional_note') %>
-                      <br><b><%= f.text_area(:note_img_forensic_discrepency, size: '50x10', class: 'field-long field-textarea', value:@claim_review.note_img_forensic_discrepency, disabled: (@claim_review.user_id!=current_user.id || ENV['BLOCKCHAIN_ENABLED'])) %></b>
+                      <br><b><%= f.text_area(:note_img_forensic_discrepency, size: '50x10', class: 'field-long field-textarea', value:@claim_review.note_img_forensic_discrepency, disabled: ENV['BLOCKCHAIN_ENABLED'] || @claim_review.user_id!=current_user.id) %></b>
                       <br><hr>
                       </li>
                   <% end %>
 
-                  <% if (@claim_review.user_id==current_user.id or (@claim_review.review_sharing_mode==1 || current_user.role=="admin")) and !@claim_review.img_metadata_discrepency.blank? %>
+                  <% if (@claim_review.user_id==current_user.id or @claim_review.review_sharing_mode==1 or current_user.role=="admin") and !@claim_review.img_metadata_discrepency.blank? %>
                       <li><b>*</b> <%== t('claim_img_metadata_discrepency_q_long') %>
-                      <br><b><%= f.select :img_metadata_discrepency, options_for_select([['Select',''],[t('claim_img_metadata_discrepency_q_options_yes').sub('<b>','').sub('</b>',''), -1],[t('claim_img_metadata_discrepency_q_options_no').sub('<b>','').sub('</b>',''), 1],[t('not_sure').sub('<b>','').sub('</b>',''), 0]], :selected => @claim_review.img_metadata_discrepency), {}, disabled: (@claim_review.user_id!=current_user.id || ENV['BLOCKCHAIN_ENABLED']) %></b>
+                      <br><b><%= f.select :img_metadata_discrepency, options_for_select([['Select',''],[t('claim_img_metadata_discrepency_q_options_yes').sub('<b>','').sub('</b>',''), -1],[t('claim_img_metadata_discrepency_q_options_no').sub('<b>','').sub('</b>',''), 1],[t('not_sure').sub('<b>','').sub('</b>',''), 0]], :selected => @claim_review.img_metadata_discrepency), {}, disabled: ENV['BLOCKCHAIN_ENABLED'] || @claim_review.user_id!=current_user.id %></b>
                       <br><hr>
                       </li>
                   <% end %>
 
-                  <% if (@claim_review.user_id==current_user.id or (@claim_review.review_sharing_mode==1 || current_user.role=="admin")) and !@claim_review.note_img_metadata_discrepency.blank? %>
+                  <% if (@claim_review.user_id==current_user.id or @claim_review.review_sharing_mode==1 or current_user.role=="admin") and !@claim_review.note_img_metadata_discrepency.blank? %>
                       <li><b>*</b> <%== t('optional_note') %>
-                      <br><b><%= f.text_area(:note_img_metadata_discrepency, size: '50x10', class: 'field-long field-textarea', value:@claim_review.note_img_metadata_discrepency, disabled: (@claim_review.user_id!=current_user.id || ENV['BLOCKCHAIN_ENABLED'])) %></b>
+                      <br><b><%= f.text_area(:note_img_metadata_discrepency, size: '50x10', class: 'field-long field-textarea', value:@claim_review.note_img_metadata_discrepency, disabled: ENV['BLOCKCHAIN_ENABLED'] || @claim_review.user_id!=current_user.id) %></b>
                       <br><hr>
                       </li>
                   <% end %>
 
-                  <% if (@claim_review.user_id==current_user.id or (@claim_review.review_sharing_mode==1 || current_user.role=="admin")) and !@claim_review.img_logical_discrepency.blank? %>
+                  <% if (@claim_review.user_id==current_user.id or @claim_review.review_sharing_mode==1 or current_user.role=="admin") and !@claim_review.img_logical_discrepency.blank? %>
                       <li><b>*</b> <%== t('claim_img_logical_discrepency_q_long') %>
-                      <br><b><%= f.select :img_logical_discrepency, options_for_select([['Select',''],[t('claim_img_logical_discrepency_q_options_yes').sub('<b>','').sub('</b>',''), -1],[t('claim_img_logical_discrepency_q_options_no').sub('<b>','').sub('</b>',''), 1],[t('not_sure').sub('<b>','').sub('</b>',''), 0]], :selected => @claim_review.img_logical_discrepency), {}, disabled: (@claim_review.user_id!=current_user.id || ENV['BLOCKCHAIN_ENABLED']) %></b>
+                      <br><b><%= f.select :img_logical_discrepency, options_for_select([['Select',''],[t('claim_img_logical_discrepency_q_options_yes').sub('<b>','').sub('</b>',''), -1],[t('claim_img_logical_discrepency_q_options_no').sub('<b>','').sub('</b>',''), 1],[t('not_sure').sub('<b>','').sub('</b>',''), 0]], :selected => @claim_review.img_logical_discrepency), {}, disabled: ENV['BLOCKCHAIN_ENABLED'] || @claim_review.user_id!=current_user.id %></b>
                       <br><hr>
                       </li>
                   <% end %>
 
-                  <% if (@claim_review.user_id==current_user.id or (@claim_review.review_sharing_mode==1 || current_user.role=="admin")) and !@claim_review.note_img_logical_discrepency.blank? %>
+                  <% if (@claim_review.user_id==current_user.id or @claim_review.review_sharing_mode==1 or current_user.role=="admin") and !@claim_review.note_img_logical_discrepency.blank? %>
                       <li><b>*</b> <%== t('optional_note') %>
-                      <br><b><%= f.text_area(:note_img_logical_discrepency, size: '50x10', class: 'field-long field-textarea', value:@claim_review.note_img_logical_discrepency, disabled: (@claim_review.user_id!=current_user.id || ENV['BLOCKCHAIN_ENABLED'])) %></b>
+                      <br><b><%= f.text_area(:note_img_logical_discrepency, size: '50x10', class: 'field-long field-textarea', value:@claim_review.note_img_logical_discrepency, disabled: ENV['BLOCKCHAIN_ENABLED'] || @claim_review.user_id!=current_user.id) %></b>
                       <br><hr>
                       </li>
                   <% end %>
 
-                  <% if (@claim_review.user_id==current_user.id or (@claim_review.review_sharing_mode==1 || current_user.role=="admin")) and !@claim_review.vid_old.blank? %>
+                  <% if (@claim_review.user_id==current_user.id or @claim_review.review_sharing_mode==1 or current_user.role=="admin") and !@claim_review.vid_old.blank? %>
                       <li><b>*</b> <%== t('claim_vid_old_q_long') %>
-                      <br><b><%= f.select :vid_old, options_for_select([['Select',''],[t('claim_vid_old_q_options_yes').sub('<b>','').sub('</b>',''), -1],[t('claim_vid_old_q_options_no').sub('<b>','').sub('</b>',''), 1],[t('not_sure').sub('<b>','').sub('</b>',''), 0]], :selected => @claim_review.vid_old), {}, disabled: (@claim_review.user_id!=current_user.id || ENV['BLOCKCHAIN_ENABLED']) %></b>
+                      <br><b><%= f.select :vid_old, options_for_select([['Select',''],[t('claim_vid_old_q_options_yes').sub('<b>','').sub('</b>',''), -1],[t('claim_vid_old_q_options_no').sub('<b>','').sub('</b>',''), 1],[t('not_sure').sub('<b>','').sub('</b>',''), 0]], :selected => @claim_review.vid_old), {}, disabled: ENV['BLOCKCHAIN_ENABLED'] || @claim_review.user_id!=current_user.id %></b>
                       <br><hr>
                       </li>
                   <% end %>
 
-                  <% if (@claim_review.user_id==current_user.id or (@claim_review.review_sharing_mode==1 || current_user.role=="admin")) and !@claim_review.note_vid_old.blank? %>
+                  <% if (@claim_review.user_id==current_user.id or @claim_review.review_sharing_mode==1 or current_user.role=="admin") and !@claim_review.note_vid_old.blank? %>
                       <li><b>*</b> <%== t('optional_note') %>
-                      <br><b><%= f.text_area(:note_vid_old, size: '50x10', class: 'field-long field-textarea', value:@claim_review.note_vid_old, disabled: (@claim_review.user_id!=current_user.id || ENV['BLOCKCHAIN_ENABLED'])) %></b>
+                      <br><b><%= f.text_area(:note_vid_old, size: '50x10', class: 'field-long field-textarea', value:@claim_review.note_vid_old, disabled: ENV['BLOCKCHAIN_ENABLED'] || @claim_review.user_id!=current_user.id) %></b>
                       <br><hr>
                       </li>
                   <% end %>
 
-                  <% if (@claim_review.user_id==current_user.id or (@claim_review.review_sharing_mode==1 || current_user.role=="admin")) and !@claim_review.vid_forensic_discrepency.blank? %>
+                  <% if (@claim_review.user_id==current_user.id or @claim_review.review_sharing_mode==1 or current_user.role=="admin") and !@claim_review.vid_forensic_discrepency.blank? %>
                       <li><b>*</b> <%== t('claim_vid_forensic_discrepency_q_long') %>
-                      <br><b><%= f.select :vid_forensic_discrepency, options_for_select([['Select',''],[t('claim_vid_forensic_discrepency_q_options_yes').sub('<b>','').sub('</b>',''), -1],[t('claim_vid_forensic_discrepency_q_options_no').sub('<b>','').sub('</b>',''), 1],[t('not_sure').sub('<b>','').sub('</b>',''), 0]], :selected => @claim_review.vid_forensic_discrepency), {}, disabled: (@claim_review.user_id!=current_user.id || ENV['BLOCKCHAIN_ENABLED']) %></b>
+                      <br><b><%= f.select :vid_forensic_discrepency, options_for_select([['Select',''],[t('claim_vid_forensic_discrepency_q_options_yes').sub('<b>','').sub('</b>',''), -1],[t('claim_vid_forensic_discrepency_q_options_no').sub('<b>','').sub('</b>',''), 1],[t('not_sure').sub('<b>','').sub('</b>',''), 0]], :selected => @claim_review.vid_forensic_discrepency), {}, disabled: ENV['BLOCKCHAIN_ENABLED'] || @claim_review.user_id!=current_user.id %></b>
                       <br><hr>
                       </li>
                   <% end %>
 
-                  <% if (@claim_review.user_id==current_user.id or (@claim_review.review_sharing_mode==1 || current_user.role=="admin")) and !@claim_review.note_vid_forensic_discrepency.blank? %>
+                  <% if (@claim_review.user_id==current_user.id or @claim_review.review_sharing_mode==1 or current_user.role=="admin") and !@claim_review.note_vid_forensic_discrepency.blank? %>
                       <li><b>*</b> <%== t('optional_note') %>
-                      <br><b><%= f.text_area(:note_vid_forensic_discrepency, size: '50x10', class: 'field-long field-textarea', value:@claim_review.note_vid_forensic_discrepency, disabled: (@claim_review.user_id!=current_user.id || ENV['BLOCKCHAIN_ENABLED'])) %></b>
+                      <br><b><%= f.text_area(:note_vid_forensic_discrepency, size: '50x10', class: 'field-long field-textarea', value:@claim_review.note_vid_forensic_discrepency, disabled: ENV['BLOCKCHAIN_ENABLED'] || @claim_review.user_id!=current_user.id) %></b>
                       <br><hr>
                       </li>
                   <% end %>
 
-                  <% if (@claim_review.user_id==current_user.id or (@claim_review.review_sharing_mode==1 || current_user.role=="admin")) and !@claim_review.vid_metadata_discrepency.blank? %>
+                  <% if (@claim_review.user_id==current_user.id or @claim_review.review_sharing_mode==1 or current_user.role=="admin") and !@claim_review.vid_metadata_discrepency.blank? %>
                       <li><b>*</b> <%== t('claim_vid_metadata_discrepency_q_long') %>
-                      <br><b><%= f.select :vid_metadata_discrepency, options_for_select([['Select',''],[t('claim_vid_metadata_discrepency_q_options_yes').sub('<b>','').sub('</b>',''), -1],[t('claim_vid_metadata_discrepency_q_options_no').sub('<b>','').sub('</b>',''), 1],[t('not_sure').sub('<b>','').sub('</b>',''), 0]], :selected => @claim_review.vid_metadata_discrepency), {}, disabled: (@claim_review.user_id!=current_user.id || ENV['BLOCKCHAIN_ENABLED']) %></b>
+                      <br><b><%= f.select :vid_metadata_discrepency, options_for_select([['Select',''],[t('claim_vid_metadata_discrepency_q_options_yes').sub('<b>','').sub('</b>',''), -1],[t('claim_vid_metadata_discrepency_q_options_no').sub('<b>','').sub('</b>',''), 1],[t('not_sure').sub('<b>','').sub('</b>',''), 0]], :selected => @claim_review.vid_metadata_discrepency), {}, disabled: ENV['BLOCKCHAIN_ENABLED'] || @claim_review.user_id!=current_user.id %></b>
                       <br><hr>
                       </li>
                   <% end %>
 
-                  <% if (@claim_review.user_id==current_user.id or (@claim_review.review_sharing_mode==1 || current_user.role=="admin")) and !@claim_review.note_vid_metadata_discrepency.blank? %>
+                  <% if (@claim_review.user_id==current_user.id or @claim_review.review_sharing_mode==1 or current_user.role=="admin") and !@claim_review.note_vid_metadata_discrepency.blank? %>
                       <li><b>*</b> <%== t('optional_note') %>
-                      <br><b><%= f.text_area(:note_vid_metadata_discrepency, size: '50x10', class: 'field-long field-textarea', value:@claim_review.note_vid_metadata_discrepency, disabled: (@claim_review.user_id!=current_user.id || ENV['BLOCKCHAIN_ENABLED'])) %></b>
+                      <br><b><%= f.text_area(:note_vid_metadata_discrepency, size: '50x10', class: 'field-long field-textarea', value:@claim_review.note_vid_metadata_discrepency, disabled: ENV['BLOCKCHAIN_ENABLED'] || @claim_review.user_id!=current_user.id) %></b>
                       <br><hr>
                       </li>
                   <% end %>
 
-                  <% if (@claim_review.user_id==current_user.id or (@claim_review.review_sharing_mode==1 || current_user.role=="admin")) and !@claim_review.vid_audio_discrepency.blank? %>
+                  <% if (@claim_review.user_id==current_user.id or @claim_review.review_sharing_mode==1 or current_user.role=="admin") and !@claim_review.vid_audio_discrepency.blank? %>
                       <li><b>*</b> <%== t('claim_vid_audio_discrepency_q_long') %>
-                      <br><b><%= f.select :vid_audio_discrepency, options_for_select([['Select',''],[t('claim_vid_audio_discrepency_q_options_yes').sub('<b>','').sub('</b>',''), -1],[t('claim_vid_audio_discrepency_q_options_no').sub('<b>','').sub('</b>',''), 1],[t('not_sure').sub('<b>','').sub('</b>',''), 0]], :selected => @claim_review.vid_audio_discrepency), {}, disabled: (@claim_review.user_id!=current_user.id || ENV['BLOCKCHAIN_ENABLED']) %></b>
+                      <br><b><%= f.select :vid_audio_discrepency, options_for_select([['Select',''],[t('claim_vid_audio_discrepency_q_options_yes').sub('<b>','').sub('</b>',''), -1],[t('claim_vid_audio_discrepency_q_options_no').sub('<b>','').sub('</b>',''), 1],[t('not_sure').sub('<b>','').sub('</b>',''), 0]], :selected => @claim_review.vid_audio_discrepency), {}, disabled: ENV['BLOCKCHAIN_ENABLED'] || @claim_review.user_id!=current_user.id %></b>
                       <br><hr>
                       </li>
                   <% end %>
 
-                  <% if (@claim_review.user_id==current_user.id or (@claim_review.review_sharing_mode==1 || current_user.role=="admin")) and !@claim_review.note_vid_audio_discrepency.blank? %>
+                  <% if (@claim_review.user_id==current_user.id or @claim_review.review_sharing_mode==1 or current_user.role=="admin") and !@claim_review.note_vid_audio_discrepency.blank? %>
                       <li><b>*</b> <%== t('optional_note') %>
-                      <br><b><%= f.text_area(:note_vid_audio_discrepency, size: '50x10', class: 'field-long field-textarea', value:@claim_review.note_vid_audio_discrepency, disabled: (@claim_review.user_id!=current_user.id || ENV['BLOCKCHAIN_ENABLED'])) %></b>
+                      <br><b><%= f.text_area(:note_vid_audio_discrepency, size: '50x10', class: 'field-long field-textarea', value:@claim_review.note_vid_audio_discrepency, disabled: ENV['BLOCKCHAIN_ENABLED'] || @claim_review.user_id!=current_user.id) %></b>
                       <br><hr>
                       </li>
                   <% end %>
 
-                  <% if (@claim_review.user_id==current_user.id or (@claim_review.review_sharing_mode==1 || current_user.role=="admin")) and !@claim_review.vid_logical_discrepency.blank? %>
+                  <% if (@claim_review.user_id==current_user.id or @claim_review.review_sharing_mode==1 or current_user.role=="admin") and !@claim_review.vid_logical_discrepency.blank? %>
                       <li><b>*</b> <%== t('claim_vid_logical_discrepency_q_long') %>
-                      <br><b><%= f.select :vid_logical_discrepency, options_for_select([['Select',''],[t('claim_vid_logical_discrepency_q_options_yes').sub('<b>','').sub('</b>',''), -1],[t('claim_vid_logical_discrepency_q_options_no').sub('<b>','').sub('</b>',''), 1],[t('not_sure').sub('<b>','').sub('</b>',''), 0]], :selected => @claim_review.vid_logical_discrepency), {}, disabled: (@claim_review.user_id!=current_user.id || ENV['BLOCKCHAIN_ENABLED']) %></b>
+                      <br><b><%= f.select :vid_logical_discrepency, options_for_select([['Select',''],[t('claim_vid_logical_discrepency_q_options_yes').sub('<b>','').sub('</b>',''), -1],[t('claim_vid_logical_discrepency_q_options_no').sub('<b>','').sub('</b>',''), 1],[t('not_sure').sub('<b>','').sub('</b>',''), 0]], :selected => @claim_review.vid_logical_discrepency), {}, disabled: ENV['BLOCKCHAIN_ENABLED'] || @claim_review.user_id!=current_user.id %></b>
                       <br><hr>
                       </li>
                   <% end %>
 
-                  <% if (@claim_review.user_id==current_user.id or (@claim_review.review_sharing_mode==1 || current_user.role=="admin")) and !@claim_review.note_vid_logical_discrepency.blank? %>
+                  <% if (@claim_review.user_id==current_user.id or @claim_review.review_sharing_mode==1 or current_user.role=="admin") and !@claim_review.note_vid_logical_discrepency.blank? %>
                       <li><b>*</b> <%== t('optional_note') %>
-                      <br><b><%= f.text_area(:note_vid_logical_discrepency, size: '50x10', class: 'field-long field-textarea', value:@claim_review.note_vid_logical_discrepency, disabled: (@claim_review.user_id!=current_user.id || ENV['BLOCKCHAIN_ENABLED'])) %></b>
+                      <br><b><%= f.text_area(:note_vid_logical_discrepency, size: '50x10', class: 'field-long field-textarea', value:@claim_review.note_vid_logical_discrepency, disabled: ENV['BLOCKCHAIN_ENABLED'] || @claim_review.user_id!=current_user.id) %></b>
                       <br><hr>
                       </li>
                   <% end %>
 
-                  <% if (@claim_review.user_id==current_user.id or (@claim_review.review_sharing_mode==1 || current_user.role=="admin")) and !@claim_review.txt_unreliable_news_content.blank? %>
+                  <% if (@claim_review.user_id==current_user.id or @claim_review.review_sharing_mode==1 or current_user.role=="admin") and !@claim_review.txt_unreliable_news_content.blank? %>
                       <li><b>*</b> <%== t('claim_txt_unreliable_news_content_q_long') %>
-                      <br><b><%= f.select :txt_unreliable_news_content, options_for_select([['Select',''],[t('claim_txt_unreliable_news_content_q_options_yes').sub('<b>','').sub('</b>',''), -1],[t('claim_txt_unreliable_news_content_q_options_no').sub('<b>','').sub('</b>',''), 1],[t('not_sure').sub('<b>','').sub('</b>',''), 0]], :selected => @claim_review.txt_unreliable_news_content), {}, disabled: (@claim_review.user_id!=current_user.id || ENV['BLOCKCHAIN_ENABLED']) %></b>
+                      <br><b><%= f.select :txt_unreliable_news_content, options_for_select([['Select',''],[t('claim_txt_unreliable_news_content_q_options_yes').sub('<b>','').sub('</b>',''), -1],[t('claim_txt_unreliable_news_content_q_options_no').sub('<b>','').sub('</b>',''), 1],[t('not_sure').sub('<b>','').sub('</b>',''), 0]], :selected => @claim_review.txt_unreliable_news_content), {}, disabled: ENV['BLOCKCHAIN_ENABLED'] || @claim_review.user_id!=current_user.id %></b>
                       <br><hr>
                       </li>
                   <% end %>
 
-                  <% if (@claim_review.user_id==current_user.id or (@claim_review.review_sharing_mode==1 || current_user.role=="admin")) and !@claim_review.note_txt_unreliable_news_content.blank? %>
+                  <% if (@claim_review.user_id==current_user.id or @claim_review.review_sharing_mode==1 or current_user.role=="admin") and !@claim_review.note_txt_unreliable_news_content.blank? %>
                       <li><b>*</b> <%== t('optional_note') %>
-                      <br><b><%= f.text_area(:note_txt_unreliable_news_content, size: '50x10', class: 'field-long field-textarea', value:@claim_review.note_txt_unreliable_news_content, disabled: (@claim_review.user_id!=current_user.id || ENV['BLOCKCHAIN_ENABLED'])) %></b>
+                      <br><b><%= f.text_area(:note_txt_unreliable_news_content, size: '50x10', class: 'field-long field-textarea', value:@claim_review.note_txt_unreliable_news_content, disabled: ENV['BLOCKCHAIN_ENABLED'] || @claim_review.user_id!=current_user.id) %></b>
                       <br><hr>
                       </li>
                   <% end %>
 
-                  <% if (@claim_review.user_id==current_user.id or (@claim_review.review_sharing_mode==1 || current_user.role=="admin")) and !@claim_review.txt_insufficient_verifiable_srcs.blank? %>
+                  <% if (@claim_review.user_id==current_user.id or @claim_review.review_sharing_mode==1 or current_user.role=="admin") and !@claim_review.txt_insufficient_verifiable_srcs.blank? %>
                       <li><b>*</b> <%== t('claim_txt_insufficient_verifiable_srcs_q_long') %>
-                      <br><b><%= f.select :txt_insufficient_verifiable_srcs, options_for_select([['Select',''],[t('claim_txt_insufficient_verifiable_srcs_q_options_yes').sub('<b>','').sub('</b>',''), -1],[t('claim_txt_insufficient_verifiable_srcs_q_options_no').sub('<b>','').sub('</b>',''), 1],[t('not_sure').sub('<b>','').sub('</b>',''), 0]], :selected => @claim_review.txt_insufficient_verifiable_srcs), {}, disabled: (@claim_review.user_id!=current_user.id || ENV['BLOCKCHAIN_ENABLED']) %></b>
+                      <br><b><%= f.select :txt_insufficient_verifiable_srcs, options_for_select([['Select',''],[t('claim_txt_insufficient_verifiable_srcs_q_options_yes').sub('<b>','').sub('</b>',''), -1],[t('claim_txt_insufficient_verifiable_srcs_q_options_no').sub('<b>','').sub('</b>',''), 1],[t('not_sure').sub('<b>','').sub('</b>',''), 0]], :selected => @claim_review.txt_insufficient_verifiable_srcs), {}, disabled: ENV['BLOCKCHAIN_ENABLED'] || @claim_review.user_id!=current_user.id %></b>
                       <br><hr>
                       </li>
                   <% end %>
 
-                  <% if (@claim_review.user_id==current_user.id or (@claim_review.review_sharing_mode==1 || current_user.role=="admin")) and !@claim_review.note_txt_insufficient_verifiable_srcs.blank? %>
+                  <% if (@claim_review.user_id==current_user.id or @claim_review.review_sharing_mode==1 or current_user.role=="admin") and !@claim_review.note_txt_insufficient_verifiable_srcs.blank? %>
                       <li><b>*</b> <%== t('optional_note') %>
-                      <br><b><%= f.text_area(:note_txt_insufficient_verifiable_srcs, size: '50x10', class: 'field-long field-textarea', value:@claim_review.note_txt_insufficient_verifiable_srcs, disabled: (@claim_review.user_id!=current_user.id || ENV['BLOCKCHAIN_ENABLED'])) %></b>
+                      <br><b><%= f.text_area(:note_txt_insufficient_verifiable_srcs, size: '50x10', class: 'field-long field-textarea', value:@claim_review.note_txt_insufficient_verifiable_srcs, disabled: ENV['BLOCKCHAIN_ENABLED'] || @claim_review.user_id!=current_user.id) %></b>
                       <br><hr>
                       </li>
                   <% end %>
 
-                  <% if (@claim_review.user_id==current_user.id or (@claim_review.review_sharing_mode==1 || current_user.role=="admin")) and !@claim_review.txt_has_clickbait.blank? %>
+                  <% if (@claim_review.user_id==current_user.id or @claim_review.review_sharing_mode==1 or current_user.role=="admin") and !@claim_review.txt_has_clickbait.blank? %>
                       <li><b>*</b> <%== t('claim_txt_has_clickbait_q_long') %>
-                      <br><b><%= f.select :txt_has_clickbait, options_for_select([['Select',''],[t('claim_txt_has_clickbait_q_options_yes').sub('<b>','').sub('</b>',''), -1],[t('claim_txt_has_clickbait_q_options_no').sub('<b>','').sub('</b>',''), 1],[t('not_sure').sub('<b>','').sub('</b>',''), 0]], :selected => @claim_review.txt_has_clickbait), {}, disabled: (@claim_review.user_id!=current_user.id || ENV['BLOCKCHAIN_ENABLED']) %></b>
+                      <br><b><%= f.select :txt_has_clickbait, options_for_select([['Select',''],[t('claim_txt_has_clickbait_q_options_yes').sub('<b>','').sub('</b>',''), -1],[t('claim_txt_has_clickbait_q_options_no').sub('<b>','').sub('</b>',''), 1],[t('not_sure').sub('<b>','').sub('</b>',''), 0]], :selected => @claim_review.txt_has_clickbait), {}, disabled: ENV['BLOCKCHAIN_ENABLED'] || @claim_review.user_id!=current_user.id %></b>
                       <br><hr>
                       </li>
                   <% end %>
 
-                  <% if (@claim_review.user_id==current_user.id or (@claim_review.review_sharing_mode==1 || current_user.role=="admin")) and !@claim_review.note_txt_has_clickbait.blank? %>
+                  <% if (@claim_review.user_id==current_user.id or @claim_review.review_sharing_mode==1 or current_user.role=="admin") and !@claim_review.note_txt_has_clickbait.blank? %>
                       <li><b>*</b> <%== t('optional_note') %>
-                      <br><b><%= f.text_area(:note_txt_has_clickbait, size: '50x10', class: 'field-long field-textarea', value:@claim_review.note_txt_has_clickbait, disabled: (@claim_review.user_id!=current_user.id || ENV['BLOCKCHAIN_ENABLED'])) %></b>
+                      <br><b><%= f.text_area(:note_txt_has_clickbait, size: '50x10', class: 'field-long field-textarea', value:@claim_review.note_txt_has_clickbait, disabled: ENV['BLOCKCHAIN_ENABLED'] || @claim_review.user_id!=current_user.id) %></b>
                       <br><hr>
                       </li>
                   <% end %>
 
-                  <% if (@claim_review.user_id==current_user.id or (@claim_review.review_sharing_mode==1 || current_user.role=="admin")) and !@claim_review.txt_poor_language.blank? %>
+                  <% if (@claim_review.user_id==current_user.id or @claim_review.review_sharing_mode==1 or current_user.role=="admin") and !@claim_review.txt_poor_language.blank? %>
                       <li><b>*</b> <%== t('claim_txt_poor_language_q_long') %>
-                      <br><b><%= f.select :txt_poor_language, options_for_select([['Select',''],[t('claim_txt_poor_language_q_options_yes').sub('<b>','').sub('</b>',''), -1],[t('claim_txt_poor_language_q_options_no').sub('<b>','').sub('</b>',''), 1],[t('not_sure').sub('<b>','').sub('</b>',''), 0]], :selected => @claim_review.txt_poor_language), {}, disabled: (@claim_review.user_id!=current_user.id || ENV['BLOCKCHAIN_ENABLED']) %></b>
+                      <br><b><%= f.select :txt_poor_language, options_for_select([['Select',''],[t('claim_txt_poor_language_q_options_yes').sub('<b>','').sub('</b>',''), -1],[t('claim_txt_poor_language_q_options_no').sub('<b>','').sub('</b>',''), 1],[t('not_sure').sub('<b>','').sub('</b>',''), 0]], :selected => @claim_review.txt_poor_language), {}, disabled: ENV['BLOCKCHAIN_ENABLED'] || @claim_review.user_id!=current_user.id %></b>
                       <br><hr>
                       </li>
                   <% end %>
 
-                  <% if (@claim_review.user_id==current_user.id or (@claim_review.review_sharing_mode==1 || current_user.role=="admin")) and !@claim_review.note_txt_poor_language.blank? %>
+                  <% if (@claim_review.user_id==current_user.id or @claim_review.review_sharing_mode==1 or current_user.role=="admin") and !@claim_review.note_txt_poor_language.blank? %>
                       <li><b>*</b> <%== t('optional_note') %>
-                      <br><b><%= f.text_area(:note_txt_poor_language, size: '50x10', class: 'field-long field-textarea', value:@claim_review.note_txt_poor_language, disabled: (@claim_review.user_id!=current_user.id || ENV['BLOCKCHAIN_ENABLED'])) %></b>
+                      <br><b><%= f.text_area(:note_txt_poor_language, size: '50x10', class: 'field-long field-textarea', value:@claim_review.note_txt_poor_language, disabled: ENV['BLOCKCHAIN_ENABLED'] || @claim_review.user_id!=current_user.id) %></b>
                       <br><hr>
                       </li>
                   <% end %>
 
-                  <% if (@claim_review.user_id==current_user.id or (@claim_review.review_sharing_mode==1 || current_user.role=="admin")) and !@claim_review.txt_crowds_distance_discrepency.blank? %>
+                  <% if (@claim_review.user_id==current_user.id or @claim_review.review_sharing_mode==1 or current_user.role=="admin") and !@claim_review.txt_crowds_distance_discrepency.blank? %>
                       <li><b>*</b> <%== t('claim_txt_crowds_distance_discrepency_q_long') %>
-                      <br><b><%= f.select :txt_crowds_distance_discrepency, options_for_select([['Select',''],[t('claim_txt_crowds_distance_discrepency_q_options_yes').sub('<b>','').sub('</b>',''), -1],[t('claim_txt_crowds_distance_discrepency_q_options_no').sub('<b>','').sub('</b>',''), 1],[t('not_sure').sub('<b>','').sub('</b>',''), 0]], :selected => @claim_review.txt_crowds_distance_discrepency), {}, disabled: (@claim_review.user_id!=current_user.id || ENV['BLOCKCHAIN_ENABLED']) %></b>
+                      <br><b><%= f.select :txt_crowds_distance_discrepency, options_for_select([['Select',''],[t('claim_txt_crowds_distance_discrepency_q_options_yes').sub('<b>','').sub('</b>',''), -1],[t('claim_txt_crowds_distance_discrepency_q_options_no').sub('<b>','').sub('</b>',''), 1],[t('not_sure').sub('<b>','').sub('</b>',''), 0]], :selected => @claim_review.txt_crowds_distance_discrepency), {}, disabled: ENV['BLOCKCHAIN_ENABLED'] || @claim_review.user_id!=current_user.id %></b>
                       <br><hr>
                       </li>
                   <% end %>
 
-                  <% if (@claim_review.user_id==current_user.id or (@claim_review.review_sharing_mode==1 || current_user.role=="admin")) and !@claim_review.note_txt_crowds_distance_discrepency.blank? %>
+                  <% if (@claim_review.user_id==current_user.id or @claim_review.review_sharing_mode==1 or current_user.role=="admin") and !@claim_review.note_txt_crowds_distance_discrepency.blank? %>
                       <li><b>*</b> <%== t('optional_note') %>
-                      <br><b><%= f.text_area(:note_txt_crowds_distance_discrepency, size: '50x10', class: 'field-long field-textarea', value:@claim_review.note_txt_crowds_distance_discrepency, disabled: (@claim_review.user_id!=current_user.id || ENV['BLOCKCHAIN_ENABLED'])) %></b>
+                      <br><b><%= f.text_area(:note_txt_crowds_distance_discrepency, size: '50x10', class: 'field-long field-textarea', value:@claim_review.note_txt_crowds_distance_discrepency, disabled: ENV['BLOCKCHAIN_ENABLED'] || @claim_review.user_id!=current_user.id) %></b>
                       <br><hr>
                       </li>
                   <% end %>
 
-                  <% if (@claim_review.user_id==current_user.id or (@claim_review.review_sharing_mode==1 || current_user.role=="admin")) and !@claim_review.txt_author_offers_little_evidence.blank? %>
+                  <% if (@claim_review.user_id==current_user.id or @claim_review.review_sharing_mode==1 or current_user.role=="admin") and !@claim_review.txt_author_offers_little_evidence.blank? %>
                       <li><b>*</b> <%== t('claim_txt_author_offers_little_evidence_q_long') %>
-                      <br><b><%= f.select :txt_author_offers_little_evidence, options_for_select([['Select',''],[t('claim_txt_author_offers_little_evidence_q_options_yes').sub('<b>','').sub('</b>',''), -1],[t('claim_txt_author_offers_little_evidence_q_options_no').sub('<b>','').sub('</b>',''), 1],[t('not_sure').sub('<b>','').sub('</b>',''), 0]], :selected => @claim_review.txt_author_offers_little_evidence), {}, disabled: (@claim_review.user_id!=current_user.id || ENV['BLOCKCHAIN_ENABLED']) %></b>
+                      <br><b><%= f.select :txt_author_offers_little_evidence, options_for_select([['Select',''],[t('claim_txt_author_offers_little_evidence_q_options_yes').sub('<b>','').sub('</b>',''), -1],[t('claim_txt_author_offers_little_evidence_q_options_no').sub('<b>','').sub('</b>',''), 1],[t('not_sure').sub('<b>','').sub('</b>',''), 0]], :selected => @claim_review.txt_author_offers_little_evidence), {}, disabled: ENV['BLOCKCHAIN_ENABLED'] || @claim_review.user_id!=current_user.id %></b>
                       <br><hr>
                       </li>
                   <% end %>
 
-                  <% if (@claim_review.user_id==current_user.id or (@claim_review.review_sharing_mode==1 || current_user.role=="admin")) and !@claim_review.note_txt_author_offers_little_evidence.blank? %>
+                  <% if (@claim_review.user_id==current_user.id or @claim_review.review_sharing_mode==1 or current_user.role=="admin") and !@claim_review.note_txt_author_offers_little_evidence.blank? %>
                       <li><b>*</b> <%== t('optional_note') %>
-                      <br><b><%= f.text_area(:note_txt_author_offers_little_evidence, size: '50x10', class: 'field-long field-textarea', value:@claim_review.note_txt_author_offers_little_evidence, disabled: (@claim_review.user_id!=current_user.id || ENV['BLOCKCHAIN_ENABLED'])) %></b>
+                      <br><b><%= f.text_area(:note_txt_author_offers_little_evidence, size: '50x10', class: 'field-long field-textarea', value:@claim_review.note_txt_author_offers_little_evidence, disabled: ENV['BLOCKCHAIN_ENABLED'] || @claim_review.user_id!=current_user.id) %></b>
                       <br><hr>
                       </li>
                   <% end %>
 
-                  <% if (@claim_review.user_id==current_user.id or (@claim_review.review_sharing_mode==1 || current_user.role=="admin")) and !@claim_review.txt_reliable_sources_disapprove.blank? %>
+                  <% if (@claim_review.user_id==current_user.id or @claim_review.review_sharing_mode==1 or current_user.role=="admin") and !@claim_review.txt_reliable_sources_disapprove.blank? %>
                       <li><b>*</b> <%== t('claim_txt_reliable_sources_disapprove_q_long') %>
-                      <br><b><%= f.select :txt_reliable_sources_disapprove, options_for_select([['Select',''],[t('claim_txt_reliable_sources_disapprove_q_options_yes').sub('<b>','').sub('</b>',''), -1],[t('claim_txt_reliable_sources_disapprove_q_options_no').sub('<b>','').sub('</b>',''), 1],[t('not_sure').sub('<b>','').sub('</b>',''), 0]], :selected => @claim_review.txt_reliable_sources_disapprove), {}, disabled: (@claim_review.user_id!=current_user.id || ENV['BLOCKCHAIN_ENABLED']) %></b>
+                      <br><b><%= f.select :txt_reliable_sources_disapprove, options_for_select([['Select',''],[t('claim_txt_reliable_sources_disapprove_q_options_yes').sub('<b>','').sub('</b>',''), -1],[t('claim_txt_reliable_sources_disapprove_q_options_no').sub('<b>','').sub('</b>',''), 1],[t('not_sure').sub('<b>','').sub('</b>',''), 0]], :selected => @claim_review.txt_reliable_sources_disapprove), {}, disabled: ENV['BLOCKCHAIN_ENABLED'] || @claim_review.user_id!=current_user.id %></b>
                       <br><hr>
                       </li>
                   <% end %>
 
-                  <% if (@claim_review.user_id==current_user.id or (@claim_review.review_sharing_mode==1 || current_user.role=="admin")) and !@claim_review.note_txt_reliable_sources_disapprove.blank? %>
+                  <% if (@claim_review.user_id==current_user.id or @claim_review.review_sharing_mode==1 or current_user.role=="admin") and !@claim_review.note_txt_reliable_sources_disapprove.blank? %>
                       <li><b>*</b> <%== t('optional_note') %>
-                      <br><b><%= f.text_area(:note_txt_reliable_sources_disapprove, size: '50x10', class: 'field-long field-textarea', value:@claim_review.note_txt_reliable_sources_disapprove, disabled: (@claim_review.user_id!=current_user.id || ENV['BLOCKCHAIN_ENABLED'])) %></b>
+                      <br><b><%= f.text_area(:note_txt_reliable_sources_disapprove, size: '50x10', class: 'field-long field-textarea', value:@claim_review.note_txt_reliable_sources_disapprove, disabled: ENV['BLOCKCHAIN_ENABLED'] || @claim_review.user_id!=current_user.id) %></b>
                       <br><hr>
                       </li>
                   <% end %>
 
-                  <% if (@claim_review.user_id==current_user.id or (@claim_review.review_sharing_mode==1 || current_user.role=="admin")) and !@claim_review.review_verdict.blank? %>
+                  <% if (@claim_review.user_id==current_user.id or @claim_review.review_sharing_mode==1 or current_user.role=="admin") and !@claim_review.review_verdict.blank? %>
                       <li><b>*</b> <%== t('review_verdict_q_long') %>
-                      <br><b><%= f.select :review_verdict, options_for_select([['Select',''],[t('rate_false').sub('<b>','').sub('</b>',''), 1],[t('rate_mostly_false').sub('<b>','').sub('</b>',''), 2],[t('rate_mixed').sub('<b>','').sub('</b>',''), 3],[t('rate_mostly_true').sub('<b>','').sub('</b>',''), 4],[t('rate_true').sub('<b>','').sub('</b>',''), 5],[t('rate_no_decision').sub('<b>','').sub('</b>',''), 0]], :selected => @claim_review.review_verdict), {}, disabled: (@claim_review.user_id!=current_user.id || ENV['BLOCKCHAIN_ENABLED']) %></b>
+                      <br><b><%= f.select :review_verdict, options_for_select([['Select',''],[t('rate_false').sub('<b>','').sub('</b>',''), 1],[t('rate_mostly_false').sub('<b>','').sub('</b>',''), 2],[t('rate_mixed').sub('<b>','').sub('</b>',''), 3],[t('rate_mostly_true').sub('<b>','').sub('</b>',''), 4],[t('rate_true').sub('<b>','').sub('</b>',''), 5],[t('rate_no_decision').sub('<b>','').sub('</b>',''), 0]], :selected => @claim_review.review_verdict), {}, disabled: ENV['BLOCKCHAIN_ENABLED'] || @claim_review.user_id!=current_user.id %></b>
                       <br><hr>
                       </li>
                   <% end %>
 
-                  <% if (@claim_review.user_id==current_user.id or (@claim_review.review_sharing_mode==1 || current_user.role=="admin")) and !@claim_review.review_description.blank? %>
+                  <% if (@claim_review.user_id==current_user.id or @claim_review.review_sharing_mode==1 or current_user.role=="admin") and !@claim_review.review_description.blank? %>
                       <li><b>*</b> <%== t('review_description_q_long') %>
-                      <br><b><%= f.text_area(:review_description, size: '50x10', class: 'field-long field-textarea', value:@claim_review.review_description, disabled: (@claim_review.user_id!=current_user.id || ENV['BLOCKCHAIN_ENABLED'])) %></b>
+                      <br><b><%= f.text_area(:review_description, size: '50x10', class: 'field-long field-textarea', value:@claim_review.review_description, disabled: ENV['BLOCKCHAIN_ENABLED'] || @claim_review.user_id!=current_user.id) %></b>
                       <br><hr>
                       </li>
                   <% end %>
 
-                  <% if (@claim_review.user_id==current_user.id or (@claim_review.review_sharing_mode==1 || current_user.role=="admin")) and !@claim_review.note_review_description.blank? %>
+                  <% if (@claim_review.user_id==current_user.id or @claim_review.review_sharing_mode==1 or current_user.role=="admin") and !@claim_review.note_review_description.blank? %>
                       <li><b>*</b> <%== t('optional_note') %>
-                      <br><b><%= f.text_area(:note_review_description, size: '50x10', class: 'field-long field-textarea', value:@claim_review.note_review_description, disabled: (@claim_review.user_id!=current_user.id || ENV['BLOCKCHAIN_ENABLED'])) %></b>
+                      <br><b><%= f.text_area(:note_review_description, size: '50x10', class: 'field-long field-textarea', value:@claim_review.note_review_description, disabled: ENV['BLOCKCHAIN_ENABLED'] || @claim_review.user_id!=current_user.id) %></b>
                       <br><hr>
                       </li>
                   <% end %>
 
-                  <% if (@claim_review.user_id==current_user.id or (@claim_review.review_sharing_mode==1 || current_user.role=="admin")) and !@claim_review.review_sharing_mode.blank? %>
+                  <% if (@claim_review.user_id==current_user.id or @claim_review.review_sharing_mode==1 or current_user.role=="admin") and !@claim_review.review_sharing_mode.blank? %>
                       <li><b>*</b> <%== t('review_sharing_mode_q_long') %>
-                      <br><b><%= f.select :review_sharing_mode, options_for_select([['Select',''],[t('yes_share').sub('<b>','').sub('</b>',''), 1],[t('no_share').sub('<b>','').sub('</b>',''), -1]], :selected => @claim_review.review_sharing_mode), {}, disabled: (@claim_review.user_id!=current_user.id || ENV['BLOCKCHAIN_ENABLED']) %></b>
+                      <br><b><%= f.select :review_sharing_mode, options_for_select([['Select',''],[t('yes_share').sub('<b>','').sub('</b>',''), 1],[t('no_share').sub('<b>','').sub('</b>',''), -1]], :selected => @claim_review.review_sharing_mode), {}, disabled: ENV['BLOCKCHAIN_ENABLED'] || @claim_review.user_id!=current_user.id %></b>
                       <br><hr>
                       </li>
                   <% end %>
 
-                  <% if (@claim_review.user_id==current_user.id or (@claim_review.review_sharing_mode==1 || current_user.role=="admin")) and !@claim_review.note_review_sharing_mode.blank? %>
+                  <% if (@claim_review.user_id==current_user.id or @claim_review.review_sharing_mode==1 or current_user.role=="admin") and !@claim_review.note_review_sharing_mode.blank? %>
                       <li><b>*</b> <%== t('claim_review_field') %>
-                      <br><b><%= f.text_area(:note_review_sharing_mode, size: '50x10', class: 'field-long field-textarea', value:@claim_review.note_review_sharing_mode, disabled: (@claim_review.user_id!=current_user.id || ENV['BLOCKCHAIN_ENABLED'])) %></b>
+                      <br><b><%= f.text_area(:note_review_sharing_mode, size: '50x10', class: 'field-long field-textarea', value:@claim_review.note_review_sharing_mode, disabled: ENV['BLOCKCHAIN_ENABLED'] || @claim_review.user_id!=current_user.id) %></b>
                       <br><hr>
                       </li>
                   <% end %>
 
-                  <% if (@claim_review.user_id==current_user.id or (@claim_review.review_sharing_mode==1 || current_user.role=="admin")) and !@claim_review.add_to_blockchain.blank? %>
+                  <% if (@claim_review.user_id==current_user.id or @claim_review.review_sharing_mode==1 or current_user.role=="admin") and !@claim_review.add_to_blockchain.blank? %>
                       <li><b>*</b> <%== t('add_to_blockchain_q_long') %>
-                      <br><b><%= f.select :add_to_blockchain, options_for_select([['Select',''],[t('yes_answer'), 1],[t('no_answer'), 0]], :selected => @claim_review.add_to_blockchain), {}, disabled: (@claim_review.user_id!=current_user.id || ENV['BLOCKCHAIN_ENABLED']) %></b>
+                      <br><b><%= f.select :add_to_blockchain, options_for_select([['Select',''],[t('yes_answer').sub('<b>','').sub('</b>',''), 1],[t('no_answer').sub('<b>','').sub('</b>',''), 0]], :selected => @claim_review.add_to_blockchain), {}, disabled: ENV['BLOCKCHAIN_ENABLED'] || @claim_review.user_id!=current_user.id %></b>
                       <br><hr>
                       </li>
                   <% end %>
-
-                  <% if ENV['BLOCKCHAIN_ENABLED'] %>
-                      <li style="display:none;"><b>*</b> <%== t('add_to_blockchain_q_long') %>
-                      <br><b><%= f.select :add_to_blockchain, options_for_select([['Select',''],[t('yes_answer'), 1],[t('no_answer'), 0]], :selected => @claim_review.add_to_blockchain), {}, disabled: (@claim_review.user_id!=current_user.id || ENV['BLOCKCHAIN_ENABLED']) %></b>
-                      <br><hr>
-                      </li>
-
-                      <% if @claim_review.add_to_blockchain==1 && !@claim_review.time_added_to_blockchain.nil? && !@claim_review.blockchain_tx.nil? %>
-                      <h6><%= t('added_to_blockchain') %>: <%= t('yes_answer_option') %><br></h6>
-                      <h6><%= t('added_on_date') %>: <%= @claim.time_added_to_blockchain %><br></h6>
-                      <h6><%= t('blockchain_tx') %>: <%= @claim.blockchain_tx %><br></h6>
-                      <% else %>
-                          <h6><%= t('added_to_blockchain') %>: <%= t('no_answer_option') %></h6>
-                      <% end %>
-
-                    <h6><%= t('expiry_date') %>:
-                      <% if !@claim.expiry_date.nil? %>
-                        <%= @claim.expiry_date %>
-                      <% else %>
-                          <%= t('no_expiry_date') %>
-                      <% end %>
-                    </h6>
-                    <h6><%= t('reward_amount') %>:
-                      <% if !@claim.reward_amount.nil? %>
-                        <%= @claim.reward_amount %>
-                      <% else %>
-                          <%= t('no_reward') %>
-                      <% end %>
-                    </h6>
-                    <h6><%= t('conditions') %>:
-                      <% if !@claim.conditions.empty? %>
-                        <%= @claim.conditions %>
-                      <% else %>
-                          <%= t('no_conditions') %>
-                      <% end %>
-                    </h6>
-                <% end %>
 
                     <li>
-                      <% if (@claim_review.user_id == current_user.id or current_user.role=='admin') && !ENV['BLOCKCHAIN_ENABLED']  %>
-                          <%= f.submit t('update'), :class=>'btn btn btn-primary' %>
-                      <% end %>
+                      <% if !ENV['BLOCKCHAIN_ENABLED'] && (@claim_review.user_id == current_user.id or current_user.role=='admin') %>
+    <%= f.submit t('update'), :class=>'btn btn btn-primary' %>
+<% end %>
 
                     </li>
                   </ul>

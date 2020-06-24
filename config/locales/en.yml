@@ -286,7 +286,7 @@ en:
   note: Note
   note_provide_rationale: It is highly recommended (but not required) that you provide a rationale for your assessment in the box below.
   open_video: Open the video
-  optional_note: Justify/explain your answer (optional)
+  optional_note: Note down any concerns/limitations about your assessment (optional)
   or: or
   or_browse: Or browse our database
   partners: Partners
@@ -524,8 +524,8 @@ en:
   confirm_email_link: Confirm email link
   expiry_date: Expiry date
   blank_deadline: Leave blank if there is no deadline
-  yes_answer: Yes
-  no_answer: No
+  yes_answer: 'Yes'
+  no_answer: 'No'
   yes_answer_option: 'Yes'
   no_answer_option: 'No'
   no_conditions: No Conditions
@@ -549,3 +549,7 @@ en:
   accepted: Accepted
   rejected: Rejected
   assessment_rationale: Rationale behind this assessment
+  assessment_time: Time assessed by admin
+  assessment_waiting: Waiting to be assessed by admin
+  assessment_status: Current assessment status
+  assess_now: Assess now

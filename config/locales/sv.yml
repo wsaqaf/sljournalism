@@ -276,7 +276,6 @@ sv:
   most: 'Mest '
   new: Ny
   next_step: Nästa steg
-  no_answer: Nej
   no_associated_resource: Inga resurser har kopplats till denna fråga.
   no_results: Inga resultat.
   no_share: Nej, håll det privat för mig
@@ -525,7 +524,8 @@ sv:
   welcome: Välkommen
   welcome_msg: Välkommen till Galileo – din faktaassistent!
   with_no_reviews: " med inga faktagranskningar ännu"
-  yes_answer: Ja
+  yes_answer: 'Ja'
+  no_answer: 'Nej'
   yes_share: Ja, dela med alla
   you_created: " som du skapade"
   you_reviewed: " att du har faktagranskat"
@@ -562,3 +562,7 @@ sv:
   accepted: Godkänd
   rejected: Avvisad
   assessment_rationale: Motivering bakom denna bedömning
+  assessment_time: Tid bedömd av admin
+  assessment_waiting: Väntar på att bedömas av admin
+  assessment_status: Aktuell bedömningsstatus
+  assess_now: Bedöma nu

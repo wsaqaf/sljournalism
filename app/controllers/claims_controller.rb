@@ -164,13 +164,13 @@ class ClaimsController < ApplicationController
       ENV['BLOCKCHAIN_ORGID']+"\",\""+
       @claim.id.to_s+"\",\""+
       current_user.id.to_s+"\", \""+
-      @claim.title.gsub(/"/, "")+"\",\""+
+      @claim.title.gsub('"', '').gsub("'", "'")+"\",\""+
       request.base_url+config.relative_url_root+"/claims"+@claim.id.to_s+"\",\""+
       @claim.expiry_date.to_s[0...-7]+"\",\""+
       @claim.reward_amount.to_s+"\",\""+
-      @claim.conditions.gsub(/\r\n?/, ";").gsub(/"/, "")+"\",\""+
+      @claim.conditions.gsub(/\r\n?/, ";").gsub('"', '').gsub("'", "'")+"\",\""+
       @claim.url+"\",\""+
-      @claim.description.gsub(/\r\n?/, ";").gsub(/"/, "")+"\",\""+
+      @claim.description.gsub(/\r\n?/, ";").gsub('"', '').gsub("'", "'")+"\",\""+
       medium+"\",\""+
       src+"\",\""+
       @claim.has_image.to_s+"\",\""+
@@ -180,9 +180,9 @@ class ClaimsController < ApplicationController
       "\"]}"
 
       cmnd="docker exec -it cli peer chaincode invoke -o orderer.example.com:7050 --tls true --cafile /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem -C mychannel -n mycc --peerAddresses peer0.org1.example.com:7051 --tlsRootCertFiles /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/ca.crt --peerAddresses peer0.org2.example.com:9051 --tlsRootCertFiles /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org2.example.com/peers/peer0.org2.example.com/tls/ca.crt -c '"+argmnt+"' --waitForEvent"
-puts ("\n=============\nRunning:\n"+cmnd+"\n--\n")
+#puts ("\n=============\nRunning:\n"+cmnd+"\n--\n")
       output=%x(#{cmnd})
-puts("Result:\n"+output+"\n==\n")
+#puts("Result:\n"+output+"\n==\n")
       begin
         tx_no=output.match(/ txid \[(.+?)\]/)[1]
         success_confirmation=output.match(/Chaincode invoke successful\. result\: status\:200 payload\:"(.+)"/)[1]
@@ -213,7 +213,7 @@ puts("Result:\n"+output+"\n==\n")
     @import_note=""
     if (params[:claims_json].present?)
       massport
-    elsif (!params[:claim].nil? && (!params[:claim][:url].empty? || params[:claim][:file]))
+    elsif (!params[:claim].nil? && ((!params[:claim][:url].empty? && params[:claim][:include_review].present?) || params[:claim][:file]))
       if (params[:claim][:include_review].present?)
         if (params[:claim][:file].present?)
           myfile=params[:claim][:file]

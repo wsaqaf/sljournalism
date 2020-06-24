@@ -62,22 +62,6 @@ class ClaimReview::StepsController < ApplicationController
     return result
   end
 
-  def blockchain_entry()
-    medium=""
-    src=""
-    begin
-      medium=Medium.find(@claim.medium_id).name
-      src=Src.find(@claim.src_id).name
-    rescue
-    end
-
-    assessments={1=>"False",2=>"Mostly False",3=>"Mixed",4=>"Mostly True",5=>"True"}
-
-    entry="\""+Rails.configuration.institution.to_s+"\",\""+@claim.title+"\",\""+assessments[@claim_review.review_verdict]+"\",\""+request.base_url+config.relative_url_root+"/claims"+@claim.id.to_s+"\",\""+@claim.created_at.to_s+"\",\""+src+"\",\""+medium+"\",\"1\",\"5\",\""+@claim_review.review_verdict.to_s+"\",\""+request.base_url+config.relative_url_root+"/logo.png"+"\",\""+@claim.url+"\",\""+@claim.description.to_s+"\",\""+@claim.tags.map(&:claim_name).join(', ')+"\",\""+@claim.has_image.to_s+"\",\""+@claim.has_video.to_s+"\",\""+@claim.has_text.to_s+"\",\""+@claim_review.updated_at.to_s+"\",\""+User.find(@claim.user_id).name.to_s+"\",\""+@claim_review.img_review_started.to_s+"\",\""+@claim_review.img_old.to_s+"\",\""+@claim_review.img_forensic_discrepency.to_s+"\",\""+@claim_review.img_metadata_discrepency.to_s+"\",\""+@claim_review.img_logical_discrepency.to_s+"\",\""+@claim_review.note_img_old.to_s+"\",\""+@claim_review.note_img_forensic_discrepency.to_s+"\",\""+@claim_review.note_img_metadata_discrepency.to_s+"\",\""+@claim_review.note_img_logical_discrepency.to_s+"\",\""+@claim_review.vid_review_started.to_s+"\",\""+@claim_review.vid_old.to_s+"\",\""+@claim_review.vid_forensic_discrepency.to_s+"\",\""+@claim_review.vid_metadata_discrepency.to_s+"\",\""+@claim_review.vid_audio_discrepency.to_s+"\",\""+@claim_review.vid_logical_discrepency.to_s+"\",\""+@claim_review.note_vid_old.to_s+"\",\""+@claim_review.note_vid_forensic_discrepency.to_s+"\",\""+@claim_review.note_vid_metadata_discrepency.to_s+"\",\""+@claim_review.note_vid_audio_discrepency.to_s+"\",\""+@claim_review.note_vid_logical_discrepency.to_s+"\",\""+@claim_review.txt_review_started.to_s+"\",\""+@claim_review.txt_unreliable_news_content.to_s+"\",\""+@claim_review.txt_insufficient_verifiable_srcs.to_s+"\",\""+@claim_review.txt_has_clickbait.to_s+"\",\""+@claim_review.txt_poor_language.to_s+"\",\""+@claim_review.txt_crowds_distance_discrepency.to_s+"\",\""+@claim_review.txt_author_offers_little_evidence.to_s+"\",\""+@claim_review.txt_reliable_sources_disapprove.to_s+"\",\""+@claim_review.note_txt_unreliable_news_content.to_s+"\",\""+@claim_review.note_txt_insufficient_verifiable_srcs.to_s+"\",\""+@claim_review.note_txt_has_clickbait.to_s+"\",\""+@claim_review.note_txt_poor_language.to_s+"\",\""+@claim_review.note_txt_crowds_distance_discrepency.to_s+"\",\""+@claim_review.note_txt_author_offers_little_evidence+"\",\""+@claim_review.note_txt_reliable_sources_disapprove+"\""
-
-    return entry
-  end
-
   def build_claim_review_schema()
 #    if (@claim_review.note_review_sharing_mode.blank?)
       tmp_arr=[]
@@ -91,7 +75,6 @@ class ClaimReview::StepsController < ApplicationController
           tmp_arr=tmp_arr+['textual']
       end
       assessments={1=>"False",2=>"Mostly False",3=>"Mixed",4=>"Mostly True",5=>"True"}
-
       claim_review_schema= {
           "@context": "http://schema.org",
           "@graph": [
@@ -126,7 +109,8 @@ class ClaimReview::StepsController < ApplicationController
                       "ratingValue": @claim_review.review_verdict,
                       "bestRating": "5",
                       "worstRating": "1",
-                      "alternateName": assessments[@claim_review.review_verdict]
+                      "alternateName": assessments[@claim_review.review_verdict],
+                      "ratingExplanation": @claim_review.review_description+" "+@claim_review.note_review_description
                   },
                   "claimReviewed": @claim.title,
                   "@type": "ClaimReview",
@@ -204,7 +188,7 @@ class ClaimReview::StepsController < ApplicationController
               }]
           }
         }
-      @claim_review.note_review_sharing_mode=JSON.generate(claim_review_schema).gsub("\"","\\\"")
+      @claim_review.note_review_sharing_mode=JSON.pretty_generate(claim_review_schema)
       return @claim_review.note_review_sharing_mode
 #      end
   end
@@ -235,7 +219,6 @@ class ClaimReview::StepsController < ApplicationController
 
   def save_to_the_blockchain
       assessments={1=>"False",2=>"Mostly False",3=>"Mixed",4=>"Mostly True",5=>"True"}
-
       argmnt='{"Args":["addFactcheck","'+
       ENV['BLOCKCHAIN_ORGID']+'","'+
       @claim_review.id.to_s+'","'+
@@ -252,20 +235,20 @@ class ClaimReview::StepsController < ApplicationController
       @claim_review.img_metadata_discrepency.to_s+'","'+
       @claim_review.img_logical_discrepency.to_s+'","'+
       @claim_review.note_img_old.to_s+'","'+
-      @claim_review.note_img_forensic_discrepency.to_s.gsub(/\r\n?/, ";").gsub(/"/, "")+'","'+
-      @claim_review.note_img_metadata_discrepency.to_s.gsub(/\r\n?/, ";").gsub(/"/, "")+'","'+
-      @claim_review.note_img_logical_discrepency.to_s.gsub(/\r\n?/, ";").gsub(/"/, "")+'","'+
+      @claim_review.note_img_forensic_discrepency.to_s.gsub(/\r\n?/, ";").gsub('"', '').gsub("'", "")+'","'+
+      @claim_review.note_img_metadata_discrepency.to_s.gsub(/\r\n?/, ";").gsub('"', '').gsub("'", "")+'","'+
+      @claim_review.note_img_logical_discrepency.to_s.gsub(/\r\n?/, ";").gsub('"', '').gsub("'", "")+'","'+
       @claim_review.vid_review_started.to_s+'","'+
       @claim_review.vid_old.to_s+'","'+
       @claim_review.vid_forensic_discrepency.to_s+'","'+
       @claim_review.vid_metadata_discrepency.to_s+'","'+
       @claim_review.vid_audio_discrepency.to_s+'","'+
       @claim_review.vid_logical_discrepency.to_s+'","'+
-      @claim_review.note_vid_old.to_s.gsub(/\r\n?/, ";").gsub(/"/, "")+'","'+
-      @claim_review.note_vid_forensic_discrepency.to_s.gsub(/\r\n?/, ";").gsub(/"/, "")+'","'+
-      @claim_review.note_vid_metadata_discrepency.to_s.gsub(/\r\n?/, ";").gsub(/"/, "")+'","'+
-      @claim_review.note_vid_audio_discrepency.to_s.gsub(/\r\n?/, ";").gsub(/"/, "")+'","'+
-      @claim_review.note_vid_logical_discrepency.to_s.gsub(/\r\n?/, ";").gsub(/"/, "")+'","'+
+      @claim_review.note_vid_old.to_s.gsub(/\r\n?/, ";").gsub('"', '').gsub("'", "")+'","'+
+      @claim_review.note_vid_forensic_discrepency.to_s.gsub(/\r\n?/, ";").gsub('"', '').gsub("'", "")+'","'+
+      @claim_review.note_vid_metadata_discrepency.to_s.gsub(/\r\n?/, ";").gsub('"', '').gsub("'", "")+'","'+
+      @claim_review.note_vid_audio_discrepency.to_s.gsub(/\r\n?/, ";").gsub('"', '').gsub("'", "")+'","'+
+      @claim_review.note_vid_logical_discrepency.to_s.gsub(/\r\n?/, ";").gsub('"', '').gsub("'", "")+'","'+
       @claim_review.txt_review_started.to_s+'","'+
       @claim_review.txt_unreliable_news_content.to_s+'","'+
       @claim_review.txt_insufficient_verifiable_srcs.to_s+'","'+
@@ -274,19 +257,21 @@ class ClaimReview::StepsController < ApplicationController
       @claim_review.txt_crowds_distance_discrepency.to_s+'","'+
       @claim_review.txt_author_offers_little_evidence.to_s+'","'+
       @claim_review.txt_reliable_sources_disapprove.to_s+'","'+
-      @claim_review.note_txt_unreliable_news_content.to_s.gsub(/\r\n?/, ";").gsub(/"/, "")+'","'+
-      @claim_review.note_txt_insufficient_verifiable_srcs.to_s.gsub(/\r\n?/, ";").gsub(/"/, "")+'","'+
-      @claim_review.note_txt_has_clickbait.to_s.gsub(/\r\n?/, ";").gsub(/"/, "")+'","'+
-      @claim_review.note_txt_poor_language.to_s.gsub(/\r\n?/, ";").gsub(/"/, "")+'","'+
-      @claim_review.note_txt_crowds_distance_discrepency.to_s.gsub(/\r\n?/, ";").gsub(/"/, "")+'","'+
-      @claim_review.note_txt_author_offers_little_evidence.to_s.gsub(/\r\n?/, ";").gsub(/"/, "")+'","'+
-      @claim_review.note_txt_reliable_sources_disapprove.to_s.gsub(/\r\n?/, ";").gsub(/"/, "")+'"]}'
+      @claim_review.note_txt_unreliable_news_content.to_s.gsub(/\r\n?/, ";").gsub('"', '').gsub("'", "")+'","'+
+      @claim_review.note_txt_insufficient_verifiable_srcs.to_s.gsub(/\r\n?/, ";").gsub('"', '').gsub("'", "")+'","'+
+      @claim_review.note_txt_has_clickbait.to_s.gsub(/\r\n?/, ";").gsub('"', '').gsub("'", "")+'","'+
+      @claim_review.note_txt_poor_language.to_s.gsub(/\r\n?/, ";").gsub('"', '').gsub("'", "")+'","'+
+      @claim_review.note_txt_crowds_distance_discrepency.to_s.gsub(/\r\n?/, ";").gsub('"', '').gsub("'", "")+'","'+
+      @claim_review.note_txt_author_offers_little_evidence.to_s.gsub(/\r\n?/, ";").gsub('"', '').gsub("'", "")+'","'+
+      @claim_review.note_txt_reliable_sources_disapprove.to_s.gsub(/\r\n?/, ";").gsub('"', '')+'","'+
+      @claim_review.note_review_verdict.to_s.gsub(/\r\n?/, ";").gsub('"', '').gsub("'", "")+'","'+
+      (@claim_review.review_description+" "+@claim_review.note_review_description).gsub(/\r\n?/, ";").gsub('"', '').gsub("'", "")+'"]}'
 
       cmnd="docker exec -it cli peer chaincode invoke -o orderer.example.com:7050 --tls true --cafile /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem -C mychannel -n mycc --peerAddresses peer0.org1.example.com:7051 --tlsRootCertFiles /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/ca.crt --peerAddresses peer0.org2.example.com:9051 --tlsRootCertFiles /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org2.example.com/peers/peer0.org2.example.com/tls/ca.crt -c '"+argmnt+"' --waitForEvent"
 
-puts ("\n=============\nRunning:\n"+cmnd+"\n--\n")
+#puts ("\n=============\nRunning:\n"+cmnd+"\n--\n")
       output=%x(#{cmnd})
-puts("Result:\n"+output+"\n==\n")
+#puts("Result:\n"+output+"\n==\n")
       begin
         tx_no=output.match(/ txid \[(.+?)\]/)[1]
         success_confirmation=output.match(/Chaincode invoke successful\. result\: status\:200 payload\:"(.+)"/)[1]

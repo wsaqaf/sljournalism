@@ -5,8 +5,6 @@ module Api
       respond_to :json
 
       def index
-        value = %x( ls -al )
-        puts("\n\n=======\n\n"+value+"\n\n=======\n\n")
         respond_with Claim.all
       end
 

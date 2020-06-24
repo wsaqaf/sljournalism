@@ -61,7 +61,9 @@
                             <%= f.submit t('next_step'), :class => 'btn btn btn-primary' %>
                   
     </fieldset>
-    <div style='float:right'><%= link_to t('del_review'), src_src_review_path(@src.id,@src_review), style: '', method: :delete, data: { confirm: t('warning_del') } %></div>
+        <% if !ENV['BLOCKCHAIN_ENABLED'] %>
+            <div style='float:right'><%= link_to t('del_review'), src_src_review_path(@src.id,@src_review), style: '', method: :delete, data: { confirm: t('warning_del') } %></div>
+        <% end %>
     <% end %>
   </div>
 </div>

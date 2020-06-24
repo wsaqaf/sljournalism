@@ -49,8 +49,7 @@ class ClaimReviewsController < ApplicationController
   def save_to_the_blockchain
         if (params[:blockchain_assessment]=="1") then eval="approved" else eval="rejected" end
 
-        argmnt="{\"Args\":[\"assessFactcheck\",\""+ENV['BLOCKCHAIN_ORGID']+"\",\""+@claim_review.blockchain_id.to_s+"\", \""+current_user.id.to_s+"\", \""+eval+"\", \""+params[:blockchain_assessment_rationale]+"\"]}"
-  #{"Args":["assessFactcheck","org1","F3801204119137170340","1","approved", "Verifiable, clear and thorough factcheck. Well done!"]}
+        argmnt="{\"Args\":[\"assessFactcheck\",\""+ENV['BLOCKCHAIN_ORGID']+"\",\""+@claim_review.blockchain_id.to_s+"\", \""+current_user.id.to_s+"\", \""+eval+"\", \""+params[:blockchain_assessment_rationale].gsub('"', '').gsub("'", "'")+"\"]}"
         cmnd="docker exec -it cli peer chaincode invoke -o orderer.example.com:7050 --tls true --cafile /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem -C mychannel -n mycc --peerAddresses peer0.org1.example.com:7051 --tlsRootCertFiles /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/ca.crt --peerAddresses peer0.org2.example.com:9051 --tlsRootCertFiles /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org2.example.com/peers/peer0.org2.example.com/tls/ca.crt -c '"+argmnt+"' --waitForEvent"
 
 #  puts ("\n=============\nRunning:\n"+cmnd+"\n--\n")

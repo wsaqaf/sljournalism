@@ -105,6 +105,8 @@ type factcheck struct {
 		NoteTxtCrowdsDistanceDiscrepency string `json:"noteTxtCrowdsDistanceDiscrepency"` //argv[42]
 		NoteTxtAuthorOffersLittleEvidence string `json:"noteTxtAuthorOffersLittleEvidence"` //argv[43]
 		NoteTxtReliableSourcesDisapprove string `json:"noteTxtReliableSourcesDisapprove"` //argv[44]
+		NoteReviewVerdict string `json:"noteReviewVerdict"` //argv[45]
+		NoteReviewDescription string `json:"noteReviewDescription"` //argv[46]
 }
 
 // ===================================================================================
@@ -421,7 +423,7 @@ func (t *SimpleChaincode) addClaim(stub shim.ChaincodeStubInterface, args []stri
 					return shim.Error("Failed to unmarshal wallet record: "+ err.Error())
 			}
 			if clientWalletJSON.Balance<commitments {
-					return shim.Error("The wallet balance is insufficient! Your balance (after deducting any future commitments) is "+strconv.Itoa(commitments)+".  You need to deposit at least "+strconv.Itoa((commitments-clientWalletJSON.Balance))+" more units for this transaction to proceed.")
+					return shim.Error("The wallet balance is insufficient! Your balance (after deducting any future commitments) is "+strconv.Itoa(rewardAmnt+clientWalletJSON.Balance-commitments)+".  You need to deposit at least "+strconv.Itoa((commitments-clientWalletJSON.Balance))+" more units for this transaction to proceed.")
 			}
 //			log=log+fmt.Sprintf("- the balance is greater indeed!\n");
 	} else {
@@ -528,7 +530,7 @@ func (t *SimpleChaincode) addFactcheck(stub shim.ChaincodeStubInterface, args []
 	}
 
 	sz := len(args)
-	for i := sz; i <=44; i++ { args = append(args,"") }
+	for i := sz; i <=46; i++ { args = append(args,"") }
 
 	fmt.Println("- start init factcheck")
 
@@ -587,6 +589,8 @@ func (t *SimpleChaincode) addFactcheck(stub shim.ChaincodeStubInterface, args []
 	fc.NoteTxtCrowdsDistanceDiscrepency = args[42]
 	fc.NoteTxtAuthorOffersLittleEvidence = args[43]
 	fc.NoteTxtReliableSourcesDisapprove = args[44]
+	fc.NoteReviewVerdict = args[45]
+	fc.NoteReviewDescription = args[46]
 
 	// ==== Check if factcheck already exists ====
 	factcheckAsBytes, err := stub.GetState(fc.FactcheckID)

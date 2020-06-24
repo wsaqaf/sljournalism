@@ -56,6 +56,18 @@
       <%= link_to link_to t('delete')+' '+t('review'), claim_claim_review_path(claim.id,claim_review), method: :delete, data: { confirm: "Are you sure?" } %><br>
     <% end %>
 
+    <% if (claim_review.user_id == current_user.id || current_user.role=="admin") && ENV['BLOCKCHAIN_ENABLED'] && !claim_review.blockchain_id.empty?  %>
+      <% if (claim_review.blockchain_assessment.present?) %>
+        <% assessments={0=>"rejected",1=>"accepted"} %>
+        <li><%= t('assessment_time') %>: <%= claim_review.blockchain_assessment_time %> </li>
+        <li><%= t('assessment_status') %>: <%= t(assessments[claim_review.blockchain_assessment]) %></li>
+        <li><%= t('assessment_rationale') %> : <%= t(claim_review.blockchain_assessment_rationale) %></li>
+      <% else %>
+      <li><%= t('assessment') %>: <%= t('assessment_waiting') %> [<b><%= link_to t('assess_now'), claim_claim_review_path(claim.id,claim_review.id) %></b>]
+      </li>
+      <% end %>
+    <% end %>
+
     <br><b><%= link_to t('more_about')+' '+t('this_review'), claim_claim_review_path(claim.id,claim_review.id) %></b>
   </ul>
   <hr>
