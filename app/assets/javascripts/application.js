@@ -276,10 +276,14 @@ function wallet(rel_url,url1,usr,to_add,add_to_blockchain)
     data: { "getbalance": "1", "addtobalance": add_more, "add_to_blockchain": add_to_blockchain },
     success: function(result)
       {
-        if (result.length > 0)
+        if (result.length > 10)
           {
             $("#wallet"+usr).html(result+" ");
             $("#hidden"+usr).show();
+          }
+        else
+          {
+            $("#wallet"+usr).html("<font color='red'>Error: could not run blockchain command.</font>");
           }
       }
    });
@@ -298,10 +302,14 @@ function assess(rel_url,url1)
     data: { "blockchain_assessment": assessment, "blockchain_assessment_rationale": rationale },
     success: function(result)
       {
-        if (result.length > 0)
+        if (result.length > 10)
           {
             $("#assessment").html(result+" ");
             $("#assessment_div").hide();
+          }
+        else
+          {
+            $("#assessment"+usr).html("<font color='red'>Error: could not run blockchain command.</font>");
           }
       }
    });

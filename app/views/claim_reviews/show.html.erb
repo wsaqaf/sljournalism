@@ -6,7 +6,7 @@
 <br><%= t('created_at') %>: <%= @claim_review.created_at %>
                    <br><%= t('updated_at') %>: <%= @claim_review.updated_at %>
 
-                    <% if !ENV['BLOCKCHAIN_ENABLED'] && (@claim_review.user_id == current_user.id || current_user.role=="admin")  %>
+                    <% if (!ENV['BLOCKCHAIN_ENABLED'] || !@claim_review.blockchain_tx.present?) && (@claim_review.user_id == current_user.id || current_user.role=="admin")  %>
                       <br><br><%= link_to t('edit_review'), claim_claim_reviews_path(@claim.id), method: :create %> -
                       <%= link_to t('del_review'), claim_claim_review_path(@claim.id,@claim_review), method: :delete, data: { confirm: t('warning_del') } %>
                     <% end %>
@@ -299,7 +299,7 @@
                     </li>
                   </ul>
 
-                  <% if (ENV['BLOCKCHAIN_ENABLED'] && !@claim_review.blockchain_tx.empty? && current_user.role=="admin") %>
+                  <% if (ENV['BLOCKCHAIN_ENABLED'] && !@claim_review.blockchain_tx.present? && current_user.role=="admin") %>
                     <div id="assessment"></div>
                     <div id="assessment_div">
                       <hr>

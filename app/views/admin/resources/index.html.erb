@@ -18,9 +18,10 @@
   <%= t('no_results') %>
   <% else %>
   <div>
+    <% buybug %>
     <%= form_tag(resources_path, method: :post) do %>
     <%= hidden_field_tag :resources_json, params[:resources_json], value: @resources_json %>
-    <!-- <%= submit_tag t('export')+" "+t('all'), name:nil, :class => 'btn btn btn-primary' %> -->
+    <%= submit_tag t('export')+" "+t('all'), name:nil, :class => 'btn btn btn-primary' %>
     <% end %>
   </div>
   <% end %>
@@ -55,13 +56,12 @@
 
         <div class="text-right p-2">
           <%
-          @my_entry = Resource.where("id=? and (user_id=? or ?=1)",resource.id,current_user.id,current_user.id).first
+          @my_entry = Resource.where("id=? and (user_id=? or ?='admin')",resource.id,current_user.id,current_user.role).first
           if (not @my_entry.blank?) %>
           <small>
             <%= link_to t('edit'), edit_resource_path(@my_entry) %> |
             <%= link_to t('delete'), resource_path(@my_entry), method: :delete, data: { confirm: t('warning_msg1', type: 'resource') } %>
-            <!-- -
-            <%= link_to "Export", export_resource_path(resource), method: :post %> -->
+            <%= link_to "Export", export_resource_path(resource), method: :post %>
 
           </small>
           <% end %>

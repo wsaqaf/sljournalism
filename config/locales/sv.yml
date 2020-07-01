@@ -286,7 +286,7 @@ sv:
   note: 'Obs:'
   note_provide_rationale: Det rekommenderas starkt (men är ej obligatoriskt) att du anger en grund för din bedömning i rutan nedan.
   open_video: Öppna videon
-  optional_note: Ytterligare anteckningar
+  optional_note: Detaljer om din bedömning och eventuella begränsningar (valfritt)
   or: eller
   or_browse: Eller utforska hela databasen
   pagy:

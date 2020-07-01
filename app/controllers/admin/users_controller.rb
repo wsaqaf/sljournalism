@@ -98,9 +98,9 @@ class Admin::UsersController < Admin::BaseController
               @save_to_blockchain="-1"
           end
           if (@save_to_blockchain=="-1")
-            output="<font color=red>"+output+"</font>"
+            if !output.blank? then output="<font color=red>"+output+"</font>" end
           else
-            output="<font color=green>"+output+"</font>"
+            if !output.blank? then output="<font color=green>"+output+"</font>" end
           end
           render json: output
           return

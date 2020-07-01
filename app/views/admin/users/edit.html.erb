@@ -1,6 +1,6 @@
 <div class="form-claim">
   <fieldset>
-    <legend>&nbsp;Edit user</legend>
+    <legend><%= t('devise.account.edit_title') %></legend>
     <%= form_for @user, as: :user, url: admin_user_path(@user), method: :patch, html: { :onsubmit => "do_submit('user')" } do |f| %>
       <% if f.object.errors.any? %>
       <div class="error_messages">
@@ -10,15 +10,15 @@
       </div>
       <% end %>
     <ul>
-      <li>Name:
+      <li><%= t('devise.account.name') %>:
       <%= f.text_field :name, class: 'field-long', :autocomplete=>"off" %>
       </li>
       <li>
-        Email:
+        <%= t('devise.account.email') %>:
       <%= f.text_field :email, class: 'field-long', :readonly => true  %>
       </li>
       <li>
-        Affiliation:
+        <%= t('devise.account.affiliation') %>:
       <%= f.text_field :affiliation, class: 'field-long', :autocomplete=>"off" %>
       </li>
       <li>
@@ -26,11 +26,11 @@
         <%= f.text_field :email, class: 'field-long', :autocomplete=>"off" %>
       </li>
       <li>
-        Role:
+        <%= t('devise.account.role') %>::
           <b>
-            <%= f.radio_button :role, 'admin', :checked => @user.role=='admin', :disabled => true %> Admin
-            <%= f.radio_button :role, 'client', :checked => @user.role=='client', :disabled => true %> Client
-            <%= f.radio_button :role, 'factchecker', :checked => @user.role=='factchecker', :disabled => true %> Factchecker
+            <%= f.radio_button :role, 'admin', :checked => @user.role=='admin', :disabled => !@user.blockchain_id.blank? %> Admin
+            <%= f.radio_button :role, 'client', :checked => @user.role=='client', :disabled => !@user.blockchain_id.blank? %> Client
+            <%= f.radio_button :role, 'factchecker', :checked => @user.role=='factchecker', :disabled => !@user.blockchain_id.blank? %> Factchecker
           </b>
       </li>
       <% if ENV['BLOCKCHAIN_ENABLED'] && @user.blockchain_tx.present?  %>
@@ -38,7 +38,7 @@
               <div id="wallet<%= @user.id.to_s %>"></div>
               <div id="hidden<%= @user.id.to_s %>" style="display: none;">
                 <% if ENV['BLOCKCHAIN_ENABLED'] && @user.role=="client"  %>
-                  Add units to wallet: <input id="addbalance<%= @user.id.to_s %>" type="text" width=3>
+                  <%= t('add_to_wallet') %>: <input id="addbalance<%= @user.id.to_s %>" type="text" width=3>
                   <button name="walletButton" type="button" value="<% t('add') %>" onclick=wallet("<%= config.relative_url_root.to_s %>","<%= config.relative_url_root.to_s+"/admin/users/"+@user.id.to_s %>","<%= @user.id.to_s %>","1"); return false;>Add</button>
                 <% end %>
               </div>
@@ -54,6 +54,6 @@
     </ul>
     <% end %>
   </fieldset>
-  <%= link_to t('delete'), admin_user_path(@user), method: :delete, data: { confirm: 'Are you sure? Deleting the user will also delete all content he/she created.' } %> -
+  <%= link_to t('delete'), admin_user_path(@user), method: :delete, data: { confirm: t('devise.account.confirm_del') } %> -
   <%= link_to t('go_back'), admin_root_path %>
   </div>

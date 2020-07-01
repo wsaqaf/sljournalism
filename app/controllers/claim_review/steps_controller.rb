@@ -235,20 +235,20 @@ class ClaimReview::StepsController < ApplicationController
       @claim_review.img_metadata_discrepency.to_s+'","'+
       @claim_review.img_logical_discrepency.to_s+'","'+
       @claim_review.note_img_old.to_s+'","'+
-      @claim_review.note_img_forensic_discrepency.to_s.gsub(/\r\n?/, ";").gsub('"', '').gsub("'", "")+'","'+
-      @claim_review.note_img_metadata_discrepency.to_s.gsub(/\r\n?/, ";").gsub('"', '').gsub("'", "")+'","'+
-      @claim_review.note_img_logical_discrepency.to_s.gsub(/\r\n?/, ";").gsub('"', '').gsub("'", "")+'","'+
+      @claim_review.note_img_forensic_discrepency.to_s+'","'+
+      @claim_review.note_img_metadata_discrepency.to_s+'","'+
+      @claim_review.note_img_logical_discrepency.to_s+'","'+
       @claim_review.vid_review_started.to_s+'","'+
       @claim_review.vid_old.to_s+'","'+
       @claim_review.vid_forensic_discrepency.to_s+'","'+
       @claim_review.vid_metadata_discrepency.to_s+'","'+
       @claim_review.vid_audio_discrepency.to_s+'","'+
       @claim_review.vid_logical_discrepency.to_s+'","'+
-      @claim_review.note_vid_old.to_s.gsub(/\r\n?/, ";").gsub('"', '').gsub("'", "")+'","'+
-      @claim_review.note_vid_forensic_discrepency.to_s.gsub(/\r\n?/, ";").gsub('"', '').gsub("'", "")+'","'+
-      @claim_review.note_vid_metadata_discrepency.to_s.gsub(/\r\n?/, ";").gsub('"', '').gsub("'", "")+'","'+
-      @claim_review.note_vid_audio_discrepency.to_s.gsub(/\r\n?/, ";").gsub('"', '').gsub("'", "")+'","'+
-      @claim_review.note_vid_logical_discrepency.to_s.gsub(/\r\n?/, ";").gsub('"', '').gsub("'", "")+'","'+
+      @claim_review.note_vid_old.to_s+'","'+
+      @claim_review.note_vid_forensic_discrepency.to_s+'","'+
+      @claim_review.note_vid_metadata_discrepency.to_s+'","'+
+      @claim_review.note_vid_audio_discrepency.to_s+'","'+
+      @claim_review.note_vid_logical_discrepency.to_s+'","'+
       @claim_review.txt_review_started.to_s+'","'+
       @claim_review.txt_unreliable_news_content.to_s+'","'+
       @claim_review.txt_insufficient_verifiable_srcs.to_s+'","'+
@@ -257,21 +257,25 @@ class ClaimReview::StepsController < ApplicationController
       @claim_review.txt_crowds_distance_discrepency.to_s+'","'+
       @claim_review.txt_author_offers_little_evidence.to_s+'","'+
       @claim_review.txt_reliable_sources_disapprove.to_s+'","'+
-      @claim_review.note_txt_unreliable_news_content.to_s.gsub(/\r\n?/, ";").gsub('"', '').gsub("'", "")+'","'+
-      @claim_review.note_txt_insufficient_verifiable_srcs.to_s.gsub(/\r\n?/, ";").gsub('"', '').gsub("'", "")+'","'+
-      @claim_review.note_txt_has_clickbait.to_s.gsub(/\r\n?/, ";").gsub('"', '').gsub("'", "")+'","'+
-      @claim_review.note_txt_poor_language.to_s.gsub(/\r\n?/, ";").gsub('"', '').gsub("'", "")+'","'+
-      @claim_review.note_txt_crowds_distance_discrepency.to_s.gsub(/\r\n?/, ";").gsub('"', '').gsub("'", "")+'","'+
-      @claim_review.note_txt_author_offers_little_evidence.to_s.gsub(/\r\n?/, ";").gsub('"', '').gsub("'", "")+'","'+
-      @claim_review.note_txt_reliable_sources_disapprove.to_s.gsub(/\r\n?/, ";").gsub('"', '')+'","'+
-      @claim_review.note_review_verdict.to_s.gsub(/\r\n?/, ";").gsub('"', '').gsub("'", "")+'","'+
-      (@claim_review.review_description+" "+@claim_review.note_review_description).gsub(/\r\n?/, ";").gsub('"', '').gsub("'", "")+'"]}'
+      @claim_review.note_txt_unreliable_news_content.to_s+'","'+
+      @claim_review.note_txt_insufficient_verifiable_srcs.to_s+'","'+
+      @claim_review.note_txt_has_clickbait.to_s+'","'+
+      @claim_review.note_txt_poor_language.to_s+'","'+
+      @claim_review.note_txt_crowds_distance_discrepency.to_s+'","'+
+      @claim_review.note_txt_author_offers_little_evidence.to_s+'","'+
+      @claim_review.note_txt_reliable_sources_disapprove.to_s+'","'+
+      @claim_review.note_review_verdict.to_s+'","'+
+      @claim_review.review_description.to_s+" "+
+      @claim_review.note_review_description.to_s+'"]}'
 
-      cmnd="docker exec -it cli peer chaincode invoke -o orderer.example.com:7050 --tls true --cafile /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem -C mychannel -n mycc --peerAddresses peer0.org1.example.com:7051 --tlsRootCertFiles /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/ca.crt --peerAddresses peer0.org2.example.com:9051 --tlsRootCertFiles /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org2.example.com/peers/peer0.org2.example.com/tls/ca.crt -c '"+argmnt+"' --waitForEvent"
+      argmnt=Shellwords.escape(argmnt.gsub("\r","").gsub("\n",""))
+puts ("\n=============Arguments:\n"+argmnt+"\n--\n")
 
-#puts ("\n=============\nRunning:\n"+cmnd+"\n--\n")
+      cmnd="docker exec -it cli peer chaincode invoke -o orderer.example.com:7050 --tls true --cafile /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem -C mychannel -n mycc --peerAddresses peer0.org1.example.com:7051 --tlsRootCertFiles /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/ca.crt --peerAddresses peer0.org2.example.com:9051 --tlsRootCertFiles /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org2.example.com/peers/peer0.org2.example.com/tls/ca.crt -c "+argmnt+" --waitForEvent"
+
+puts ("\n=============Running:\n"+cmnd+"\n--\n")
       output=%x(#{cmnd})
-#puts("Result:\n"+output+"\n==\n")
+puts("Result:\n"+output+"\n==\n")
       begin
         tx_no=output.match(/ txid \[(.+?)\]/)[1]
         success_confirmation=output.match(/Chaincode invoke successful\. result\: status\:200 payload\:"(.+)"/)[1]
@@ -295,7 +299,7 @@ class ClaimReview::StepsController < ApplicationController
   def update
       @claim_review = ClaimReview.find(params[:claim_review_id])
       if current_user.id!=@claim_review.user_id then redirect_to claim_path(@claim); return end
-      begin
+#      begin
         @claim_review.update(claim_review_params(step).merge(user_id: current_user.id))
         if (step=="s22")
           if (params[:claim_review][:add_to_blockchain] && ENV['BLOCKCHAIN_ENABLED'] && current_user.role=="factchecker")
@@ -308,9 +312,9 @@ class ClaimReview::StepsController < ApplicationController
               return
           end
         end
-      rescue
-        return
-      end
+#      rescue
+#        return
+#      end
       if (params['commit']==t('previous_step'))
           redirect_to previous_wizard_path+'?s=prev'
           return
