@@ -160,29 +160,27 @@ class ClaimsController < ApplicationController
       src=""
       if (@claim.medium_id) then medium=Medium.find(@claim.medium_id).name end
       if (@claim.src_id) then src=Src.find(@claim.src_id).name end
-      argmnt="{\"Args\":[\"addClaim\",\""+
-      ENV['BLOCKCHAIN_ORGID']+"\",\""+
-      @claim.id.to_s+"\",\""+
-      current_user.id.to_s+"\", \""+
-      @claim.title.to_s+"\",\""+
-      request.base_url+config.relative_url_root+"/claims"+@claim.id.to_s+"\",\""+
-      @claim.expiry_date.to_s[0...-7]+"\",\""+
-      @claim.reward_amount.to_s+"\",\""+
-      @claim.conditions.to_s+"\",\""+
-      @claim.url+"\",\""+
-      @claim.description.to_s+"\",\""+
-      medium+"\",\""+
-      src+"\",\""+
-      @claim.has_image.to_s+"\",\""+
-      @claim.has_video.to_s+"\",\""+
-      @claim.has_text.to_s+"\",\""+
-      @claim.tags.map(&:claim_name).join(', ')+
-      "\"]}"
+      argmnt='{"Args":["addClaim","'+
+      ENV['BLOCKCHAIN_ORGID']+'","'+
+      @claim.id.to_s+'","'+
+      current_user.id.to_s+'", "'+
+      escaped_str(@claim.title.to_s.gsub("''",""))+'","'+
+      request.base_url+config.relative_url_root+"/claims"+escaped_str(@claim.id.to_s.gsub("''",""))+'","'+
+      @claim.expiry_date.to_s[0...-7].gsub("''","")+'","'+
+      @claim.reward_amount.to_s.gsub("''","")+'","'+
+      escaped_str(@claim.conditions.to_s.gsub("''",""))+'","'+
+      @claim.url.gsub("''","")+'","'+
+      escaped_str(@claim.description.to_s.gsub("''",""))+'","'+
+      medium.gsub("''","")+'","'+
+      src.gsub("''","")+'","'+
+      @claim.has_image.to_s+'","'+
+      @claim.has_video.to_s+'","'+
+      @claim.has_text.to_s+'","'+
+      @claim.tags.map(&:claim_name).join(', ').gsub("''","")+'"]}'
 
-      argmnt=Shellwords.escape(argmnt.gsub("\r","").gsub("\n",""))
+      cmnd="peer chaincode invoke -o localhost:7050 --ordererTLSHostnameOverride orderer.example.com --tls true --cafile "+Rails.root.to_s+"/hyperledger/fabric-samples/test-network/organizations/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem -C mychannel -n factcheck --peerAddresses localhost:7051 --tlsRootCertFiles "+Rails.root.to_s+"/hyperledger/fabric-samples/test-network/organizations/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/ca.crt --peerAddresses localhost:9051 --tlsRootCertFiles "+Rails.root.to_s+"/hyperledger/fabric-samples/test-network/organizations/peerOrganizations/org2.example.com/peers/peer0.org2.example.com/tls/ca.crt -c '"+argmnt+"' --waitForEvent 2>&1"
 
-      cmnd="docker exec -it cli peer chaincode invoke -o orderer.example.com:7050 --tls true --cafile /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem -C mychannel -n mycc --peerAddresses peer0.org1.example.com:7051 --tlsRootCertFiles /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/ca.crt --peerAddresses peer0.org2.example.com:9051 --tlsRootCertFiles /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org2.example.com/peers/peer0.org2.example.com/tls/ca.crt -c "+argmnt+" --waitForEvent"
-#puts ("\n=============\nRunning:\n"+cmnd+"\n--\n")
+puts ("\n=============Running:\n"+cmnd+"\n--\n")
       output=%x(#{cmnd})
 #puts("Result:\n"+output+"\n==\n")
       begin

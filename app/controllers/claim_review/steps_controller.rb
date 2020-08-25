@@ -229,49 +229,48 @@ class ClaimReview::StepsController < ApplicationController
       '1","5","'+
       @claim_review.review_verdict.to_s+'", "'+
       request.base_url+config.relative_url_root+'/assets/'+@claim_review.review_verdict.to_s+'.png'+'","'+
-      @claim_review.img_review_started.to_s+'","'+
-      @claim_review.img_old.to_s+'","'+
-      @claim_review.img_forensic_discrepency.to_s+'","'+
-      @claim_review.img_metadata_discrepency.to_s+'","'+
-      @claim_review.img_logical_discrepency.to_s+'","'+
-      @claim_review.note_img_old.to_s+'","'+
-      @claim_review.note_img_forensic_discrepency.to_s+'","'+
-      @claim_review.note_img_metadata_discrepency.to_s+'","'+
-      @claim_review.note_img_logical_discrepency.to_s+'","'+
-      @claim_review.vid_review_started.to_s+'","'+
-      @claim_review.vid_old.to_s+'","'+
-      @claim_review.vid_forensic_discrepency.to_s+'","'+
-      @claim_review.vid_metadata_discrepency.to_s+'","'+
-      @claim_review.vid_audio_discrepency.to_s+'","'+
-      @claim_review.vid_logical_discrepency.to_s+'","'+
-      @claim_review.note_vid_old.to_s+'","'+
-      @claim_review.note_vid_forensic_discrepency.to_s+'","'+
-      @claim_review.note_vid_metadata_discrepency.to_s+'","'+
-      @claim_review.note_vid_audio_discrepency.to_s+'","'+
-      @claim_review.note_vid_logical_discrepency.to_s+'","'+
-      @claim_review.txt_review_started.to_s+'","'+
-      @claim_review.txt_unreliable_news_content.to_s+'","'+
-      @claim_review.txt_insufficient_verifiable_srcs.to_s+'","'+
-      @claim_review.txt_has_clickbait.to_s+'","'+
-      @claim_review.txt_poor_language.to_s+'","'+
-      @claim_review.txt_crowds_distance_discrepency.to_s+'","'+
-      @claim_review.txt_author_offers_little_evidence.to_s+'","'+
-      @claim_review.txt_reliable_sources_disapprove.to_s+'","'+
-      @claim_review.note_txt_unreliable_news_content.to_s+'","'+
-      @claim_review.note_txt_insufficient_verifiable_srcs.to_s+'","'+
-      @claim_review.note_txt_has_clickbait.to_s+'","'+
-      @claim_review.note_txt_poor_language.to_s+'","'+
-      @claim_review.note_txt_crowds_distance_discrepency.to_s+'","'+
-      @claim_review.note_txt_author_offers_little_evidence.to_s+'","'+
-      @claim_review.note_txt_reliable_sources_disapprove.to_s+'","'+
-      @claim_review.note_review_verdict.to_s+'","'+
-      @claim_review.review_description.to_s+" "+
-      @claim_review.note_review_description.to_s+'"]}'
+      @claim_review.img_review_started.to_s.gsub("''","")+'","'+
+      @claim_review.img_old.to_s.gsub("''","")+'","'+
+      @claim_review.img_forensic_discrepency.to_s.gsub("''","")+'","'+
+      @claim_review.img_metadata_discrepency.to_s.gsub("''","")+'","'+
+      @claim_review.img_logical_discrepency.to_s.gsub("''","")+'","'+
+      @claim_review.note_img_old.to_s.gsub("''","")+'","'+
+      @claim_review.note_img_forensic_discrepency.to_s.gsub("''","")+'","'+
+      @claim_review.note_img_metadata_discrepency.to_s.gsub("''","")+'","'+
+      @claim_review.note_img_logical_discrepency.to_s.gsub("''","")+'","'+
+      @claim_review.vid_review_started.to_s.gsub("''","")+'","'+
+      @claim_review.vid_old.to_s.gsub("''","")+'","'+
+      @claim_review.vid_forensic_discrepency.to_s.gsub("''","")+'","'+
+      @claim_review.vid_metadata_discrepency.to_s.gsub("''","")+'","'+
+      @claim_review.vid_audio_discrepency.to_s.gsub("''","")+'","'+
+      @claim_review.vid_logical_discrepency.to_s.gsub("''","")+'","'+
+      @claim_review.note_vid_old.to_s.gsub("''","")+'","'+
 
-      argmnt=Shellwords.escape(argmnt.gsub("\r","").gsub("\n",""))
+      escaped_str(@claim_review.note_vid_forensic_discrepency.to_s.gsub("''",""))+'","'+
+      escaped_str(@claim_review.note_vid_metadata_discrepency.to_s.gsub("''",""))+'","'+
+      escaped_str(@claim_review.note_vid_audio_discrepency.to_s.gsub("''",""))+'","'+
+      escaped_str(@claim_review.note_vid_logical_discrepency.to_s.gsub("''",""))+'","'+
+      @claim_review.txt_review_started.to_s.gsub("''","")+'","'+
+      @claim_review.txt_unreliable_news_content.to_s.gsub("''","")+'","'+
+      @claim_review.txt_insufficient_verifiable_srcs.to_s.gsub("''","")+'","'+
+      @claim_review.txt_has_clickbait.to_s.gsub("''","")+'","'+
+      @claim_review.txt_poor_language.to_s.gsub("''","")+'","'+
+      @claim_review.txt_crowds_distance_discrepency.to_s.gsub("''","")+'","'+
+      @claim_review.txt_author_offers_little_evidence.to_s.gsub("''","")+'","'+
+      @claim_review.txt_reliable_sources_disapprove.to_s.gsub("''","")+'","'+
+      escaped_str(@claim_review.note_txt_unreliable_news_content.to_s.gsub("''",""))+'","'+
+      escaped_str(@claim_review.note_txt_insufficient_verifiable_srcs.to_s.gsub("''",""))+'","'+
+      escaped_str(@claim_review.note_txt_has_clickbait.to_s.gsub("''",""))+'","'+
+      escaped_str(@claim_review.note_txt_poor_language.to_s.gsub("''",""))+'","'+
+      escaped_str(@claim_review.note_txt_crowds_distance_discrepency.to_s.gsub("''",""))+'","'+
+      escaped_str(@claim_review.note_txt_author_offers_little_evidence.to_s.gsub("''",""))+'","'+
+      escaped_str(@claim_review.note_txt_reliable_sources_disapprove.to_s.gsub("''",""))+'","'+
+      escaped_str(@claim_review.note_review_verdict.to_s.gsub("''",""))+'","'+
+      escaped_str(@claim_review.review_description.to_s.gsub("''","")+' '+@claim_review.note_review_description.to_s.gsub("''",""))+
+      '"]}'
+
 puts ("\n=============Arguments:\n"+argmnt+"\n--\n")
-
-      cmnd="docker exec -it cli peer chaincode invoke -o orderer.example.com:7050 --tls true --cafile /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem -C mychannel -n mycc --peerAddresses peer0.org1.example.com:7051 --tlsRootCertFiles /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/ca.crt --peerAddresses peer0.org2.example.com:9051 --tlsRootCertFiles /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org2.example.com/peers/peer0.org2.example.com/tls/ca.crt -c "+argmnt+" --waitForEvent"
+      cmnd="peer chaincode invoke -o localhost:7050 --ordererTLSHostnameOverride orderer.example.com --tls true --cafile "+Rails.root.to_s+"/hyperledger/fabric-samples/test-network/organizations/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem -C mychannel -n factcheck --peerAddresses localhost:7051 --tlsRootCertFiles "+Rails.root.to_s+"/hyperledger/fabric-samples/test-network/organizations/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/ca.crt --peerAddresses localhost:9051 --tlsRootCertFiles "+Rails.root.to_s+"/hyperledger/fabric-samples/test-network/organizations/peerOrganizations/org2.example.com/peers/peer0.org2.example.com/tls/ca.crt -c '"+argmnt+"' --waitForEvent 2>&1"
 
 puts ("\n=============Running:\n"+cmnd+"\n--\n")
       output=%x(#{cmnd})

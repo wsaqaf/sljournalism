@@ -4,6 +4,7 @@ class ApplicationController < ActionController::Base
     acts_as_token_authentication_handler_for User, fallback: :none
 
     before_action :set_locale
+    before_action :set_hyperledger_env
 
     def get_preview(url)
       @filter_msg=""
@@ -51,13 +52,25 @@ class ApplicationController < ActionController::Base
       end
       return output
     end
-    
+
     private
 
     def set_locale
        I18n.default_locale = params[:locale] if params[:locale].present?
        @pagy_locale = params[:locale] || 'en'
        @no_turbolinks="false"
+    end
+
+    def set_hyperledger_env
+      ENV['TESTNET_PATH']=Rails.root.to_s+config.relative_url_root+"/hyperledger/fabric-samples/test-network"
+      ENV['CHANNEL_NAME']="mychannel"
+      ENV['PATH']=ENV['TESTNET_PATH']+"/../bin:"+ENV['PATH']
+      ENV['FABRIC_CFG_PATH']=Rails.root.to_s+config.relative_url_root+"/hyperledger/fabric-samples/config/"
+      ENV['CORE_PEER_TLS_ENABLED']="true"
+      ENV['CORE_PEER_LOCALMSPID']="Org1MSP"
+      ENV['CORE_PEER_TLS_ROOTCERT_FILE']=ENV['TESTNET_PATH']+"/organizations/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/ca.crt"
+      ENV['CORE_PEER_MSPCONFIGPATH']=ENV['TESTNET_PATH']+"/organizations/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp"
+      ENV['CORE_PEER_ADDRESS']="localhost:7051"
     end
 
 #    protect_from_forgery with: :exception
@@ -144,6 +157,22 @@ class ApplicationController < ActionController::Base
         respond_to do |format|
             format.json { render :json => preview }
         end
+    end
+
+    def escaped_str(mystring)
+        mystring2=mystring.gsub(/\\/){ %q(\\\\\\\\)}
+        mystring2=mystring2.gsub(/[\n]/){ %q(\\n)}
+        mystring2=mystring2.gsub(/[\r]/){ %q(\\r)}
+        mystring2=mystring2.gsub(/[\t]/){ %q(\\t)}
+        mystring2=mystring2.gsub(/[\a]/){ %q(\\a)}
+        mystring2=mystring2.gsub(/[\b]/){ %q(\\b)}
+        mystring2=mystring2.gsub(/[\e]/){ %q(\\e)}
+        mystring2=mystring2.gsub(/[\f]/){ %q(\\f)}
+        mystring2=mystring2.gsub(/[\v]/){ %q(\\v)}
+
+        mystring2=mystring2.gsub(/\"/,"\\\"")
+        mystring2=mystring2.gsub(/'/){ %q('\\'') }
+        return mystring2
     end
 
     class Thumbnail

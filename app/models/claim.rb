@@ -36,7 +36,7 @@ class Claim < ApplicationRecord
   validates :has_video, presence: true
   validates :has_text, presence: true
 
-  validates :reward_amount, :numericality => { :greater_than_or_equal_to => 0, :less_than_or_equal_to => 1000000 }
+#  validates :reward_amount, :numericality => { :greater_than_or_equal_to => 0, :less_than_or_equal_to => 1000000 }
 
   def medium_name
       medium.try(:name)
