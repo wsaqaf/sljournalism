@@ -16,6 +16,11 @@ Here are examples:
 
 #1) Register admin,client and factchecker wallets:
 
+peer chaincode invoke -o localhost:7050 --ordererTLSHostnameOverride orderer.example.com --tls --cafile ${PWD}/organizations/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem -C mychannel -n factcheck --peerAddresses localhost:7051 --tlsRootCertFiles ${PWD}/organizations/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/ca.crt --peerAddresses localhost:9051 --tlsRootCertFiles ${PWD}/organizations/peerOrganizations/org2.example.com/peers/peer0.org2.example.com/tls/ca.crt -c '{"Args1":["registerWallet","admin","org1","1", "The Admin"]}' --waitForEvent
+
+peer chaincode invoke -o orderer.example.com:7050 --isInit --tls --cafile /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem -C mychannel -n factcheck --peerAddresses peer0.org1.example.com:7051 --tlsRootCertFiles /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/ca.crt --peerAddresses peer0.org2.example.com:9051 --tlsRootCertFiles /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org2.example.com/peers/peer0.org2.example.com/tls/ca.crt -c '{"Args1":["registerWallet","admin","org1","1", "The Admin"]}' --waitForEvent
+
+
 peer chaincode invoke -o localhost:7050 --ordererTLSHostnameOverride orderer.example.com --tls --cafile $TESTNET_PATH/organizations/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem -C mychannel -n factcheck --peerAddresses localhost:7051 --tlsRootCertFiles $TESTNET_PATH/organizations/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/ca.crt --peerAddresses localhost:9051 --tlsRootCertFiles $TESTNET_PATH/organizations/peerOrganizations/org2.example.com/peers/peer0.org2.example.com/tls/ca.crt -c '{"Args1":["registerWallet","admin","org1","1", "The Admin"]}' --waitForEvent
 
 peer chaincode invoke -o localhost:7050 --ordererTLSHostnameOverride orderer.example.com --tls true --cafile $TESTNET_PATH/organizations/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem -C $CHANNEL_NAME -n factcheck --peerAddresses localhost:7051 --tlsRootCertFiles $TESTNET_PATH/organizations/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/ca.crt --peerAddresses localhost:9051 --tlsRootCertFiles $TESTNET_PATH/organizations/peerOrganizations/org2.example.com/peers/peer0.org2.example.com/tls/ca.crt -c '{"Args":["registerWallet","client","org1","2", "The Client"]}' --waitForEvent
@@ -164,3 +169,51 @@ peer lifecycle chaincode approveformyorg --channelID $CHANNEL_NAME --name mycc -
 peer lifecycle chaincode checkcommitreadiness --channelID $CHANNEL_NAME --name mycc --version 1.0 --init-required --sequence 1 --tls true --cafile $TESTNET_PATH/organizations/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem --output json
 peer lifecycle chaincode commit -o orderer.example.com:7050 --channelID $CHANNEL_NAME --name mycc --version 1.0 --sequence 1 --init-required --tls true --cafile $TESTNET_PATH/organizations/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem --peerAddresses localhost:7051 --tlsRootCertFiles $TESTNET_PATH/organizations/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/ca.crt --peerAddresses localhost:9051 --tlsRootCertFiles $TESTNET_PATH/organizations/peerOrganizations/org2.example.com/peers/peer0.org2.example.com/tls/ca.crt
 peer chaincode invoke -o orderer.example.com:7050 --isInit --tls true --cafile $TESTNET_PATH/organizations/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem -C $CHANNEL_NAME -n factcheck --peerAddresses localhost:7051 --tlsRootCertFiles $TESTNET_PATH/organizations/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/ca.crt --peerAddresses localhost:9051 --tlsRootCertFiles $TESTNET_PATH/organizations/peerOrganizations/org2.example.com/peers/peer0.org2.example.com/tls/ca.crt -c '{"Args":["Init"]}' --waitForEvent
+
+
+======
+
+Installation steps (Ubuntu 18.04):
+1) Install Node.js: https://www.digitalocean.com/community/tutorials/how-to-install-node-js-on-ubuntu-18-04
+
+2) Install Ruby on Rails with rbenv (install latest ruby ver you see):
+https://www.digitalocean.com/community/tutorials/how-to-install-ruby-on-rails-with-rbenv-on-ubuntu-18-04
+
+3) Install PostgreSQL with Ruby on Rails App (remember db name, username and pw for later configurations):
+https://www.digitalocean.com/community/tutorials/how-to-use-postgresql-with-your-ruby-on-rails-application-on-ubuntu-18-04
+(only do steps 1 & 2)
+
+4) Install Apache2 with the command: sudo apt-get install apache2-dev
+
+5) Install Passenger as shown here:
+https://codepen.io/asommer70/post/installing-ruby-rails-and-passenger-on-ubuntu-an-admin-s-guide
+
+6) Deploy passenger to be used by the app as shown here:
+https://www.phusionpassenger.com/library/deploy/apache/deploy/ruby/
+
+4) Ensure you have git installed, else install using: sudo apt install git
+
+5) Clone github repo from: https://github.com/wsaqaf/sljournalism.git using the command:
+git clone https://github.com/wsaqaf/sljournalism.git
+
+6) Run the commands:
+bundle install
+
+7) Run the command: bundle exec rake secret
+and keep the output to use in the next step
+
+8) Create the database using the commands (where <db> is the value in step 2)
+sudo -u postgres createuser sljournalism
+sudo -u postgres createdb sljournalism -O sljournalism
+sudo -u postgres psql postgres
+ALTER USER sljournalism WITH PASSWORD 'sljournalism';
+
+9) Add an entry in /etc/postgresql/XX/main/pg_hba.conf under the line "local all postgres peer" as follows (<dbuser> from step 2):
+local all <dbuser> trust
+
+10) Restart postgres with the command: sudo service postgresql restart
+
+11) Run the command
+bundle exec rake assets:precompile db:schema:load RAILS_ENV=production DISABLE_DATABASE_ENVIRONMENT_CHECK=1
+
+8) In the file sljournalism/config/local_env.yml, fill in the top SECRET_KEY_BASE value with the output from step 7 and fill in the remaining information as appropriate. Remember to use the postgres credentials used in step 3 above

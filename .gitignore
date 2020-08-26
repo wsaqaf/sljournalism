@@ -5,6 +5,8 @@
 #   git config --global core.excludesfile '~/.gitignore_global'
 
 .DS_Store
+.byebug_history
+.htaccess
 
 # Ignore bundler config.
 /.bundle

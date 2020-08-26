@@ -38,9 +38,9 @@ gem 'react-rails'
 
 gem 'spring', '>= 2.1.0'
 
-gem 'jwt'
+#gem 'jwt'
 gem "pundit"
-gem 'devise-jwt', '~> 0.6.0'
+#gem 'devise-jwt', '~> 0.6.0'
 gem 'rack-cors', require: 'rack/cors'
 gem 'simple_token_authentication', '~> 1.0'
 
