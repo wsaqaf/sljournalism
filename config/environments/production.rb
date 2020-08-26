@@ -35,8 +35,7 @@ Rails.application.configure do
 #  config.serve_static_assets = true
   config.serve_static_assets = false
 
-  #config.assets.resolve_with = [:manifest]
-  config.assets.resolve_with = [:manifest, :environment]
+  config.assets.resolve_with = [:manifest]
 
   # `config.assets.precompile` and `config.assets.version` have moved to config/initializers/assets.rb
 
