@@ -16,12 +16,9 @@
                 hint: t('devise.account.name_h'),
                 autofocus: true ,
                 input_html: { autocomplete: "name", :style=> 'width: 400px' }%>
-    <%= f.input :url,
-                label: t('devise.account.url'),
-                required: false,
-                hint: t('devise.account.url_h'),
-                autofocus: true,
-                input_html: { autocomplete: "url", :style=> 'width: 400px' } %>
+    <% if User.count()==0 %>
+        <%= f.hidden_field :role, :value => "admin" %>
+    <% end %>
     <%= f.input :details,
                 label: t('devise.account.details'),
                 required: false,
