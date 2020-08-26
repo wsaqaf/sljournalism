@@ -62,10 +62,10 @@ class ApplicationController < ActionController::Base
     end
 
     def set_hyperledger_env
-      ENV['TESTNET_PATH']=Rails.root.to_s+config.relative_url_root+"/hyperledger/fabric-samples/test-network"
+      ENV['TESTNET_PATH']=Rails.root.to_s+"/hyperledger/fabric-samples/test-network"
       ENV['CHANNEL_NAME']="mychannel"
       ENV['PATH']=ENV['TESTNET_PATH']+"/../bin:"+ENV['PATH']
-      ENV['FABRIC_CFG_PATH']=Rails.root.to_s+config.relative_url_root+"/hyperledger/fabric-samples/config/"
+      ENV['FABRIC_CFG_PATH']=Rails.root.to_s+"/hyperledger/fabric-samples/config/"
       ENV['CORE_PEER_TLS_ENABLED']="true"
       ENV['CORE_PEER_LOCALMSPID']="Org1MSP"
       ENV['CORE_PEER_TLS_ROOTCERT_FILE']=ENV['TESTNET_PATH']+"/organizations/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/ca.crt"
