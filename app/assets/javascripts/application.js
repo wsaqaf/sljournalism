@@ -126,7 +126,7 @@ function submit_tags(relative_url, s) {
   $("#new_tags_block").html(
     "<br><center><img src='" +
       relative_url +
-      "/assets/loading.gif' width=50></center><br>"
+      "/loading.gif' width=50></center><br>"
   );
   const element = document.getElementById(s + "_tag_list");
   var q = element.value;
@@ -199,7 +199,7 @@ function URLPreview(relative_url, s) {
   $("#url_preview_block").html(
     "<br><center><img src='" +
       relative_url +
-      "/assets/loading.gif' width=50></center><br>"
+      "/loading.gif' width=50></center><br>"
   );
   const element = document.getElementById(s + "_url");
   var q = element.value;
@@ -267,7 +267,7 @@ function wallet(rel_url,url1,usr,to_add,add_to_blockchain)
  {
   var add_more="0";
   if (to_add === "1") { add_more=$("#addbalance"+usr).val(); }
-  $("#wallet"+usr).html("<img src='"+rel_url+"/assets/loading.gif' width=50><br>");
+  $("#wallet"+usr).html("<img src='"+rel_url+"/loading.gif' width=50><br>");
   $.ajax(
    {
     url: url1,
@@ -293,7 +293,7 @@ function assess(rel_url,url1)
  {
   var assessment=$('#blockchain_assessment option:selected').val()
   var rationale=$('textarea#assessment_rationale').val();
-  $("#assessment").html("<img src='"+rel_url+"/assets/loading.gif' width=50><br>");
+  $("#assessment").html("<img src='"+rel_url+"/loading.gif' width=50><br>");
   $.ajax(
    {
     url: url1,
