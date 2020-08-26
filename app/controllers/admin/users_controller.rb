@@ -28,7 +28,7 @@ class Admin::UsersController < Admin::BaseController
 
   puts ("\n=============Running:\n"+cmnd+"\n--\n")
 
-        cmnd=Rails.root.to_s+config.relative_url_root+"/hyperledger/fabric-samples/bin/"+cmnd
+        cmnd=Rails.root.to_s+"/hyperledger/fabric-samples/bin/"+cmnd
         output=%x(#{cmnd})
         puts("Result:\n"+output+"\n==\n")
   #puts("Result:\n"+output+"\n==\n")
@@ -85,7 +85,7 @@ class Admin::UsersController < Admin::BaseController
           cmnd="peer chaincode invoke -o localhost:7050 --ordererTLSHostnameOverride orderer.example.com --tls true --cafile "+Rails.root.to_s+config.relative_url_root+"/hyperledger/fabric-samples/test-network/organizations/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem -C mychannel -n factcheck --peerAddresses localhost:7051 --tlsRootCertFiles "+Rails.root.to_s+config.relative_url_root+"/hyperledger/fabric-samples/test-network/organizations/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/ca.crt --peerAddresses localhost:9051 --tlsRootCertFiles "+Rails.root.to_s+config.relative_url_root+"/hyperledger/fabric-samples/test-network/organizations/peerOrganizations/org2.example.com/peers/peer0.org2.example.com/tls/ca.crt -c '"+argmnt+"' --waitForEvent 2>&1"
   puts ("\n=============Running:\n"+cmnd+"\n--\n")
 
-          cmnd=Rails.root.to_s+config.relative_url_root+"/hyperledger/fabric-samples/bin/"+cmnd
+          cmnd=Rails.root.to_s+"/hyperledger/fabric-samples/bin/"+cmnd
           output=%x(#{cmnd})
   #puts("Result:\n"+output+"\n==\n")
             begin
@@ -120,7 +120,7 @@ class Admin::UsersController < Admin::BaseController
       cmnd="peer chaincode query -C mychannel -n factcheck -c '"+argmnt+"'"
 #puts (ENV.to_h.to_s+"\n")
 puts ("\n=============\nRunning:\n"+cmnd+"\n--\n")
-      cmnd=Rails.root.to_s+config.relative_url_root+"/hyperledger/fabric-samples/bin/"+cmnd
+      cmnd=Rails.root.to_s+"/hyperledger/fabric-samples/bin/"+cmnd
       output=%x(#{cmnd})
 #puts("Result:\n"+output+"\n==\n")
         balance=-1
@@ -139,7 +139,7 @@ puts ("\n=============\nRunning:\n"+cmnd+"\n--\n")
         cmnd="peer chaincode invoke -o localhost:7050 --ordererTLSHostnameOverride orderer.example.com --tls true --cafile "+Rails.root.to_s+config.relative_url_root+"/hyperledger/fabric-samples/test-network/organizations/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem -C mychannel -n factcheck --peerAddresses localhost:7051 --tlsRootCertFiles "+Rails.root.to_s+config.relative_url_root+"/hyperledger/fabric-samples/test-network/organizations/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/ca.crt --peerAddresses localhost:9051 --tlsRootCertFiles "+Rails.root.to_s+config.relative_url_root+"/hyperledger/fabric-samples/test-network/organizations/peerOrganizations/org2.example.com/peers/peer0.org2.example.com/tls/ca.crt -c '"+argmnt+"' --waitForEvent 2>&1"
 
   puts ("\n=============Running:\n"+cmnd+"\n--\n")
-        cmnd=Rails.root.to_s+config.relative_url_root+"/hyperledger/fabric-samples/bin/"+cmnd
+        cmnd=Rails.root.to_s+"/hyperledger/fabric-samples/bin/"+cmnd
         output=%x(#{cmnd})
   #puts("Result:\n"+output+"\n==\n")
           begin

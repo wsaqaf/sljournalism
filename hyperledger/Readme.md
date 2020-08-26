@@ -216,4 +216,27 @@ local all <dbuser> trust
 11) Run the command
 bundle exec rake assets:precompile db:schema:load RAILS_ENV=production DISABLE_DATABASE_ENVIRONMENT_CHECK=1
 
-8) In the file sljournalism/config/local_env.yml, fill in the top SECRET_KEY_BASE value with the output from step 7 and fill in the remaining information as appropriate. Remember to use the postgres credentials used in step 3 above
+12) In the file sljournalism/config/local_env.yml, fill in the top SECRET_KEY_BASE value with the output from step 7 and fill in the remaining information as appropriate. Remember to use the postgres credentials used in step 3 above
+
+13) Restart apache with: sudo service apache2 restart
+
+14) Install docker using instructions here:
+https://www.hostinger.com/tutorials/how-to-install-docker-on-ubuntu
+
+15) Install docker-composer using the commands:
+sudo apt-get install docker-compose
+
+16) Add the current user to the docker group and close the ssh session and login again as shown:
+sudo usermod -a -G docker $USER
+exit
+
+17) install go-lang using the commands:
+sudo apt update
+sudo apt install golang-go
+
+17) go to /hyperledger/ and run the command: . initialize.sh
+
+18) go to hyperledger/chaincode and the command: . run.sh
+
+19) Open the website to go through the steps shown in the DEMO video here:
+<link to youtube>
