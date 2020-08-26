@@ -1,9 +1,9 @@
 ---
 en:
-  about_galileo: About Galileo
-  about_galileo_txt: The Galileo prototype is an outcome of the Faktaassistenten research project funded by Vinnova and developed in cooperation between 'Future Journalism' and Södertörn University
+  about_galileo: About Source-Labeled Journalism
+  about_galileo_txt: The Source-Labeled Journalism project is funded by Vinnova and developed in cooperation between Södertörn University and Lapidus Interactive.
   about_malin: Malin is a teacher and researcher in journalism. She has a particular focus on storytelling, and recently also the blockchain.
-  about_msg1: "<p>The Galileo prototype is an outcome of the Faktaassistenten research project funded by Vinnova and developed in cooperation between 'Future Journalism' (Framtidens Journalistik) and Södertörn University (Read more <a href='https://www.vinnova.se/p/faktaassistenten/' target=_blank>here</a>).</p><p>The initial purpose of the assistant was to help strengthen confidence in journalistic news produ ction, by supporting editors in finding the balance between a fast and credible news production for the digital platforms.</p> <p>The research and processes have culminated in this website which visualizes key resources and provides practical fact-checking facilitation. </p>"
+  about_msg1: "<p>The Source-Labeled Journalism project is funded by Vinnova and developed in cooperation between Södertörn University and Lapidus Interactive. (Read more <a href='https://www.vinnova.se/en/p/source-labeled-journalism---an-editorial-service-using-blockchain-technology-for-fact-checking/' target=_blank>here</a>).</p><p>The aim of the project is to initiate, develop and evaluate an editorial application prototype using blockchain technology to verify information. The application would serve as a way to build a permanent record of fact-checked results of different types of digital material, such as documents, images and videos etc.</p>"
   about_sh: "<h4><b>Södertörn University</b> </h4><p><a href='https://sh.se' target=_blank><font color=yellow>Södertörn University</font></a> provides high quality research and education at all levels, offering a friendly atmosphere and an inspiring environment. Our modern, attractive campus is located only 20 minutes from Stockholm.</p>"
   about_sh_txt: "<h4><b>Södertörn University</b> </h4><p><a href='https://sh.se' target=_blank>Södertörn University</a> provides high quality research and education at all levels, offering a friendly atmosphere and an inspiring environment. Our modern, attractive campus is located only 20 minutes from Stockholm.</p>"
   about_walid: Walid specializes in the use of the Internet and media technology for journalism and freedom of expresssion.
@@ -189,7 +189,7 @@ en:
   go_sign_up_part1: If you don't have an account, you can
   hello: Hello
   home_d: Science-backed tools and efficient checklists for media and journalists
-  home_t: Galileo helps you separate facts from fiction
+  home_t: Demo of the Source-Labeled Journalism prototype
   how_it_started: How it started
   image_claim: Does the claim depend on or use an image?
   import: Import
@@ -505,7 +505,7 @@ en:
     other: Deleting this will also delete %{count} dependent reviews.
   warning_msg1: Are you sure you want to go ahead and delete this %{type}?
   warning_msg2: Are you sure you want to go ahead and delete this  %{type} and all its reviews?
-  website_title: Galileo – The Fact Check Assistant
+  website_title: Source-Labeled Journalism Project
   welcome: Welcome
   welcome_msg: Welcome to Fact Check Assistant!
   with_no_reviews: " with no reviews yet"
