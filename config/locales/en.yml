@@ -448,11 +448,11 @@ en:
   src_url: URL (e.g., official Website URL, official Facebook profile URL, official Twitter URL profile, etc.)
   srcs: Sources
   start_review: Start reviewing directly after submission
-  step_1: 1. Add a claim
+  step_1: Add a claim
   step_1_d: Do you want to know if a text, video or image is fact or fiction? Start the fact checking process by adding a claim.
-  step_2: 2. Make a fact check
+  step_2: Make a fact check
   step_2_d: Use our checklists and tools to make your fact checking more robust.
-  step_3: 3. Publish on the blockchain
+  step_3: Publish on the blockchain
   step_3_d: Use our checklists and tools to make your fact checking more robust.
   submit: Submit
   tag_added: " added successfully."

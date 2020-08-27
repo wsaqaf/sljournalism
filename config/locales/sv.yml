@@ -463,11 +463,11 @@ sv:
   src_url: URL (t.ex. officiell webbplats-URL, officiell Facebook-profil-URL, officiell Twitter-URL-profil, etc.)
   srcs: Källor
   start_review: Börja faktagranska direkt efter inlämning
-  step_1: 1. Lägg till ett påstående
+  step_1: Lägg till ett påstående
   step_1_d: Vill du ta reda på sanningshalten om en text, video eller bildkontext? Starta faktagranskningen genom att lägga till ett påstående.
-  step_2: 2. Gör faktakoll
+  step_2: Gör faktakoll
   step_2_d: Använd våra checklistor och verktyg för en robust faktakontroll.
-  step_3: 3. Publicera säkert på blockkedjan
+  step_3: Publicera säkert på blockkedjan
   step_3_d: När en faktragranskning delats på blockkedjan, kan ingen mixtra med den.
   submit: Skicka in
   tag_added: " tillagd."
