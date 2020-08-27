@@ -188,7 +188,7 @@ en:
   go_sign_in_part1: To use the service, please
   go_sign_up_part1: If you don't have an account, you can
   hello: Hello
-  home_d: Science-backed tools and efficient checklists for media and journalists
+  home_d: A prototype for distributed fact checking
   home_t: Demo of the Source-Labeled Journalism prototype
   how_it_started: How it started
   image_claim: Does the claim depend on or use an image?
@@ -505,9 +505,9 @@ en:
     other: Deleting this will also delete %{count} dependent reviews.
   warning_msg1: Are you sure you want to go ahead and delete this %{type}?
   warning_msg2: Are you sure you want to go ahead and delete this  %{type} and all its reviews?
-  website_title: Source-Labeled Journalism Project
+  website_title: Source-Labeled Journalism
   welcome: Welcome
-  welcome_msg: Welcome to Fact Check Assistant!
+  welcome_msg: Welcome to Source-Labeled Journalism
   with_no_reviews: " with no reviews yet"
   yes_share: Yes share with everyone
   you_created: " that you created"

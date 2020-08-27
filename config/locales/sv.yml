@@ -189,7 +189,7 @@ sv:
   go_sign_up_part1: Om du inte har ett konto kan du
   hello: Hej
   home_d: Vetenskapliga metoder och effektiva checklistor för media och journalister
-  home_t: Med Galileo blir du en expert på att faktagranska!
+  home_t: En prototyp för distribuerad faktakontroll
   how_it_started: Hur det började
   image_claim: Innehåller påståendet en bild?
   import: importera
@@ -520,9 +520,9 @@ sv:
     other: Om du tar bort den här raderas också %{count} tillhörande faktagranskningar.
   warning_msg1: Är du säker på att du vill gå vidare och ta bort %{type}?
   warning_msg2: Är du säker på att du vill gå vidare och ta bort %{type} och dess faktagranskningar?
-  website_title: Galileo – faktaassistenten
+  website_title: Ursprungsmärkt journalistik
   welcome: Välkommen
-  welcome_msg: Välkommen till Galileo – din faktaassistent!
+  welcome_msg: Välkommen till Ursprungsmärkt journalistik!
   with_no_reviews: " med inga faktagranskningar ännu"
   yes_answer: 'Ja'
   no_answer: 'Nej'
