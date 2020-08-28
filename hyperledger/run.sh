@@ -1,5 +1,5 @@
 #!/bin/bash -x
-cd ../fabric-samples/test-network
+cd fabric-samples/test-network
 
 bash ./network.sh down
 
