@@ -45,6 +45,17 @@
       Bio:
       <%= f.text_area(:details, size: '50x10', class: 'field-long field-textarea') %>
       </li>
+      <% if (ENV['BLOCKCHAIN_ENABLED']) %>
+        <li>
+          Add to blockchain?
+            <b>
+              <%= f.radio_button :add_to_blockchain, 'yes' %> Yes
+              <%= f.radio_button :add_to_blockchain, 'no', :checked => true %> No
+            </b>
+        </li>
+      <% else %>
+            <%= f.hidden_field :add_to_blockchain, :value => "no" %>
+      <% end %>
       <li>
         <%= f.submit t('submit'), :class => 'btn btn btn-primary' %>
       </li>

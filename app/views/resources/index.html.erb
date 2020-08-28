@@ -11,19 +11,10 @@
       <%= form_tag(resources_path, method: :get, class: "form-inline") do %>
       <%= text_field_tag :q, params[:q], class: "form-control" %>&nbsp;
       <%= submit_tag t('search'), name: nil, :class => 'btn btn btn-primary' %>
-      <% end %></div>
+      <% end %>
+    </div>
   </div>
   <!-- <hr> -->
-  <% if (@resources.size==0) %>
-  <%= t('no_results') %>
-  <% else %>
-  <div>
-    <%= form_tag(resources_path, method: :post) do %>
-    <%= hidden_field_tag :resources_json, params[:resources_json], value: @resources_json %>
-    <!-- <%= submit_tag t('export')+" "+t('all'), name:nil, :class => 'btn btn btn-primary' %> -->
-    <% end %>
-  </div>
-  <% end %>
   <div class="container">
     <div class="card-columns">
       <% @resources.each do |resource| %>
@@ -60,20 +51,29 @@
           <small>
             <%= link_to t('edit'), edit_resource_path(@my_entry) %> |
             <%= link_to t('delete'), resource_path(@my_entry), method: :delete, data: { confirm: t('warning_msg1', type: 'resource') } %>
-            <!-- -
-            <%= link_to "Export", export_resource_path(resource), method: :post %> -->
+            | <%= link_to "Export", export_resource_path(resource), method: :post %>
 
           </small>
           <% end %>
         </div>
       </div>
-
-
       <% end %>
     </div>
   </div>
   <% if @total_count>10 then %> <%== pagy_bootstrap_nav(@pagy) %> <% end %>
 </div>
+
+<% if (@resources.size==0) %>
+  <%= t('no_results') %>
+<% else %>
+  <div class="text-center mb-5">
+    <%= form_tag(resources_path, method: :post) do %>
+      <%= hidden_field_tag :resources_json, params[:resources_json], value: @resources_json %>
+      <%= submit_tag t('export')+" "+t('all'), name:nil, :class => 'btn btn btn-primary' %>
+    <% end %>
+  </div>
+<% end %>
+
 <div class="container text-left p2">
   <%= link_to t('add')+" "+t('or')+" "+t('import')+" "+t('resource').capitalize, new_resource_path,:class=>'btn btn btn-secondary',:style=>'' %>
 </div>

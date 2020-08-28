@@ -15,15 +15,14 @@
   </div>
   <!-- <hr> -->
   <% if (@resources.size==0) %>
-  <%= t('no_results') %>
+    <%= t('no_results') %>
   <% else %>
-  <div>
-    <% buybug %>
-    <%= form_tag(resources_path, method: :post) do %>
-    <%= hidden_field_tag :resources_json, params[:resources_json], value: @resources_json %>
-    <%= submit_tag t('export')+" "+t('all'), name:nil, :class => 'btn btn btn-primary' %>
-    <% end %>
-  </div>
+    <div>
+      <%= form_tag(resources_path, method: :post) do %>
+        <%= hidden_field_tag :resources_json, params[:resources_json], value: @resources_json %>
+        <%= submit_tag t('export')+" "+t('all'), name:export_all, :class => 'btn btn btn-primary' %>
+      <% end %>
+    </div>
   <% end %>
   <div class="container">
     <div class="card-columns">
