@@ -69,6 +69,23 @@ sudo apt install golang-go
 
 ====================================
 
+To reset the blockchain and database, empty the database (warning: all claim/claim review and blockchain data will be lost):
+
+1) Open the Rails Console using: rails c
+2) Run the following commands to delete all claims and reviews and remove user references to the blockchain:
+Claim.destroy_all
+ClaimReview.destroy_all
+User.update_all("blockchain_tx=NULL")
+User.update_all("time_added_to_blockchain=NULL")
+
+3) If you want to preserve the users credentials, skip this step and go to step 4. Otherwise, if you aactually want to also delete the users to start from scratch, you can also use this command in Rails Console:
+User.destroy_all
+
+4) Reset the hyperledger database by running the command under the hyperledger/chaincode/ folder: run.sh
+5) Confirm by going to the website that all claims and proceed to sign up as admin if you deleted the users, or sign in as admin and add the users to the blockchain if you just removed them from the blockchain. Then you can do the other steps (add claims and review claims, etc.)
+
+====================================
+
 You can also test the setup directly on the command line (without the interface) using some dummy data like the following:
 
 #1) Register admin,client and factchecker wallets:
