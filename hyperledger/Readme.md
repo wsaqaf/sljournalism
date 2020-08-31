@@ -11,9 +11,6 @@ curl -sSL https://bit.ly/2ysbOFE | bash -s
 
 Here are examples:
 
-#For linux commands, start with:
-### docker exec -ti peer0.org1.example.com sh
-
 #1) Register admin,client and factchecker wallets:
 
 peer chaincode invoke -o localhost:7050 --ordererTLSHostnameOverride orderer.example.com --tls --cafile ${PWD}/organizations/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem -C mychannel -n factcheck --peerAddresses localhost:7051 --tlsRootCertFiles ${PWD}/organizations/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/ca.crt --peerAddresses localhost:9051 --tlsRootCertFiles ${PWD}/organizations/peerOrganizations/org2.example.com/peers/peer0.org2.example.com/tls/ca.crt -c '{"Args1":["registerWallet","admin","org1","1", "The Admin"]}' --waitForEvent
@@ -191,52 +188,52 @@ https://codepen.io/asommer70/post/installing-ruby-rails-and-passenger-on-ubuntu-
 6) Deploy passenger to be used by the app as shown here:
 https://www.phusionpassenger.com/library/deploy/apache/deploy/ruby/
 
-4) Ensure you have git installed, else install using: sudo apt install git
+7) Ensure you have git installed, else install using: sudo apt install git
 
-5) Clone github repo from: https://github.com/wsaqaf/sljournalism.git using the command:
+8) Clone github repo from: https://github.com/wsaqaf/sljournalism.git using the command:
 git clone https://github.com/wsaqaf/sljournalism.git
 
-6) Run the commands:
+9) Run the commands:
 bundle install
 
-7) Run the command: bundle exec rake secret
+10) Run the command: bundle exec rake secret
 and keep the output to use in the next step
 
-8) Create the database using the commands (where <db> is the value in step 2)
+11) Create the database using the commands (where <db> is the value in step 2)
 sudo -u postgres createuser sljournalism
 sudo -u postgres createdb sljournalism -O sljournalism
 sudo -u postgres psql postgres
 ALTER USER sljournalism WITH PASSWORD 'sljournalism';
 
-9) Add an entry in /etc/postgresql/XX/main/pg_hba.conf under the line "local all postgres peer" as follows (<dbuser> from step 2):
+12) Add an entry in /etc/postgresql/XX/main/pg_hba.conf under the line "local all postgres peer" as follows (<dbuser> from step 2):
 local all <dbuser> trust
 
-10) Restart postgres with the command: sudo service postgresql restart
+13) Restart postgres with the command: sudo service postgresql restart
 
-11) Run the command
+14) Run the command
 bundle exec rake assets:precompile db:schema:load RAILS_ENV=production DISABLE_DATABASE_ENVIRONMENT_CHECK=1
 
-12) In the file sljournalism/config/local_env.yml, fill in the top SECRET_KEY_BASE value with the output from step 7 and fill in the remaining information as appropriate. Remember to use the postgres credentials used in step 3 above
+15) In the file sljournalism/config/local_env.yml, fill in the top SECRET_KEY_BASE value with the output from step 7 and fill in the remaining information as appropriate. Remember to use the postgres credentials used in step 3 above
 
-13) Restart apache with: sudo service apache2 restart
+16) Restart apache with: sudo service apache2 restart
 
-14) Install docker using instructions here:
+17) Install docker using instructions here:
 https://www.hostinger.com/tutorials/how-to-install-docker-on-ubuntu
 
-15) Install docker-composer using the commands:
+18) Install docker-composer using the commands:
 sudo apt-get install docker-compose
 
-16) Add the current user to the docker group and close the ssh session and login again as shown:
+19) Add the current user to the docker group and close the ssh session and login again as shown:
 sudo usermod -a -G docker $USER
 exit
 
-17) install go-lang using the commands:
+20) install go-lang using the commands:
 sudo apt update
 sudo apt install golang-go
 
-17) go to /hyperledger/ and run the command: . initialize.sh
+21) go to /hyperledger/ and run the command: . initialize.sh
 
-18) go to hyperledger/chaincode and the command: . run.sh
+22) go to hyperledger/chaincode and the command: . run.sh
 
-19) Open the website to go through the steps shown in the DEMO video here:
+23) To ensure that everything works properly, open the website to go through the steps shown in the DEMO video here:
 <link to youtube>

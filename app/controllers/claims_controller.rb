@@ -205,7 +205,6 @@ puts ("\n=============Running:\n"+cmnd+"\n--\n")
   end
 
   def create
-#byebug
     start_review=0
     if (!params[:claim].nil?)
       start_review=params[:claim][:start_review]
