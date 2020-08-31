@@ -234,17 +234,17 @@ class ClaimReview::StepsController < ApplicationController
       @claim_review.img_forensic_discrepency.to_s.gsub("''","")+'","'+
       @claim_review.img_metadata_discrepency.to_s.gsub("''","")+'","'+
       @claim_review.img_logical_discrepency.to_s.gsub("''","")+'","'+
-      @claim_review.note_img_old.to_s.gsub("''","")+'","'+
-      @claim_review.note_img_forensic_discrepency.to_s.gsub("''","")+'","'+
-      @claim_review.note_img_metadata_discrepency.to_s.gsub("''","")+'","'+
-      @claim_review.note_img_logical_discrepency.to_s.gsub("''","")+'","'+
+      escaped_str(@claim_review.note_img_old.to_s.gsub("''",""))+'","'+
+      escaped_str(@claim_review.note_img_forensic_discrepency.to_s.gsub("''",""))+'","'+
+      escaped_str(@claim_review.note_img_metadata_discrepency.to_s.gsub("''",""))+'","'+
+      escaped_str(@claim_review.note_img_logical_discrepency.to_s.gsub("''",""))+'","'+
       @claim_review.vid_review_started.to_s.gsub("''","")+'","'+
       @claim_review.vid_old.to_s.gsub("''","")+'","'+
       @claim_review.vid_forensic_discrepency.to_s.gsub("''","")+'","'+
       @claim_review.vid_metadata_discrepency.to_s.gsub("''","")+'","'+
       @claim_review.vid_audio_discrepency.to_s.gsub("''","")+'","'+
       @claim_review.vid_logical_discrepency.to_s.gsub("''","")+'","'+
-      @claim_review.note_vid_old.to_s.gsub("''","")+'","'+
+      escaped_str(@claim_review.note_vid_old.to_s.gsub("''",""))+'","'+
 
       escaped_str(@claim_review.note_vid_forensic_discrepency.to_s.gsub("''",""))+'","'+
       escaped_str(@claim_review.note_vid_metadata_discrepency.to_s.gsub("''",""))+'","'+
@@ -282,7 +282,7 @@ puts("Result:\n"+output+"\n==\n")
         if (success_confirmation.length>1)
           @save_to_blockchain=tx_no
           @claim_review.blockchain_id=output.match(/factcheckID.+?(F.+?)\\/)[1]
-          @claim_review.add_to_blockchain=1
+          @claim_review.add_to_blockchain="1"
           @claim_review.blockchain_tx=@save_to_blockchain
           @claim_review.time_added_to_blockchain=Time.now.utc.to_s[0...-7]
           @claim_review.save
@@ -297,12 +297,13 @@ puts("Result:\n"+output+"\n==\n")
   end
 
   def update
+#byebug
       @claim_review = ClaimReview.find(params[:claim_review_id])
       if current_user.id!=@claim_review.user_id then redirect_to claim_path(@claim); return end
 #      begin
         @claim_review.update(claim_review_params(step).merge(user_id: current_user.id))
         if (step=="s22")
-          if (params[:claim_review][:add_to_blockchain] && ENV['BLOCKCHAIN_ENABLED'] && current_user.role=="factchecker")
+          if (params[:claim_review][:add_to_blockchain]=="1" && ENV['BLOCKCHAIN_ENABLED'] && current_user.role=="factchecker")
                 output=save_to_the_blockchain()
                 if (@save_to_blockchain.length>3)
                   redirect_to claims_path(:blockchain_resp => @save_to_blockchain, :response => output)

@@ -278,7 +278,7 @@ en:
   next_step: Next Step
   no_associated_resource: No resources have been associated with this question.
   no_results: No results were returned.
-  no_share: No keep it private to me only
+  no_share: No, don't other reviewers see it
   not_all_qs_needed: You don't need to answer all questions!<br>If you are ready to assess the %{page}, simply jump to the [Reviewer Assessment] step to the left (one before the last) and mark your verdict.
   not_assessed: Not not_assessed
   not_provided: N/A
@@ -509,7 +509,7 @@ en:
   welcome: Welcome
   welcome_msg: Welcome to Source-Labeled Journalism
   with_no_reviews: " with no reviews yet"
-  yes_share: Yes share with everyone
+  yes_share: Yes share with other reviewers
   you_created: " that you created"
   you_reviewed: " that you reviewed"
 
@@ -553,3 +553,8 @@ en:
   assessment_waiting: Waiting to be assessed by admin
   assessment_status: Current assessment status
   assess_now: Assess now
+  current_status: Current status on blockchain
+  open_for_reviews: Open for claim reviews
+  reward_offered: The offered token reward
+  deadline: Deadline
+  none: None

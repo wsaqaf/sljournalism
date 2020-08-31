@@ -40,8 +40,8 @@
   <%== t('only_clients_can_add_claims') %>
 <% else %>
     <%= link_to t('add')+" "+t('or')+" "+t('import')+" "+t('claim').capitalize, new_claim_path,:class=>'btn btn btn-secondary',:style=>'', :disabled => (ENV['BLOCKCHAIN_ENABLED'] && current_user.role!="client") %>
-  </div>
 <% end %>
+</div>
 <hr>
 <% @claims.each do |claim| %>
 <!-- <%= react_component("Post", {title: claim.title}) %> -->
@@ -75,7 +75,8 @@
       <% if !claim.tags.empty? %>
         <%= t('tags') %>:
           <small>
-          <%= raw claim.tags.map(&:claim_name).map { |t| link_to t, tag_path(t) }.join(', ') %> | <%= t('updated_at') %>:
+          <%= raw claim.tags.map(&:claim_name).map { |t| link_to t, tag_path(t) }.join(', ') %>
+          | <%= t('updated_at') %>:
           <%= claim.created_at.strftime("%Y-%m-%d") %></small>
       <% end %>
       <div class="mt-2">
@@ -118,45 +119,46 @@
       end %>
     <small>
       <% if ENV['BLOCKCHAIN_ENABLED'] %>
+          <b><%= t('current_status') %>: </b>
           <% if claim.status_on_blockchain.nil? %>
-            <b>Current status on blockchain: </b>: Waiting for the first claim review! -
+            <%= t('open_for_reviews') %> -
           <% else %>
-            <b>Current status on blockchain: </b>: <%= claim.status_on_blockchain %> -
+            <%= claim.status_on_blockchain %> -
           <% end %>
-          Reward offered: <%= claim.reward_amount.to_s %> - Deadline:
+          <b><%= t('reward_offered') %>:</b> <%= claim.reward_amount.to_s %> - <b><%= t('deadline') %>:</b>
             <% if claim.expiry_date %>
                 <%= claim.expiry_date %>
             <% else %>
-              None
+              <%= t('none') %>
             <% end %> ====
       <% end %>
         <% if (@total_reviews>0) %>
           <% if !result1.empty? %>
             <%= result1 %>
             <% if (@total_reviews>1) %>
-              <%= link_to "(" + t('show_reviews', reviews: @total_reviews), claim_claim_reviews_path(claim.id) %> |
+              - <%= link_to t('show_reviews', reviews: @total_reviews), claim_claim_reviews_path(claim.id) %>
             <% else %>
-              <%= link_to "(" + t('show_review'), claim_claim_reviews_path(claim.id) %> |
+              - <%= link_to t('show_review'), claim_claim_reviews_path(claim.id) %>
             <% end %>
             <% if @revtype == "Add" %>
               <% if !ENV['BLOCKCHAIN_ENABLED'] || (current_user.role=="factchecker" && claim.status_on_blockchain!="settled") %>
-                <%= link_to t('add_review'), claim_claim_reviews_path(claim.id), method: :create %> )
+                - <%= link_to t('add_review'), claim_claim_reviews_path(claim.id), method: :create %>
               <% end %>
             <% else %>
               <% if !ENV['BLOCKCHAIN_ENABLED'] || !@my_review.blockchain_tx.present? %>
-                <%= link_to t('edit_review'), claim_claim_reviews_path(claim.id), method: :create %> |
-                <%= link_to t('del_review'), claim_claim_review_path(claim.id,@my_review), method: :delete, data: { confirm: t('confirm_del_q')} %> )
+                - <%= link_to t('edit_review'), claim_claim_reviews_path(claim.id), method: :create %>
+                - <%= link_to t('del_review'), claim_claim_review_path(claim.id,@my_review), method: :delete, data: { confirm: t('confirm_del_q')} %>
               <% end %>
             <% end %>
           <% else %>
             <% if !ENV['BLOCKCHAIN_ENABLED'] || !@my_review.blockchain_tx.present? %>
-                ( <%= link_to t('edit_review'), claim_claim_reviews_path(claim.id), method: :create %> |
-                <%= link_to t('del_review'), claim_claim_review_path(claim.id,@my_review), method: :delete, data: { confirm: t('confirm_del_q')} %> )
+                - <%= link_to t('edit_review'), claim_claim_reviews_path(claim.id), method: :create %>
+                - <%= link_to t('del_review'), claim_claim_review_path(claim.id,@my_review), method: :delete, data: { confirm: t('confirm_del_q')} %>
               <% end %>
           <% end %>
         <% else %>
           <% if !ENV['BLOCKCHAIN_ENABLED'] || (current_user.role=="factchecker"  && claim.status_on_blockchain!="settled") %>
-            <div  style='float:right'><%= link_to t('add_review'), claim_claim_reviews_path(claim.id), method: :create %></div><br>
+            <div  style='float:right'> - <%= link_to t('add_review'), claim_claim_reviews_path(claim.id), method: :create %></div><br>
           <% end %>
         <% end %>
     </small>

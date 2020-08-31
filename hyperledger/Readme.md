@@ -62,7 +62,7 @@ sudo apt install golang-go
 
 21) go to /hyperledger/ and run the command: . initialize.sh
 
-22) go to hyperledger/chaincode and the command: . run.sh
+22) go to hyperledger/ and the command: . run.sh
 
 23) To ensure that everything works properly, open the website to go through the steps shown in the DEMO video here:
 <link to youtube>
@@ -81,7 +81,7 @@ User.update_all("time_added_to_blockchain=NULL")
 3) If you want to preserve the users credentials, skip this step and go to step 4. Otherwise, if you aactually want to also delete the users to start from scratch, you can also use this command in Rails Console:
 User.destroy_all
 
-4) Reset the hyperledger database by running the command under the hyperledger/chaincode/ folder: run.sh
+4) Reset the hyperledger database by running the command under the hyperledger/ folder: run.sh
 5) Confirm by going to the website that all claims and proceed to sign up as admin if you deleted the users, or sign in as admin and add the users to the blockchain if you just removed them from the blockchain. Then you can do the other steps (add claims and review claims, etc.)
 
 ====================================
