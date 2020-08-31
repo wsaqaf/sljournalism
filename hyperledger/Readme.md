@@ -1,15 +1,75 @@
-To install this, just follow all the instructions shown here:
-https://hyperledger-fabric.readthedocs.io/en/release-2.0/build_network.html
+Steps for installation for a first time (clean instance) on Ubuntu 18.04:
 
-1) If you haven't already done so, download and run the latest version of Hyperledger Fabric (v2.0):
-curl -sSL https://bit.ly/2ysbOFE | bash -s
+1) Install Node.js: https://www.digitalocean.com/community/tutorials/how-to-install-node-js-on-ubuntu-18-04
 
-2) run run.sh in the chaincode folder as: bash run.sh
+2) Install Ruby on Rails with rbenv (install latest ruby ver you see):
+https://www.digitalocean.com/community/tutorials/how-to-install-ruby-on-rails-with-rbenv-on-ubuntu-18-04
 
-3) You are now done and have the chaincode installed.
- You are now ready to interact with the chaincode in adding, fetching and deleting factchecks.
+3) Install PostgreSQL with Ruby on Rails App (remember db name, username and pw for later configurations):
+https://www.digitalocean.com/community/tutorials/how-to-use-postgresql-with-your-ruby-on-rails-application-on-ubuntu-18-04
+(only do steps 1 & 2)
 
-Here are examples:
+4) Install Apache2 with the command: sudo apt-get install apache2-dev
+
+5) Install Passenger as shown here:
+https://codepen.io/asommer70/post/installing-ruby-rails-and-passenger-on-ubuntu-an-admin-s-guide
+
+6) Deploy passenger to be used by the app as shown here:
+https://www.phusionpassenger.com/library/deploy/apache/deploy/ruby/
+
+7) Ensure you have git installed, else install using: sudo apt install git
+
+8) Clone github repo from: https://github.com/wsaqaf/sljournalism.git using the command:
+git clone https://github.com/wsaqaf/sljournalism.git
+
+9) Run the commands:
+bundle install
+
+10) Run the command: bundle exec rake secret
+and keep the output to use in the next step
+
+11) Create the database using the commands (where <db> is the value in step 2)
+sudo -u postgres createuser sljournalism
+sudo -u postgres createdb sljournalism -O sljournalism
+sudo -u postgres psql postgres
+ALTER USER sljournalism WITH PASSWORD 'sljournalism';
+
+12) Add an entry in /etc/postgresql/XX/main/pg_hba.conf under the line "local all postgres peer" as follows (<dbuser> from step 2):
+local all <dbuser> trust
+
+13) Restart postgres with the command: sudo service postgresql restart
+
+14) Run the command
+bundle exec rake assets:precompile db:schema:load RAILS_ENV=production DISABLE_DATABASE_ENVIRONMENT_CHECK=1
+
+15) In the file sljournalism/config/local_env.yml, fill in the top SECRET_KEY_BASE value with the output from step 7 and fill in the remaining information as appropriate. Remember to use the postgres credentials used in step 3 above
+
+16) Restart apache with: sudo service apache2 restart
+
+17) Install docker using instructions here:
+https://www.hostinger.com/tutorials/how-to-install-docker-on-ubuntu
+
+18) Install docker-composer using the commands:
+sudo apt-get install docker-compose
+
+19) Add the current user to the docker group and close the ssh session and login again as shown:
+sudo usermod -a -G docker $USER
+exit
+
+20) install go-lang using the commands:
+sudo apt update
+sudo apt install golang-go
+
+21) go to /hyperledger/ and run the command: . initialize.sh
+
+22) go to hyperledger/chaincode and the command: . run.sh
+
+23) To ensure that everything works properly, open the website to go through the steps shown in the DEMO video here:
+<link to youtube>
+
+====================================
+
+You can also test the setup directly on the command line (without the interface) using some dummy data like the following:
 
 #1) Register admin,client and factchecker wallets:
 
@@ -123,117 +183,6 @@ Notes:
 - You can find the couchdb statedb data via the links (make sure your firewall ingress port settings are open):
 http://<server ip>:<port for couchdb1/_utils/#/_all_dbs
 http://<server ip>:<port for couchdb2/_utils/#/_all_dbs
-http://<server ip>:<port for couchdb3/_utils/#/_all_dbs
 
 - You can find the raw blockchain data at using:
 sudo less /var/lib/docker/volumes/net_orderer.example.com/_data/chains/mychannel/blockfile_000000
-
-
-====
-Contents of run1.sh:
-
-#!/bin/bash -x
-./byfn.sh -m down
-./byfn.sh up -s couchdb -n
-docker cp ../../chaincode/factcheck cli:/opt/gopath/src/github.com/hyperledger/fabric-samples/chaincode
-docker cp ../../chaincode/run2.sh cli:/opt/gopath/src/github.com/hyperledger/fabric/peer
-docker cp ../../chaincode/.bashrc cli:/root
-echo "Going into cli... Once you are in cli, run: . run2.sh"
-docker exec -it cli /bin/bash
-
-Contents of run2.sh:
-
-#!/bin/bash
-set -x
-export CHANNEL_NAME=mychannel
-peer lifecycle chaincode package mycc.tar.gz --path /opt/gopath/src/github.com/hyperledger/fabric-samples/chaincode/factcheck/go/ --lang golang --label mycc_1
-peer lifecycle chaincode install mycc.tar.gz
-output=$(peer lifecycle chaincode queryinstalled)
-CC_PACKAGE_ID=$(echo $output| sed 's/[^,]*ID: \([^,]*\).*/\1/')
-
-CORE_PEER_MSPCONFIGPATH=$TESTNET_PATH/organizations/ordererOrganizations/example.com/peerOrganizations/org2.example.com/users/Admin@org2.example.com/msp
-CORE_PEER_ADDRESS=peer0.org2.example.com:9051
-CORE_PEER_LOCALMSPID="Org2MSP"
-CORE_PEER_TLS_ROOTCERT_FILE=$TESTNET_PATH/organizations/ordererOrganizations/example.com/peerOrganizations/org2.example.com/peers/peer0.org2.example.com/tls/ca.crt
-
-peer lifecycle chaincode install mycc.tar.gz
-peer lifecycle chaincode approveformyorg --channelID $CHANNEL_NAME --name mycc --version 1.0 --init-required --package-id $CC_PACKAGE_ID --sequence 1 --tls true --cafile $TESTNET_PATH/organizations/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem
-CORE_PEER_MSPCONFIGPATH=$TESTNET_PATH/organizations/ordererOrganizations/example.com/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp
-CORE_PEER_ADDRESS=peer0.org1.example.com:7051
-CORE_PEER_LOCALMSPID="Org1MSP"
-CORE_PEER_TLS_ROOTCERT_FILE=$TESTNET_PATH/organizations/ordererOrganizations/example.com/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/ca.crt
-peer lifecycle chaincode approveformyorg --channelID $CHANNEL_NAME --name mycc --version 1.0 --init-required --package-id $CC_PACKAGE_ID --sequence 1 --tls true --cafile $TESTNET_PATH/organizations/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem
-peer lifecycle chaincode checkcommitreadiness --channelID $CHANNEL_NAME --name mycc --version 1.0 --init-required --sequence 1 --tls true --cafile $TESTNET_PATH/organizations/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem --output json
-peer lifecycle chaincode commit -o orderer.example.com:7050 --channelID $CHANNEL_NAME --name mycc --version 1.0 --sequence 1 --init-required --tls true --cafile $TESTNET_PATH/organizations/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem --peerAddresses localhost:7051 --tlsRootCertFiles $TESTNET_PATH/organizations/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/ca.crt --peerAddresses localhost:9051 --tlsRootCertFiles $TESTNET_PATH/organizations/peerOrganizations/org2.example.com/peers/peer0.org2.example.com/tls/ca.crt
-peer chaincode invoke -o orderer.example.com:7050 --isInit --tls true --cafile $TESTNET_PATH/organizations/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem -C $CHANNEL_NAME -n factcheck --peerAddresses localhost:7051 --tlsRootCertFiles $TESTNET_PATH/organizations/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/ca.crt --peerAddresses localhost:9051 --tlsRootCertFiles $TESTNET_PATH/organizations/peerOrganizations/org2.example.com/peers/peer0.org2.example.com/tls/ca.crt -c '{"Args":["Init"]}' --waitForEvent
-
-
-======
-
-Installation steps (Ubuntu 18.04):
-1) Install Node.js: https://www.digitalocean.com/community/tutorials/how-to-install-node-js-on-ubuntu-18-04
-
-2) Install Ruby on Rails with rbenv (install latest ruby ver you see):
-https://www.digitalocean.com/community/tutorials/how-to-install-ruby-on-rails-with-rbenv-on-ubuntu-18-04
-
-3) Install PostgreSQL with Ruby on Rails App (remember db name, username and pw for later configurations):
-https://www.digitalocean.com/community/tutorials/how-to-use-postgresql-with-your-ruby-on-rails-application-on-ubuntu-18-04
-(only do steps 1 & 2)
-
-4) Install Apache2 with the command: sudo apt-get install apache2-dev
-
-5) Install Passenger as shown here:
-https://codepen.io/asommer70/post/installing-ruby-rails-and-passenger-on-ubuntu-an-admin-s-guide
-
-6) Deploy passenger to be used by the app as shown here:
-https://www.phusionpassenger.com/library/deploy/apache/deploy/ruby/
-
-7) Ensure you have git installed, else install using: sudo apt install git
-
-8) Clone github repo from: https://github.com/wsaqaf/sljournalism.git using the command:
-git clone https://github.com/wsaqaf/sljournalism.git
-
-9) Run the commands:
-bundle install
-
-10) Run the command: bundle exec rake secret
-and keep the output to use in the next step
-
-11) Create the database using the commands (where <db> is the value in step 2)
-sudo -u postgres createuser sljournalism
-sudo -u postgres createdb sljournalism -O sljournalism
-sudo -u postgres psql postgres
-ALTER USER sljournalism WITH PASSWORD 'sljournalism';
-
-12) Add an entry in /etc/postgresql/XX/main/pg_hba.conf under the line "local all postgres peer" as follows (<dbuser> from step 2):
-local all <dbuser> trust
-
-13) Restart postgres with the command: sudo service postgresql restart
-
-14) Run the command
-bundle exec rake assets:precompile db:schema:load RAILS_ENV=production DISABLE_DATABASE_ENVIRONMENT_CHECK=1
-
-15) In the file sljournalism/config/local_env.yml, fill in the top SECRET_KEY_BASE value with the output from step 7 and fill in the remaining information as appropriate. Remember to use the postgres credentials used in step 3 above
-
-16) Restart apache with: sudo service apache2 restart
-
-17) Install docker using instructions here:
-https://www.hostinger.com/tutorials/how-to-install-docker-on-ubuntu
-
-18) Install docker-composer using the commands:
-sudo apt-get install docker-compose
-
-19) Add the current user to the docker group and close the ssh session and login again as shown:
-sudo usermod -a -G docker $USER
-exit
-
-20) install go-lang using the commands:
-sudo apt update
-sudo apt install golang-go
-
-21) go to /hyperledger/ and run the command: . initialize.sh
-
-22) go to hyperledger/chaincode and the command: . run.sh
-
-23) To ensure that everything works properly, open the website to go through the steps shown in the DEMO video here:
-<link to youtube>
