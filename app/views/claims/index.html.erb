@@ -143,13 +143,13 @@
                 <%= link_to t('add_review'), claim_claim_reviews_path(claim.id), method: :create %> )
               <% end %>
             <% else %>
-              <% if !ENV['BLOCKCHAIN_ENABLED'] %>
+              <% if !ENV['BLOCKCHAIN_ENABLED'] || !@my_review.blockchain_tx.present? %>
                 <%= link_to t('edit_review'), claim_claim_reviews_path(claim.id), method: :create %> |
                 <%= link_to t('del_review'), claim_claim_review_path(claim.id,@my_review), method: :delete, data: { confirm: t('confirm_del_q')} %> )
               <% end %>
             <% end %>
           <% else %>
-            <% if !ENV['BLOCKCHAIN_ENABLED'] %>
+            <% if !ENV['BLOCKCHAIN_ENABLED'] || !@my_review.blockchain_tx.present? %>
                 ( <%= link_to t('edit_review'), claim_claim_reviews_path(claim.id), method: :create %> |
                 <%= link_to t('del_review'), claim_claim_review_path(claim.id,@my_review), method: :delete, data: { confirm: t('confirm_del_q')} %> )
               <% end %>
