@@ -101,7 +101,7 @@
        @my_review = ClaimReview.where(claim_id: @claim.id, user_id: current_user.id).first
       if (@my_review.blank?) %>
          <hr><%= link_to t('check_reviews')+" "+t('this_claim'), claim_claim_reviews_path(@claim.id) %>
-         <% if !ENV['BLOCKCHAIN_ENABLED'] || (current_user.role=="factchecker" && claim.status_on_blockchain!="settled") %>
+         <% if !ENV['BLOCKCHAIN_ENABLED'] || (current_user.role=="factchecker" && @claim.status_on_blockchain!="settled") %>
             <%= link_to t('review').capitalize+" "+t('this_claim'), claim_claim_reviews_path(@claim.id), method: :create %>
          <% end %>
      <% else %>
@@ -111,7 +111,7 @@
        <% end
      end
   else %>
-    <% if !ENV['BLOCKCHAIN_ENABLED'] || (current_user.role=="factchecker" && claim.status_on_blockchain!="settled") %>
+    <% if !ENV['BLOCKCHAIN_ENABLED'] || (current_user.role=="factchecker" && @claim.status_on_blockchain!="settled") %>
       <br><%= link_to t('review').capitalize+" "+t('this_claim'), claim_claim_reviews_path(@claim.id), method: :create %>
     <% end %>
  <% end %>
