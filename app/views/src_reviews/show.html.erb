@@ -152,19 +152,21 @@
                     </li>
                   </ul>
 
-                  <% if (ENV['BLOCKCHAIN_ENABLED'] && !@claim_review.blockchain_tx.empty? && current_user.role=="admin") %>
+                  <% if (ENV['BLOCKCHAIN_ENABLED'] && !@claim_review.blockchain_tx.empty?) %>
                     <div id="assessment"></div>
                     <div id="assessment_div">
                       <hr>
                       <h4><%= t('assess_factcheck') %></h4><br>
-                      <% if @claim_review.blockchain_assessment.nil? %>
-                          <%= t('assessment') %>:
-                          <select name="blockchain_assessment" id="blockchain_assessment">
-                            <option value="1">Accepted</option>
-                            <option value="0">Rejected</option>
-                          </select><br>
-                          <br><%= t('assessment_rationale') %>:<br><textarea id="assessment_rationale" name="assessment_rationale" rows="4" cols="50"></textarea>
-                          <br><button name="asssmentButton" type="button" value="<% t('submit') %>" onclick=javascript:assess("<%= config.relative_url_root.to_s %>","<%= config.relative_url_root.to_s+"/claims/"+@claim.id.to_s+"/claim_reviews/"+@claim_review.id.to_s %>"); return false;><%= t('submit') %></button>
+                      <% if @claim_review.blockchain_assessment.nil?%>
+                          <% if current_user.role=="admin" %>
+                              <%= t('assessment') %>:
+                              <select name="blockchain_assessment" id="blockchain_assessment">
+                                <option value="1">Accepted</option>
+                                <option value="0">Rejected</option>
+                              </select><br>
+                              <br><%= t('assessment_rationale') %>:<br><textarea id="assessment_rationale" name="assessment_rationale" rows="4" cols="50"></textarea>
+                              <br><button name="asssmentButton" type="button" value="<% t('submit') %>" onclick=javascript:assess("<%= config.relative_url_root.to_s %>","<%= config.relative_url_root.to_s+"/claims/"+@claim.id.to_s+"/claim_reviews/"+@claim_review.id.to_s %>"); return false;><%= t('submit') %></button>
+                          <% end %>
                       <% else %>
                         <%= t('assessment') %>:
                             <% if @claim_review.blockchain_assessment==1 %>
