@@ -67,10 +67,10 @@ puts ("\n=============Running:\n"+cmnd+"\n--\n")
             @save_to_blockchain=tx_no
             @claim_review.blockchain_tx=@save_to_blockchain
             @claim_review.save
-            if output.include? "Claim successfully factchecked and rewards (if any) settled"
-              @claim.status_on_blockchain="Finished and no longer accepts reviews."
+            if output.include? "All submitted factchecks have now been evaluated"
+              @claim.status_on_blockchain=t('factchecks_settled')
             else
-              @claim.status_on_blockchain="Received at least one review, open for more."
+              @claim.status_on_blockchain=t('received_factchecks')
             end
             @claim.save
 

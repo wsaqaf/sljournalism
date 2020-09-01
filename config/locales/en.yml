@@ -558,3 +558,5 @@ en:
   reward_offered: The offered token reward
   deadline: Deadline
   none: None
+  received_factchecks: Received at least one review, open for more
+  factchecks_settled: Finished and no longer accepts reviews

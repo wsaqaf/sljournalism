@@ -805,7 +805,7 @@ func (t *SimpleChaincode) assessFactcheck(stub shim.ChaincodeStubInterface, args
 			}
 	}
 
-	if (args[3]=="approved" || claimJSON.Deadline!="") {
+	if (len(claimJSON.Deadline)<3) {
 		claimJSON.Status = "completed"
 		claimJSON.StatusUpdatedAt = currentTime
 
@@ -818,10 +818,9 @@ func (t *SimpleChaincode) assessFactcheck(stub shim.ChaincodeStubInterface, args
 		if err != nil {
 			return shim.Error(err.Error())
 		}
-		return shim.Success([]byte("Claim successfully factchecked and rewards (if any) settled: "+string(claimJSONasBytes)))
+		return shim.Success([]byte("All submitted factchecks have now been evaluated and the rewards (if any) are settled: "+string(claimJSONasBytes)))
 	}
-	return shim.Success([]byte("Factcheck rejected! Only when a factcheck is approved would this claim (without a deadline) be completed."))
-
+	return shim.Success([]byte("Still waiting for more factchecks."))
 }
 
 // ===============================================
