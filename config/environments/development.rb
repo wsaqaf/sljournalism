@@ -6,7 +6,7 @@ Rails.application.configure do
   # since you don't have to restart the web server when you make code changes.
 
   #added lately:
-  config.assets.prefix = "/dev-assets"
+#  config.assets.prefix = "/dev-assets"
   config.public_file_server.enabled = true
 
   config.cache_classes = false
