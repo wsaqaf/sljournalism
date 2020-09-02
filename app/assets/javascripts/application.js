@@ -309,7 +309,7 @@ function assess(rel_url,url1)
           }
         else
           {
-            $("#assessment"+usr).html("<font color='red'>Error: could not run blockchain command.</font>");
+            $("#assessment").html("<font color='red'>Error: could not run blockchain command.</font>");
           }
       }
    });

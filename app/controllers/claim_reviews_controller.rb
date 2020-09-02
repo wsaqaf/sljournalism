@@ -66,6 +66,11 @@ puts ("\n=============Running:\n"+cmnd+"\n--\n")
             @claim_review.blockchain_assessment_time=Time.now.utc.to_s
             @save_to_blockchain=tx_no
             @claim_review.blockchain_tx=@save_to_blockchain
+            if eval=="approved"
+              @claim_review.review_sharing_mode="1"
+            else
+              @claim_review.review_sharing_mode="-1"
+            end
             @claim_review.save
             if output.include? "All submitted factchecks have now been evaluated"
               @claim.status_on_blockchain=t('factchecks_settled')
