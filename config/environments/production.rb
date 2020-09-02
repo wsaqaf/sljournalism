@@ -39,7 +39,7 @@ config.serve_static_assets = false
 config.assets.compile = false
 
 # Generate digests for assets URLs
-config.assets.digest = true
+#config.assets.digest = true
 
 #config.public_file_server.enabled = true
 #config.assets.compile = true
