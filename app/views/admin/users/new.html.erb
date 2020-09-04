@@ -1,7 +1,7 @@
 <div class="container">
   <div class="form-claim">
     <fieldset>
-      <legend>&nbsp;Add new user</legend>
+      <legend>&nbsp;<%= t('add_new_user') %></legend>
       <%= form_for @user, as: :user, url: admin_users_path, method: :post, html: { :onsubmit => "do_submit('user')" } do |f| %>
         <% if f.object.errors.any? %>
         <div class="error_messages">
@@ -11,15 +11,15 @@
         </div>
         <% end %>
       <ul>
-        <li>Name:
+        <li><%= t('devise.account.name') %>:
         <%= f.text_field :name, class: 'field-long', :required=>"true" %>
         </li>
         <li>
-          Email:
+          <%= t('devise.account.email') %>:
         <%= f.text_field :email, class: 'field-long', :required=>"true" %>
         </li>
         <li>
-          Affiliation:
+          <%= t('devise.account.affiliation') %>:
         <%= f.text_field :affiliation, class: 'field-long', :autocomplete=>"off" %>
         </li>
         <li>
@@ -27,15 +27,15 @@
           <%= f.text_field :url, class: 'field-long', :autocomplete=>"off" %>
         </li>
         <li>
-          Password:
+          <%= t('devise.account.password') %>:
           <%= f.password_field :password, class: 'field-long', :required=>"true" %>
         </li>
         <li>
-          Confirm password:
+          <%= t('devise.account.repeat_pw') %>:
           <%= f.password_field :password_confirmation, class: 'field-long', :required=>"true" %>
         </li>
         <li>
-          Role:
+          <%= t('devise.account.role') %>:
             <b>
               <%= f.radio_button :role, 'admin'%> Admin
               <%= f.radio_button :role, 'client'%> Client
@@ -48,10 +48,10 @@
         </li>
         <% if (ENV['BLOCKCHAIN_ENABLED']) %>
           <li>
-            Add to blockchain?
+            <%= t('add_to_blockhain') %>?
               <b>
-                <%= f.radio_button :add_to_blockchain, 'yes' %> Yes
-                <%= f.radio_button :add_to_blockchain, 'no', :checked => true %> No
+                <%= f.radio_button :add_to_blockchain, 'yes', :checked => true %> <%= t('yes_answer') %>
+                <%= f.radio_button :add_to_blockchain, 'no' %> <%= t('no_answer') %>
               </b>
           </li>
         <% else %>

@@ -19,7 +19,7 @@ en:
       password: "Password"
       current_pw: "Current password"
       new_pw: "New password"
-      repeat_pw: "Retype new password"
+      repeat_pw: "Retype the password"
       email_h: "You will need this email to log in everytime"
       name_h: "Your name will be included in meta data of your claim reviews"
       affiliation_h: "This will be useful to identify peers in your organisation and for networking purposes"

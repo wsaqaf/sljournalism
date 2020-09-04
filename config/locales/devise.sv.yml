@@ -28,7 +28,7 @@ sv:
       password: "Lösenord"
       current_pw: "Nuvarande lösenord"
       new_pw: "Nytt lösenord"
-      repeat_pw: "Skriv nytt nytt lösenord"
+      repeat_pw: "Skriv nytt lösenord"
       name_h: "Ditt namn kommer att inkluderas i metadata för dina anspråkgranskningar"
       affiliation_h: "Detta kommer att vara användbart för att identifiera kamrater i din organisation och för nätverksändamål"
       role_h: "Tillgängliga roller: Kan skicka in anspråk för granskning, Factchecker: Kan bara granska anspråk, Guest: Kan bara visa anspråk och recensioner"
