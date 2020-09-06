@@ -221,10 +221,10 @@ and check if docker is correctly installed
 18) install golang (v 1.14.1) using the commands:
 
   >     sudo apt update
-	>     sudo apt -y upgrade
-	>			wget https://dl.google.com/go/go1.14.1.linux-amd64.tar.gz -O /tmp/go1.14.1.linux-amd64.tar.gz
-	>			sudo tar -xvf /tmp/go1.11.linux-amd64.tar.gz
-	>			sudo mv /tmp/go /usr/local
+  >     sudo apt -y upgrade
+  >     wget https://dl.google.com/go/go1.14.1.linux-amd64.tar.gz -O /tmp/go1.14.1.linux-amd64.tar.gz
+  >     sudo tar -xvf /tmp/go1.11.linux-amd64.tar.gz
+  >     sudo mv /tmp/go /usr/local
 
 19) go to the *hyperledger/* folder under the main Ruby app and initialize the Hyperledger environment:
 
