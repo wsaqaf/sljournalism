@@ -1,20 +1,19 @@
 
 ## Steps for installation for a first time (clean instance) on Ubuntu 18.04:
 
-1) Login to your shell account on your Droplet and create a new account with sudo rights if you have not already done so. In our case, we assume that we will create an account named *'demo'*:
+1) Login to your shell account on your Droplet and create a new account with sudo rights if you have not already done so. In our case, we assume that we will create an account named *'demo'* with the default root account:
 
-  >     adduser demo
+  >     sudo adduser demo
 
 and enter a password of your choice when prompted
 
 Then give it sudo rights as shown:
-  >     usermod -aG sudo demo
+  >     sudo usermod -aG sudo demo
   >     su - demo
 
-2) Update and upgrade the packages in the system:
+2) Update the packages in the system:
 
   >     sudo apt update
-  >     sudo apt upgrade
 
 3) Install Ruby dependencies (Nodejs, Yarn, etc.):
 
@@ -23,10 +22,11 @@ Then give it sudo rights as shown:
   >     echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
   >     sudo add-apt-repository ppa:chris-lea/redis-server
   >     sudo apt update
-  >     sudo apt install git-core curl zlib1g-dev build-essential libssl-dev libreadline-dev libyaml-dev libsqlite3-dev sqlite3 libxml2-dev libxslt1-dev libcurl4-openssl-dev software-properties-common libffi-dev dirmngr gnupg apt-transport-https ca-certificates redis-server redis-tools nodejs yarn npm
+  >     sudo apt install git-core curl zlib1g-dev build-essential libssl-dev libreadline-dev libyaml-dev libsqlite3-dev sqlite3 libxml2-dev libxslt1-dev libcurl4-openssl-dev software-properties-common libffi-dev dirmngr gnupg apt-transport-https ca-certificates redis-server redis-tools nodejs yarn
+
 
 confirm that nodejs and npm are installed:
-  >     nodejs -v;npm -v
+  >     nodejs -v
 
 4) Install Ruby 2.7.1 and Rails and use rbenv for versioning:
 
@@ -49,18 +49,27 @@ Install rails and bundler to complete the Ruby setup
 confirm that bundle 2.0 is installed correctly
   >     bundle -v
 
-5) Install postgres and its libraries as well as a database and its owner account (using *'demo'* for database, user and password):
+5) Install postgres and its libraries as well as a database and its owner account (In this setup we are using *'demo'* for database, user and password. You can update that as you see fit):
 
   >     sudo apt install postgresql postgresql-contrib libpq-dev
+
+You can start the service with:
   >     sudo service postgresql start
+
+Then create the user:
   >     sudo -u postgres createuser demo
+
+and the database the user owns:
   >     sudo -u postgres createdb demo -O demo
+
+go into the postgres environment:
   >     sudo -u postgres psql postgres
 
-Then once in psql, set up the password as follows:
+and once in, set up the password as follows:
   >     ALTER USER demo WITH PASSWORD 'demo';
 
-then exit from psql using \q
+then exit from psql using
+  >     \q
 
 6) Install Apache2 (you can also choose Nginx but for this demo, Apache2 is sufficient):
 
@@ -69,7 +78,10 @@ then exit from psql using \q
 Verify that the default Apache2 page appears by visiting the website (droplet's IP on a web browser should work)
 http://<public IP or domain name>
 
-7) Add a file at /etc/apache2/sites-available/demo.conf to correspond to the app. We used *'demo'* but you can use any other name.
+7) Add a file at /etc/apache2/sites-available/demo.conf to correspond to the app. We used *'demo'* but you can use any other name:
+
+  >     sudo nano /etc/apache2/sites-available/demo.conf
+
 In the file, ensure that you have the following values (replace the email and other the word 'demo' with the appropriate location of the app):
 
   >     ServerName <public ip>
@@ -89,9 +101,17 @@ In the file, ensure that you have the following values (replace the email and ot
   >     
   >     </VirtualHost>
 
+Remember to change <public ip> to your public IP.
 
-8) Clone github repo from: https://github.com/wsaqaf/sljournalism.git using the command:
+Once you save and exit the file, ensure you enable it using the command:
+  >     sudo a2ensite demo.conf
 
+Furthermore, disable the default file using:
+  >     sudo a2dissite 000-default.conf
+
+8) Go to the root location of the www data files and clone github repo from: https://github.com/wsaqaf/sljournalism.git using the commands:
+
+	>     cd /var/www/html
   >     git clone https://github.com/wsaqaf/sljournalism.git
 
 Then go into the created app folder sljournalism and run the commands:
@@ -175,7 +195,7 @@ https://certbot.eff.org/lets-encrypt/ubuntubionic-apache.html
 
 ====================================
 
-**Reseting the databases**
+## Reseting the databases**
 To reset the blockchain and database, empty the database (warning: all claim/claim review and blockchain data will be lost):
 
 1) Go to the app's main folder and open the Rails Console using the command:
