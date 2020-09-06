@@ -111,6 +111,8 @@ Furthermore, disable the default file using:
 
 8) Go to the root location of the www data files and clone github repo from: https://github.com/wsaqaf/sljournalism.git using the commands:
 
+	>			sudo chown $USER:$USER -R /var/www
+	>			sudo chmod -R 755 /var/www
 	>     cd /var/www/html
   >     git clone https://github.com/wsaqaf/sljournalism.git
 
