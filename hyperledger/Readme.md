@@ -11,6 +11,8 @@ Then give it sudo rights as shown:
   >     sudo usermod -aG sudo demo
   >     su - demo
 
+At this point, it is recommended to exit the ssh session and login again using the new user *'demo'* before continuing.
+
 2) Update the packages in the system:
 
   >     sudo apt update
@@ -216,13 +218,17 @@ and check if docker is correctly installed
 
   >     sudo usermod -a -G docker $USER; exit
 
-18) install go-lang using the commands:
+18) install golang (v 1.14.1) using the commands:
 
-  >     sudo apt update; sudo apt install golang-go
+  >     sudo apt update
+	>     sudo apt -y upgrade
+	>			wget https://dl.google.com/go/go1.14.1.linux-amd64.tar.gz -O /tmp/go1.14.1.linux-amd64.tar.gz
+	>			sudo tar -xvf /tmp/go1.11.linux-amd64.tar.gz
+	>			sudo mv /tmp/go /usr/local
 
 19) go to the *hyperledger/* folder under the main Ruby app and initialize the Hyperledger environment:
 
-	>			cd /var/www/html/sljournalism/hyperledger
+  >     cd /var/www/html/sljournalism/hyperledger
   >     . initialize.sh
 
 20) Install and deploy the chaincode on the blockchain
