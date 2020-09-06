@@ -113,12 +113,12 @@ Furthermore, disable the default file using:
 
 	>			sudo chown $USER:$USER -R /var/www
 	>			sudo chmod -R 755 /var/www
-	>     cd /var/www/html
+  >     cd /var/www/html
   >     git clone https://github.com/wsaqaf/sljournalism.git
 
 Then go into the created app folder sljournalism and run the commands:
 
-	>     cd sljournalism
+  >     cd sljournalism
   >     bundle install
 
 Then get the secret key for the app using:
@@ -130,32 +130,32 @@ copy the key somewhere since you will use it in the next step
 
 Edit the contents of the file *sljournalism/config/local_env_empty.yml* and ensure all the relevant fields are filled:
 
-	>     sudo nano /var/www/html/sljournalism/config/local_env_empty.yml
+  >     sudo nano /var/www/html/sljournalism/config/local_env_empty.yml
 
 You can fill in the contents as shown below:
 
-	>     SECRET_KEY_BASE: '<code from above>'
-	>     SMTP_HOST: '' #this and the below SMTP_* variables are needed if you need to receive notifications, resend passwords, etc.
-	>     SMTP_PORT: ''
-	>     SMTP_USER: ''
-	>     SMTP_PW: ''
-	>     SERVER_NAME: 'Demo'
-	>     SERVER_DOMAIN: '<public ip>'
-	>     SERVER_CODE: 'sljournalism'
-	>     ADMIN_EMAIL: '' #to be used for communication
-	>     RELATIVE_URL: '' #this is blank since it is not in a subdirectory.
-	>     DB_NAME: 'demo' #the database-related variables (DB_*) should match what you had in step 5 above
-	>     DB_USER: 'demo'
-	>     DB_PW: 'demo'
-	>     BLOCKCHAIN_ENABLED: 'yes' #This is crucial to have as 'yes' for the blockchain setup to work
-	>     BLOCKCHAIN_ORGID: 'org1' #for demo purposes, this can be 'org1'
+  >     SECRET_KEY_BASE: '<code from above>'
+  >     SMTP_HOST: '' #this and the below SMTP_* variables are needed if you need to receive notifications, resend passwords, etc.
+  >     SMTP_PORT: ''
+  >     SMTP_USER: ''
+  >     SMTP_PW: ''
+  >     SERVER_NAME: 'Demo'
+  >     SERVER_DOMAIN: '<public ip>'
+  >     SERVER_CODE: 'sljournalism'
+  >     ADMIN_EMAIL: '' #to be used for communication
+  >     RELATIVE_URL: '' #this is blank since it is not in a subdirectory.
+  >     DB_NAME: 'demo' #the database-related variables (DB_*) should match what you had in step 5 above
+  >     DB_USER: 'demo'
+  >     DB_PW: 'demo'
+  >     BLOCKCHAIN_ENABLED: 'yes' #This is crucial to have as 'yes' for the blockchain setup to work
+  >     BLOCKCHAIN_ORGID: 'org1' #for demo purposes, this can be 'org1'
 
 The first value for the variable SECRET_KEY_BASE needs to be the string copied from the last command of the last step.
 The postgres database, username and password values need to match those done in step 5 earlier
 
 Don't forget to rename the file the file edited above from *local_env_empty.yml* to *local_env.yml*
 
-	>     mv config/local_env_empty.yml config/local_env.yml
+  >     mv config/local_env_empty.yml config/local_env.yml
 
 10) Run bundle exec rake to create the database
 
@@ -207,7 +207,6 @@ http://<public IP or domain name>
 and check if docker is correctly installed
 
   >     sudo systemctl status docker
-
 
 16) Install docker-composer using the commands:
 
