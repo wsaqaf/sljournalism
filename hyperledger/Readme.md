@@ -227,6 +227,20 @@ and check if docker is correctly installed
   >     sudo tar -xvf go1.14.1.linux-amd64.tar.gz
   >     sudo mv go /usr/local
 
+then export the environmental variables:
+
+  >     export GOROOT=/usr/local/go
+  >     export GOPATH=$HOME/go
+  >     export PATH=$GOPATH/bin:$GOROOT/bin:$PATH
+
+and renew the shell sessions:
+
+  >     source ~/.profile
+
+and finally confirm the installation:
+
+  >     go version
+
 19) go to the *hyperledger/* folder under the main Ruby app and initialize the Hyperledger environment:
 
   >     cd /var/www/html/sljournalism/hyperledger
