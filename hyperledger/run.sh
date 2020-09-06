@@ -13,6 +13,5 @@ export CORE_PEER_TLS_ROOTCERT_FILE=${TESTNET_PATH}/organizations/peerOrganizatio
 export CORE_PEER_MSPCONFIGPATH=${TESTNET_PATH}/organizations/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp
 export CORE_PEER_ADDRESS=localhost:7051
 
-
 bash ./network.sh up createChannel -ca -c $CHANNEL_NAME -s couchdb
-bash ./network.sh deployCC -ccn factcheck -ccp ../../chaincode/factcheck/go
+bash ./network.sh deployCC -ccn factcheck -ccp ${TESTNET_PATH}/../../chaincode/factcheck/go

@@ -15,6 +15,7 @@ DB_NAME: '' #the name of the postgres database used by the app
 DB_USER: '' #username to access the database
 DB_PW: '' #password to access the database
 BLOCKCHAIN_ENABLED: 'yes' #if this is part of a blockchain network, add the API URL here
+BLOCKCHAIN_ORGID: 'org1' #has to be unique within the whole consortium (e.g., 'org1')
 
 # Example setup below #
 #SECRET_KEY_BASE: 'cf1xxsdfw207924538ff17b74de2de9b9364b206826bba583acf4025fa62ada44cd18653ca79d1d0c90f2cdbfa7170284f0852db3c133acdef3d1ebb65dae08de'
@@ -29,3 +30,5 @@ BLOCKCHAIN_ENABLED: 'yes' #if this is part of a blockchain network, add the API 
 #DB_NAME: 'localfca'
 #DB_USER: 'root'
 #DB_PW: 'pw'
+#BLOCKCHAIN_ENABLED: 'yes' #if this is part of a blockchain network, add the API URL here
+#BLOCKCHAIN_ORGID: 'org1' #has to be unique within the whole consortium (e.g., 'org1')
