@@ -118,13 +118,38 @@ Furthermore, disable the default file using:
 
 Then go into the created app folder sljournalism and run the commands:
 
+	>     cd sljournalism
   >     bundle install
+
+Then get the secret key for the app using:
   >     bundle exec rake secret
-copy the value obtained from the last command (a long string) since you will use it in the next sep
+
+copy the key somewhere since you will use it in the next step
 
 9) Configure the app and rename it to *local_env.yml*:
 
-Edit the contents of the file *sljournalism/config/local_env_empty.yml* and ensure all the relevant fields are filled.
+Edit the contents of the file *sljournalism/config/local_env_empty.yml* and ensure all the relevant fields are filled:
+
+	>     sudo nano /var/www/html/sljournalism/config/local_env_empty.yml
+
+You can fill in the contents as shown below:
+
+	>     SECRET_KEY_BASE: '<code from above>'
+	>     SMTP_HOST: '' #this and the below SMTP_* variables are needed if you need to receive notifications, resend passwords, etc.
+	>     SMTP_PORT: ''
+	>     SMTP_USER: ''
+	>     SMTP_PW: ''
+	>     SERVER_NAME: 'Demo'
+	>     SERVER_DOMAIN: '<public ip>'
+	>     SERVER_CODE: 'sljournalism'
+	>     ADMIN_EMAIL: '' #to be used for communication
+	>     RELATIVE_URL: '' #this is blank since it is not in a subdirectory.
+	>     DB_NAME: 'demo' #the database-related variables (DB_*) should match what you had in step 5 above
+	>     DB_USER: 'demo'
+	>     DB_PW: 'demo'
+	>     BLOCKCHAIN_ENABLED: 'yes' #This is crucial to have as 'yes' for the blockchain setup to work
+	>     BLOCKCHAIN_ORGID: 'org1' #for demo purposes, this can be 'org1'
+
 The first value for the variable SECRET_KEY_BASE needs to be the string copied from the last command of the last step.
 The postgres database, username and password values need to match those done in step 5 earlier
 
