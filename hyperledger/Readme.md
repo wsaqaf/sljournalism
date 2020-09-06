@@ -224,7 +224,7 @@ and check if docker is correctly installed
   >     sudo apt -y upgrade
   >     cd /tmp
   >     wget https://dl.google.com/go/go1.14.1.linux-amd64.tar.gz
-  >     sudo tar -xvf go1.14.linux-amd64.tar.gz
+  >     sudo tar -xvf go1.14.1.linux-amd64.tar.gz
   >     sudo mv go /usr/local
 
 19) go to the *hyperledger/* folder under the main Ruby app and initialize the Hyperledger environment:
