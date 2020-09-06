@@ -155,18 +155,21 @@ The postgres database, username and password values need to match those done in 
 
 Don't forget to rename the file the file edited above from *local_env_empty.yml* to *local_env.yml*
 
+	>     mv config/local_env_empty.yml config/local_env.yml
+
 10) Run bundle exec rake to create the database
 
   >     bundle exec rake assets:clobber db:schema:load RAILS_ENV=production DISABLE_DATABASE_ENVIRONMENT_CHECK=1
 
+Don't worry if you see any warnings. As long as there are no errors, things are OK.
+
 11) Install Phusion Passenger to connect to Apache
 
 Install our PGP key and add HTTPS support for APT
-  >     sudo apt install -y dirmngr gnupg
   >     sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 561F9B9CAC40B2F7
-  >     sudo apt install -y apt-transport-https ca-certificates
   >     sudo sh -c 'echo deb https://oss-binaries.phusionpassenger.com/apt/passenger bionic main > /etc/apt/sources.list.d/passenger.list'
   >     sudo apt update
+	>			sudo apt install apache2-dev
   >     sudo apt install -y libapache2-mod-passenger
   >     sudo a2enmod passenger
   >     sudo apache2ctl restart
@@ -180,8 +183,10 @@ Add the following two lines to the demo.conf file under /etc/apache2 below the l
   >     PassengerRuby /home/demo/.rbenv/versions/2.7.1/bin/ruby
   >     PassengerAppRoot /var/www/html/sljournalism
 
-12) Restart Apache with:
+12) Update the Ruby app assets and restart Apache with:
 
+  >     RAILS_ENV=development rails assets:clobber
+  >     RAILS_ENV=development rake assets:precompile
   >     sudo service apache2 restart
 
 Confirm that the app is working fine by visiting the website on your browser at:
@@ -191,12 +196,22 @@ http://<public IP or domain name>
 
 14) Restart your http server (apache or ngix) to ensure the app is online
 
-15) Install docker using instructions here:
-https://www.hostinger.com/tutorials/how-to-install-docker-on-ubuntu
+15) Install docker with the commands:
+
+  >     curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+  >     sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+  >     sudo apt update
+  >     apt-cache policy docker-ce
+  >     sudo apt install docker-ce
+
+and check if docker is correctly installed
+
+  >     sudo systemctl status docker
+
 
 16) Install docker-composer using the commands:
 
-  >     sudo apt-get install docker-compose
+  >     sudo apt install docker-compose
 
 17) Add the current user to the docker group and close the ssh session and login again as shown:
 
@@ -206,13 +221,14 @@ https://www.hostinger.com/tutorials/how-to-install-docker-on-ubuntu
 
   >     sudo apt update; sudo apt install golang-go
 
-19) go to /hyperledger/ and run the command:
+19) go to the *hyperledger/* folder under the main Ruby app and initialize the Hyperledger environment:
 
-  >     sh initialize.sh
+	>			cd /var/www/html/sljournalism/hyperledger
+  >     . initialize.sh
 
-20) go to hyperledger/ and the command:
+20) Install and deploy the chaincode on the blockchain
 
-  >     sh run.sh
+  >     . run.sh
 
 **Congrats!** You should now be done and able to open the website try testing the various functions and features
 
