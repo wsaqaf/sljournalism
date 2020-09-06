@@ -149,23 +149,23 @@ https://www.hostinger.com/tutorials/how-to-install-docker-on-ubuntu
 
 16) Install docker-composer using the commands:
 
- > `sudo apt-get install docker-compose`
+ > sudo apt-get install docker-compose
 
 17) Add the current user to the docker group and close the ssh session and login again as shown:
 
- > `sudo usermod -a -G docker $USER; exit`
+ > sudo usermod -a -G docker $USER; exit
 
 18) install go-lang using the commands:
 
- > `sudo apt update; sudo apt install golang-go`
+ > sudo apt update; sudo apt install golang-go
 
 19) go to /hyperledger/ and run the command:
 
- > `sh initialize.sh`
+ > sh initialize.sh
 
 20) go to hyperledger/ and the command:
 
- > `sh run.sh`
+ > sh run.sh
 
 **Congrats!** You should now be done and able to open the website try testing the various functions and features
 
@@ -180,7 +180,7 @@ To reset the blockchain and database, empty the database (warning: all claim/cla
 
 1) Go to the app's main folder and open the Rails Console using the command:
 
- >   `rails c`
+ >   rails c
 
 2) Run the following commands to delete all claims and reviews and remove user references to the blockchain:
 
@@ -191,7 +191,7 @@ To reset the blockchain and database, empty the database (warning: all claim/cla
 
 3) If you want to preserve the users credentials, skip this step and go to step 4. Otherwise, if you actually want to also delete the users to start from scratch, you can also use this command in Rails Console:
 
- >   `User.destroy_all`
+ >   User.destroy_all
 
 4) Reset the hyperledger database by running the command under the hyperledger/ folder as described earlier :
 
