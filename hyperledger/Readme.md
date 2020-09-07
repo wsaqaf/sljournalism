@@ -4,7 +4,7 @@
 1) Login to your shell account on your Droplet and create a new account (e.g., *demo*) with sudo rights if you have not already done so.
 We also assume that the root account's username is *ubuntu* (since that is the default when creating a droplet or instance). You have to replace <public ip> with the public ip of your server:
 
-	>			ssh ubuntu@<public ip>
+  >     ssh ubuntu@<public ip>
   >     sudo adduser demo
 
 and enter a password of your choice when prompted
@@ -13,17 +13,18 @@ Then give it sudo rights as shown:
   >     sudo usermod -aG sudo demo
 
 Copy the private ssh keys to the newly created account and update their ownership
-	>			sudo cp -rf ~/.ssh /home/demo
-	>			sudo chown -R demo:demo /home/demo
+
+  >     sudo cp -rf ~/.ssh /home/demo
+  >     sudo chown -R demo:demo /home/demo
 
 At this point, we exit the ssh session and login again using the new user *'demo'* before continuing
   >     exit
-	>			ssh demo@<public ip>
+  >     ssh demo@<public ip>
 
 2) Update the packages in the system:
 
   >     sudo apt update
-	>     sudo apt -y upgrade
+  >     sudo apt -y upgrade
 
 3) Install Ruby dependencies (Nodejs, Yarn, etc.):
 
@@ -179,7 +180,7 @@ Install our PGP key and add HTTPS support for APT
   >     sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 561F9B9CAC40B2F7
   >     sudo sh -c 'echo deb https://oss-binaries.phusionpassenger.com/apt/passenger bionic main > /etc/apt/sources.list.d/passenger.list'
   >     sudo apt update
-	>			sudo apt install apache2-dev
+  >     sudo apt install apache2-dev
   >     sudo apt install -y libapache2-mod-passenger
   >     sudo a2enmod passenger
   >     sudo apache2ctl restart
