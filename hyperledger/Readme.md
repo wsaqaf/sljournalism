@@ -219,6 +219,9 @@ http://<public IP or domain name>
   >     sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
   >     sudo apt update
   >     apt-cache policy docker-ce
+
+Procees do install docker-ce
+
   >     sudo apt install docker-ce
 
 and check if docker is correctly installed
