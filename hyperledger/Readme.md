@@ -161,7 +161,7 @@ Don't forget to rename the file the file edited above from *local_env_empty.yml*
 
 10) Run bundle exec rake to create the database
 
-  >     bundle exec rake assets:clobber db:schema:load RAILS_ENV=production DISABLE_DATABASE_ENVIRONMENT_CHECK=1
+  >     bundle exec rake assets:precompile db:schema:load RAILS_ENV=production DISABLE_DATABASE_ENVIRONMENT_CHECK=1
 
 Don't worry if you see any warnings. As long as there are no errors, things are OK.
 
@@ -187,8 +187,8 @@ Add the following two lines to the demo.conf file under /etc/apache2 below the l
 
 12) Update the Ruby app assets and restart Apache with:
 
-  >     RAILS_ENV=development rails assets:clobber
-  >     RAILS_ENV=development rake assets:precompile
+  >     rails assets:clobber RAILS_ENV=production
+  >     rake assets:precompile RAILS_ENV=production
   >     sudo service apache2 restart
 
 Confirm that the app is working fine by visiting the website on your browser at:
