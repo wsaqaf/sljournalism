@@ -28,11 +28,13 @@ At this point, we exit the ssh session and login again using the new user *'demo
 
 3) Install Ruby dependencies (Nodejs, Yarn, etc.):
 
+Start by updating the repo sources:
   >     curl -sL https://deb.nodesource.com/setup_12.x | sudo -E bash -
   >     curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
   >     echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
   >     sudo add-apt-repository ppa:chris-lea/redis-server
-  >     sudo apt update
+
+then install the dependencies
   >     sudo apt install git-core curl zlib1g-dev build-essential libssl-dev libreadline-dev libyaml-dev libsqlite3-dev sqlite3 libxml2-dev libxslt1-dev libcurl4-openssl-dev software-properties-common libffi-dev dirmngr gnupg apt-transport-https ca-certificates redis-server redis-tools nodejs yarn
 
 
