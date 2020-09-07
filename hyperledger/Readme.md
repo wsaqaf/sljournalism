@@ -1,21 +1,29 @@
 
 ## Steps for installation for a first time (clean instance) on Ubuntu 18.04:
 
-1) Login to your shell account on your Droplet and create a new account with sudo rights if you have not already done so. In our case, we assume that we will create an account named *'demo'* with the default root account:
+1) Login to your shell account on your Droplet and create a new account (e.g., *demo*) with sudo rights if you have not already done so.
+We also assume that the root account's username is *ubuntu* (since that is the default when creating a droplet or instance). You have to replace <public ip> with the public ip of your server:
 
+	>			ssh ubuntu@<public ip>
   >     sudo adduser demo
 
 and enter a password of your choice when prompted
 
 Then give it sudo rights as shown:
   >     sudo usermod -aG sudo demo
-  >     su - demo
 
-At this point, it is recommended to exit the ssh session and login again using the new user *'demo'* before continuing.
+Copy the private ssh keys to the newly created account and update their ownership
+	>			sudo cp -rf ~/.ssh /home/demo
+	>			sudo chown -R demo:demo /home/demo
+
+At this point, we exit the ssh session and login again using the new user *'demo'* before continuing
+  >     exit
+	>			ssh demo@<public ip>
 
 2) Update the packages in the system:
 
   >     sudo apt update
+	>     sudo apt -y upgrade
 
 3) Install Ruby dependencies (Nodejs, Yarn, etc.):
 
