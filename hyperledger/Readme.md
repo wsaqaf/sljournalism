@@ -276,9 +276,9 @@ To reset the blockchain and database, empty the database (warning: all claim/cla
 
   >     User.destroy_all
 
-4) Reset the hyperledger database by running the command under the hyperledger/ folder as described earlier :
+4) Exect the Console and reset the hyperledger blockchain by running this command under the *hyperledger/* directory:
 
-  >     sh run.sh
+  >     . run.sh
 
 5) Confirm by going to the website that all claims and proceed to sign up as admin if you deleted the users, or sign in as admin and add the users to the blockchain if you just removed them from the blockchain. Then you can do the other steps (add claims and review claims, etc.)
 
