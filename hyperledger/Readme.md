@@ -86,7 +86,8 @@ then exit from psql using
 
 6) Install Apache2 (you can also choose Nginx but for this demo, Apache2 is sufficient):
 
-  >     sudo apt install apache2
+  >     sudo apt update
+  >     sudo apt install apache2 apache2-dev
 
 Verify that the default Apache2 page appears by visiting the website (droplet's IP on a web browser should work)
 http://<public IP or domain name>
@@ -182,7 +183,6 @@ Install our PGP key and add HTTPS support for APT
   >     sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 561F9B9CAC40B2F7
   >     sudo sh -c 'echo deb https://oss-binaries.phusionpassenger.com/apt/passenger bionic main > /etc/apt/sources.list.d/passenger.list'
   >     sudo apt update
-  >     sudo apt install apache2-dev
   >     sudo apt install -y libapache2-mod-passenger
   >     sudo a2enmod passenger
   >     sudo apache2ctl restart
