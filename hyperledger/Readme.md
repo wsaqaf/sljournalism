@@ -1,7 +1,9 @@
 
 ## Steps for installation for a first time (clean instance) on Ubuntu 18.04:
 
-1) Login to your shell account on your Droplet and create a new account (e.g., *demo*) with sudo rights if you have not already done so.
+### 1) Login to your shell account
+
+SSH into your Droplet and create a new account (e.g., *demo*) with sudo rights if you have not already done so.
 We also assume that the root account's username is *ubuntu* (since that is the default when creating a droplet or instance). You have to replace <public ip> with the public ip of your server:
 
   >     ssh ubuntu@<public ip>
@@ -21,12 +23,12 @@ At this point, we exit the ssh session and login again using the new user *'demo
   >     exit
   >     ssh demo@<public ip>
 
-2) Update the packages in the system:
+### 2) Update the packages in the system
 
   >     sudo apt update
   >     sudo apt -y upgrade
 
-3) Install Ruby dependencies (Nodejs, Yarn, etc.):
+### 3) Install Ruby dependencies
 
 Start by updating the repo sources:
   >     curl -sL https://deb.nodesource.com/setup_12.x | sudo -E bash -
@@ -41,7 +43,7 @@ then install the dependencies
 confirm that nodejs and npm are installed:
   >     nodejs -v
 
-4) Install Ruby 2.7.1 and Rails and use rbenv for versioning:
+### 4) Install Ruby 2.7.1, Rails and Bundler
 
   >     git clone https://github.com/sstephenson/rbenv.git ~/.rbenv
   >     echo 'export PATH="$HOME/.rbenv/bin:$PATH"' >> ~/.bashrc
@@ -59,10 +61,13 @@ Install rails and bundler to complete the Ruby setup
   >     gem install rails
   >     gem install bundler
 
-confirm that bundle 2.0 is installed correctly
+confirm that rails and bundle are installed correctly
   >     bundle -v
+  >     rails -v
 
-5) Install postgres and its libraries as well as a database and its owner account (In this setup we are using *'demo'* for database, user and password. You can update that as you see fit):
+### 5) Install postgres
+
+Install postgres and its libraries as well as a database and its owner account (In this setup we are using *'demo'* for database, user and password. You can update that as you see fit):
 
   >     sudo apt install postgresql postgresql-contrib libpq-dev
 
@@ -84,7 +89,7 @@ and once in, set up the password as follows:
 then exit from psql using
   >     \q
 
-6) Install Apache2 (you can also choose Nginx but for this demo, Apache2 is sufficient):
+### 6) Install Apache2
 
   >     sudo apt update
   >     sudo apt install apache2 apache2-dev
@@ -92,7 +97,9 @@ then exit from psql using
 Verify that the default Apache2 page appears by visiting the website (droplet's IP on a web browser should work)
 http://<public IP or domain name>
 
-7) Add a file at /etc/apache2/sites-available/demo.conf to correspond to the app. We used *'demo'* but you can use any other name:
+### 7) Configure new website on Apache
+
+Add the file at /etc/apache2/sites-available/demo.conf to correspond to the app. We used *'demo'* but you can use any other name:
 
   >     sudo nano /etc/apache2/sites-available/demo.conf
 
@@ -123,7 +130,9 @@ Once you save and exit the file, ensure you enable it using the command:
 Furthermore, disable the default file using:
   >     sudo a2dissite 000-default.conf
 
-8) Go to the root location of the www data files and clone github repo from: https://github.com/wsaqaf/sljournalism.git using the commands:
+### 8) Clone the sljournalism app
+
+Go to the root location of the www data files and clone github repo from: https://github.com/wsaqaf/sljournalism.git using the commands:
 
 	>			sudo chown $USER:$USER -R /var/www
 	>			sudo chmod -R 755 /var/www
@@ -140,7 +149,7 @@ Then get the secret key for the app using:
 
 copy the key somewhere since you will use it in the next step
 
-9) Configure the app and rename it to *local_env.yml*:
+### 9) Configure the app through *local_env.yml*:
 
 Edit the contents of the file *sljournalism/config/local_env_empty.yml* and ensure all the relevant fields are filled:
 
@@ -171,13 +180,13 @@ Don't forget to rename the file the file edited above from *local_env_empty.yml*
 
   >     mv config/local_env_empty.yml config/local_env.yml
 
-10) Run bundle exec rake to create the database
+### 10) Run bundle exec rake to create the database tables:
 
   >     bundle exec rake assets:precompile db:schema:load RAILS_ENV=production DISABLE_DATABASE_ENVIRONMENT_CHECK=1
 
 Don't worry if you see any warnings. As long as there are no errors, things are OK.
 
-11) Install Phusion Passenger to connect to Apache
+### 11) Install Phusion Passenger to connect to Apache:
 
 Install our PGP key and add HTTPS support for APT
   >     sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 561F9B9CAC40B2F7
@@ -196,20 +205,15 @@ Add the following two lines to the demo.conf file under /etc/apache2 below the l
   >     PassengerRuby /home/demo/.rbenv/versions/2.7.1/bin/ruby
   >     PassengerAppRoot /var/www/html/sljournalism
 
-12) Update the Ruby app assets and restart Apache with:
+### 12) Restart web server
 
-  >     rails assets:clobber RAILS_ENV=production
-  >     rake assets:precompile RAILS_ENV=production
-  >     sudo service apache2 restart
+  >     sudo apache2ctl restart
 
 Confirm that the app is working fine by visiting the website on your browser at:
 http://<public IP or domain name>
 
-13) In the file **sljournalism/config/local_env.yml,** fill in the top *SECRET_KEY_BASE* value with the output from step 10 and fill in the remaining information. Remember to use the postgres credentials used in step 11 above
 
-14) Restart your http server (apache or ngix) to ensure the app is online
-
-15) Install docker with the commands:
+### 13) Install docker with the commands:
 
   >     curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
   >     sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
@@ -221,15 +225,19 @@ and check if docker is correctly installed
 
   >     sudo systemctl status docker
 
-16) Install docker-composer using the commands:
+### 14) Install docker-composer using the commands:
 
   >     sudo apt install docker-compose
 
-17) Add the current user to the docker group and close the ssh session and login again as shown:
+### 15) Add the user to docker group
 
-  >     sudo usermod -a -G docker $USER; exit
+Run this command to add the user to the docker group and close the ssh session and login again as shown:
 
-18) install golang (v 1.14.1) using the commands:
+  >     sudo usermod -a -G docker $USER
+  >     exit
+  >     ssh demo@<public ip>
+
+### 16) install golang (v 1.14.1)
 
   >     sudo apt update
   >     sudo apt -y upgrade
@@ -252,18 +260,25 @@ and finally confirm the installation:
 
   >     go version
 
-19) go to the *hyperledger/* folder under the main Ruby app and initialize the Hyperledger environment:
+### 17) Initialize the Hyperledger blockchain
+
+Go to the *hyperledger/* folder under the main Ruby app and initialize the Hyperledger environment:
 
   >     cd /var/www/html/sljournalism/hyperledger
   >     . initialize.sh
 
-20) Install and deploy the chaincode on the blockchain
+### 18) Install and deploy the chaincode on the blockchain
 
   >     . run.sh
 
-**Congrats!** You should now be done and able to open the website try testing the various functions and features
+### 19) Test the web app
 
-#### *[Extra]* Setup SSL access for domain name
+**Congrats!** You should now be done and able to open the website try testing the various functions and features.
+Here is a video demo you can use for testing:
+https://play.sh.se/media/Prototype+demo/0_zaht9yol
+
+
+### 20) *[Optional]* Setup SSL access for domain name:
 In case you have a domain name, ensure that you install an SSL certificate. You can use CertBot as shown here:
 https://certbot.eff.org/lets-encrypt/ubuntubionic-apache.html
 
