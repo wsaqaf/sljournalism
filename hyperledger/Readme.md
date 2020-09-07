@@ -91,7 +91,6 @@ then exit from psql using
 
 ### 6) Install Apache2
 
-  >     sudo apt update
   >     sudo apt install apache2 apache2-dev
 
 Verify that the default Apache2 page appears by visiting the website (droplet's IP on a web browser should work)
@@ -191,7 +190,6 @@ Don't worry if you see any warnings. As long as there are no errors, things are 
 Install our PGP key and add HTTPS support for APT
   >     sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 561F9B9CAC40B2F7
   >     sudo sh -c 'echo deb https://oss-binaries.phusionpassenger.com/apt/passenger bionic main > /etc/apt/sources.list.d/passenger.list'
-  >     sudo apt update
   >     sudo apt install -y libapache2-mod-passenger
   >     sudo a2enmod passenger
   >     sudo apache2ctl restart
@@ -217,7 +215,6 @@ http://<public IP or domain name>
 
   >     curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
   >     sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
-  >     sudo apt update
   >     apt-cache policy docker-ce
 
 Procees do install docker-ce
@@ -242,8 +239,12 @@ Run this command to add the user to the docker group and close the ssh session a
 
 ### 16) install golang (v 1.14.1)
 
-  >     sudo apt update
-  >     sudo apt -y upgrade
+Update and upgrade any software one last time
+>     sudo apt update
+>     sudo apt -y upgrade
+
+Download and extract Golang v 1.14.1
+
   >     cd /tmp
   >     wget https://dl.google.com/go/go1.14.1.linux-amd64.tar.gz
   >     sudo tar -xvf go1.14.1.linux-amd64.tar.gz
