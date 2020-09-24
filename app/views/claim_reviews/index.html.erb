@@ -51,12 +51,12 @@
     <li><%= t('reviewer') %>: <%= reviewer_name %><%= reviewer_aff %></li>
     <li><%= t('updated_at') %>: <%= claim_review.updated_at %></li>
 
-    <% if (claim_review.user_id == current_user.id || current_user.role=="admin") && (!ENV['BLOCKCHAIN_ENABLED'] || !claim_review.blockchain_tx.present?) %>
+    <% if (claim_review.user_id == current_user.id || current_user.role=="admin") && (ENV['BLOCKCHAIN_ENABLED']!="true" || !claim_review.blockchain_tx.present?) %>
       <br><%= link_to t('edit')+' '+t('review'), claim_claim_reviews_path(claim.id), method: :create %> -
       <%= link_to link_to t('delete')+' '+t('review'), claim_claim_review_path(claim.id,claim_review), method: :delete, data: { confirm: "Are you sure?" } %><br>
     <% end %>
 
-    <% if (claim_review.user_id == current_user.id || current_user.role=="admin") && ENV['BLOCKCHAIN_ENABLED'] && !claim_review.blockchain_id.present?  %>
+    <% if (claim_review.user_id == current_user.id || current_user.role=="admin") && ENV['BLOCKCHAIN_ENABLED']=='true' && !claim_review.blockchain_id.present?  %>
       <% if (claim_review.blockchain_assessment.present?) %>
         <% assessments={0=>"rejected",1=>"accepted"} %>
         <li><%= t('assessment_time') %>: <%= claim_review.blockchain_assessment_time %> </li>

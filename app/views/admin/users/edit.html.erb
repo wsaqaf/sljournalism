@@ -34,11 +34,11 @@
               <%= f.radio_button :role, 'factchecker', :checked => @user.role=='factchecker', :disabled => !@user.blockchain_id.blank? %> Factchecker
             </b>
         </li>
-        <% if ENV['BLOCKCHAIN_ENABLED'] && @user.blockchain_tx.present?  %>
+        <% if ENV['BLOCKCHAIN_ENABLED']=='true' && @user.blockchain_tx.present?  %>
               <small><a href=javascript:wallet("<%= config.relative_url_root.to_s %>","<%= config.relative_url_root.to_s+"/admin/users/"+@user.id.to_s %>","<%= @user.id.to_s %>","0")>Show wallet balance</a><br>
                 <div id="wallet<%= @user.id.to_s %>"></div>
                 <div id="hidden<%= @user.id.to_s %>" style="display: none;">
-                  <% if ENV['BLOCKCHAIN_ENABLED'] && @user.role=="client"  %>
+                  <% if ENV['BLOCKCHAIN_ENABLED']=='true' && @user.role=="client"  %>
                     <%= t('add_to_wallet') %>: <input id="addbalance<%= @user.id.to_s %>" type="text" width=3>
                     <button name="walletButton" type="button" value="<% t('add') %>" onclick=wallet("<%= config.relative_url_root.to_s %>","<%= config.relative_url_root.to_s+"/admin/users/"+@user.id.to_s %>","<%= @user.id.to_s %>","1"); return false;>Add</button>
                   <% end %>

@@ -32,7 +32,7 @@
                 <li class="nav-item"><%= link_to t('claims'), claims_path, style: 'text-decoration:underline' %></li>
             <% end %>
 
-            <% if (current_user.role=="client" || !ENV["BLOCKCHAIN_ENABLED"]) %>
+            <% if (current_user.role=="client" || ENV["BLOCKCHAIN_ENABLED"]!="true") %>
               <% if !request.fullpath.include? "claims/new" then %>
               <li class="nav-item"><%= link_to t('add_new'), new_claim_path %></li>
               <% else %>

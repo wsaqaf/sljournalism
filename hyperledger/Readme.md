@@ -169,7 +169,7 @@ You can fill in the contents as shown below:
   >     DB_NAME: 'demo' #the database-related variables (DB_*) should match what you had in step 5 above
   >     DB_USER: 'demo'
   >     DB_PW: 'demo'
-  >     BLOCKCHAIN_ENABLED: 'yes' #This is crucial to have as 'yes' for the blockchain setup to work
+  >     BLOCKCHAIN_ENABLED: 'true' #This is crucial to have as 'true' for the blockchain setup to work
   >     BLOCKCHAIN_ORGID: 'org1' #for demo purposes, this can be 'org1'
 
 The first value for the variable SECRET_KEY_BASE needs to be the string copied from the last command of the last step.

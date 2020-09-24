@@ -5,13 +5,13 @@ class ClaimsController < ApplicationController
   before_action :blockchain_check2, only: [:edit, :update, :destroy]
 
   def blockchain_check1
-    if (current_user.role!="client" && ENV['BLOCKCHAIN_ENABLED'])
+    if (current_user.role!="client" && ENV['BLOCKCHAIN_ENABLED']=="true")
       redirect_to claims_path
     end
   end
 
   def blockchain_check2
-    unless ENV['BLOCKCHAIN_ENABLED']
+    unless ENV['BLOCKCHAIN_ENABLED']=="true"
       redirect_to claims_path
     end
   end
@@ -140,7 +140,7 @@ class ClaimsController < ApplicationController
   end
 
   def new
-    if (!ENV['BLOCKCHAIN_ENABLED'] || current_user.role=="client")
+    if (ENV['BLOCKCHAIN_ENABLED']!="true" || current_user.role=="client")
       @claim = current_user.claims.build
       @srcs = Src.all.map{ |c| [c.name, c.id]}
       @media = Medium.all.map{ |m| [m.name, m.id]}
@@ -335,7 +335,7 @@ puts ("\n=============Running:\n"+cmnd+"\n--\n")
         end
       end
     else
-      if (claim_params['add_to_blockchain'] && ENV['BLOCKCHAIN_ENABLED'] && current_user.role=="client")
+      if (claim_params['add_to_blockchain'] && ENV['BLOCKCHAIN_ENABLED']=='true' && current_user.role=="client")
           @claim = current_user.claims.build(claim_params)
           if (@claim.save)
             output=save_to_the_blockchain()

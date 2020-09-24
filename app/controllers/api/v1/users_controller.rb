@@ -28,7 +28,7 @@ module Api
         params[:user][:add_to_blockchain]=""
         @user = User.create(user_create_params)
         if @user.save
-          if (ENV['BLOCKCHAIN_ENABLED'] && add_bc=="1")
+          if (ENV['BLOCKCHAIN_ENABLED']=='true' && add_bc=="1")
             argmnt="{\"Args\":[\"registerWallet\",\""+@user.role+"\",\""+ENV['BLOCKCHAIN_ORGID']+"\",\""+@user.id.to_s+"\", \""+@user.name+"\"]}"
 
             cmnd="peer chaincode invoke -o localhost:7050 --ordererTLSHostnameOverride orderer.example.com --tls true --cafile "+Rails.root.to_s+"/hyperledger/fabric-samples/test-network/organizations/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem -C mychannel -n factcheck --peerAddresses localhost:7051 --tlsRootCertFiles "+Rails.root.to_s+"/hyperledger/fabric-samples/test-network/organizations/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/ca.crt --peerAddresses localhost:9051 --tlsRootCertFiles "+Rails.root.to_s+"/hyperledger/fabric-samples/test-network/organizations/peerOrganizations/org2.example.com/peers/peer0.org2.example.com/tls/ca.crt -c '"+argmnt+"' --waitForEvent 2>&1"
@@ -87,7 +87,7 @@ module Api
         if (params[:id]=="own")
           params[:id]=current_user.id.to_s
         end
-        if (ENV['BLOCKCHAIN_ENABLED'] && (params[:getbalance].present? || (params[:addtobalance].present? && current_user.role=="client" && current_user.id.to_s==params[:id])))
+        if (ENV['BLOCKCHAIN_ENABLED']=='true' && (params[:getbalance].present? || (params[:addtobalance].present? && current_user.role=="client" && current_user.id.to_s==params[:id])))
           argmnt='{"Args":["queryRecords","{\"selector\":{\"docType\":\"wallet\",\"ownerIDInOrg\":\"'+params[:id]+'\",\"orgID\":\"'+ENV['BLOCKCHAIN_ORGID']+'\"},\"fields\":[\"balance\"]}"]}'
           cmnd="peer chaincode query -C mychannel -n factcheck -c '"+argmnt+"'"
     #puts (ENV.to_h.to_s+"\n")

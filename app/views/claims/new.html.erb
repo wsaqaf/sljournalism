@@ -75,18 +75,18 @@
                 <%= f.radio_button :sharing_mode, '-1', :checked => @claim.sharing_mode==-1 %> <%= t('no_share') %>
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</b>
             </li>
-            <% if !ENV['BLOCKCHAIN_ENABLED'] %>
+            <% if ENV['BLOCKCHAIN_ENABLED']!="true" %>
               <li>
-                  <br><b><%= f.check_box :start_review, :checked => !ENV['BLOCKCHAIN_ENABLED'] %> <%= t('start_review') %></b><br>
+                  <br><b><%= f.check_box :start_review, :checked => ENV['BLOCKCHAIN_ENABLED']!="true" %> <%= t('start_review') %></b><br>
               </li>
             <% end %>
-      <% if (current_user.role=="client" && ENV["BLOCKCHAIN_ENABLED"] && current_user.blockchain_tx.present?) %>
+      <% if (current_user.role=="client" && ENV["BLOCKCHAIN_ENABLED"]=="true" && current_user.blockchain_tx.present?) %>
                 <li class="mt-4">
                   <p style="display:none"><%= f.check_box :add_to_blockchain, :checked => true %> <%= t('save_to_blockchain') %></p>
                   <small><a href=javascript:wallet("<%= config.relative_url_root.to_s %>","<%= config.relative_url_root.to_s+"/admin/users/"+current_user.id.to_s %>","<%= current_user.id.to_s %>","0")><%= t('show_wallet_balance') %></a><br>
                     <div id="wallet<%= current_user.id.to_s %>"></div>
                     <div id="hidden<%= current_user.id.to_s %>" style="display: none;">
-                      <% if ENV['BLOCKCHAIN_ENABLED'] && current_user.role=="client"  %>
+                      <% if ENV['BLOCKCHAIN_ENABLED']=='true' && current_user.role=="client"  %>
                         <br><%= t('add_to_wallet') %>: <input id="addbalance<%= current_user.id.to_s %>" type="text" style="width: 50px;">
                         <button name="walletButton" type="button" value="Add" onclick=wallet("<%= config.relative_url_root.to_s %>","<%= config.relative_url_root.to_s+"/admin/users/"+current_user.id.to_s %>","<%= current_user.id.to_s %>","1"); return false;><%= t('add') %></button>
                       <% end %>

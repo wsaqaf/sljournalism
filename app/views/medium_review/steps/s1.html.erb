@@ -94,7 +94,7 @@
               
       <%= f.submit t('next_step'), :class => 'btn btn btn-primary' %>
     </fieldset>
-        <% if !ENV['BLOCKCHAIN_ENABLED'] %>
+        <% if ENV['BLOCKCHAIN_ENABLED']!='true' %>
             <div style='float:right'><%= link_to t('del_review'), medium_medium_review_path(@medium.id,@medium_review), style: '', method: :delete, data: { confirm: t('warning_del') } %></div>
         <% end %>
     <% end %>

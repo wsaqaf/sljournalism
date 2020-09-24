@@ -310,7 +310,7 @@ puts("Result:\n"+output+"\n==\n")
 #      begin
         @claim_review.update(claim_review_params(step).merge(user_id: current_user.id))
         if (step=="s22")
-          if (params[:claim_review][:add_to_blockchain]=="1" && ENV['BLOCKCHAIN_ENABLED'] && current_user.role=="factchecker")
+          if (params[:claim_review][:add_to_blockchain]=="1" && ENV['BLOCKCHAIN_ENABLED']=='true' && current_user.role=="factchecker")
                 output=save_to_the_blockchain()
                 if (@save_to_blockchain.length>3)
                   redirect_to claims_path(:blockchain_resp => @save_to_blockchain, :response => output)

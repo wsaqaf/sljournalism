@@ -93,7 +93,7 @@ class SrcReview::StepsController < ApplicationController
   def find_src
     @src = Src.find(params[:src_id])
 
-    @all_steps={'s1'=>t('src_credentials_q_short'),'s2'=>t('src_factcheck_history_q_short'),'s3'=>t('src_quality_of_writing_q_short'),'s4'=>t('src_connected_to_biased_entities_q_short'),'s5'=>t('src_difficulty_to_verify_auth_q_short'),'s6'=>t('src_other_problems_q_short'),'s7'=>t('calculated_score_q_short'),'s8'=>t('review_verdict_q_short'),'s8'=>t('review_description_q_short'),'s9'=>t('share_setting_brief')}
+    @all_steps={'s1'=>t('src_credentials_q_short'),'s2'=>t('src_factcheck_history_q_short'),'s3'=>t('src_quality_of_writing_q_short'),'s4'=>t('src_connected_to_biased_entities_q_short'),'s5'=>t('src_difficulty_to_verify_auth_q_short'),'s6'=>t('src_other_problems_q_short'),'s7'=>t('calculated_score_q_short'),'s8'=>t('review_verdict_q_short'),'s9'=>t('share_setting_brief')}
 
   end
 

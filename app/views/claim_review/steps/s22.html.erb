@@ -66,7 +66,7 @@
       <%= link_to t('previous_step'),previous_wizard_path+'?s=prev',:class=>'btn btn btn-primary',:style=>'color:white; background-color:#4B99AD' %>
 &nbsp;&nbsp;&nbsp;<%= f.submit t('finish'), :class => 'btn btn btn-primary' %>
     </fieldset>
-        <% if !ENV['BLOCKCHAIN_ENABLED'] %>
+        <% if ENV['BLOCKCHAIN_ENABLED']!='true' %>
             <div style='float:right'><%= link_to t('del_review'), claim_claim_review_path(@claim.id,@claim_review), style: '', method: :delete, data: { confirm: t('warning_del') } %></div>
         <% end %>
     <% end %>

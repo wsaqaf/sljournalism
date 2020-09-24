@@ -54,7 +54,7 @@
       <%= t('not_provided') %>
   <% end %>
 </h6>
-<% if ENV['BLOCKCHAIN_ENABLED'] %>
+<% if ENV['BLOCKCHAIN_ENABLED']=='true' %>
     <% if @claim.add_to_blockchain==1 && !@claim.time_added_to_blockchain.nil? && !@claim.blockchain_tx.nil? %>
       <h6><%= t('added_to_blockchain') %>: <%= t('yes_answer_option') %><br></h6>
       <h6><%= t('added_on_date') %>: <%= @claim.time_added_to_blockchain %><br></h6>
@@ -101,7 +101,7 @@
        @my_review = ClaimReview.where(claim_id: @claim.id, user_id: current_user.id).first
       if (@my_review.blank?) %>
          <hr><%= link_to t('check_reviews')+" "+t('this_claim'), claim_claim_reviews_path(@claim.id) %>
-         <% if !ENV['BLOCKCHAIN_ENABLED'] || (current_user.role=="factchecker" && @claim.status_on_blockchain!="settled") %>
+         <% if ENV['BLOCKCHAIN_ENABLED']!="true" || (current_user.role=="factchecker" && @claim.status_on_blockchain!="settled") %>
             <%= link_to t('review').capitalize+" "+t('this_claim'), claim_claim_reviews_path(@claim.id), method: :create %>
          <% end %>
      <% else %>
@@ -111,7 +111,7 @@
        <% end
      end
   else %>
-    <% if !ENV['BLOCKCHAIN_ENABLED'] || (current_user.role=="factchecker" && @claim.status_on_blockchain!="settled") %>
+    <% if ENV['BLOCKCHAIN_ENABLED']!="true" || (current_user.role=="factchecker" && @claim.status_on_blockchain!="settled") %>
       <br><%= link_to t('review').capitalize+" "+t('this_claim'), claim_claim_reviews_path(@claim.id), method: :create %>
     <% end %>
  <% end %>
@@ -120,7 +120,7 @@
 <br><br>
 <%= link_to t('go_back'), claims_path %>
 
-  <% if !ENV['BLOCKCHAIN_ENABLED'] && (@claim.user_id == current_user.id || current_user.role=="admin")  %> -
+  <% if ENV['BLOCKCHAIN_ENABLED']!='true' && (@claim.user_id == current_user.id || current_user.role=="admin")  %> -
     <%= link_to t('edit'), edit_claim_path(@claim) %> -
     <%= link_to t('delete'), claim_path(@claim), method: :delete, data: { confirm: @warning_msg} %>
   <% end %>

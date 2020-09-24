@@ -14,7 +14,7 @@ RELATIVE_URL: '' #this is the directory where the app runs (if it runs on the ma
 DB_NAME: '' #the name of the postgres database used by the app
 DB_USER: '' #username to access the database
 DB_PW: '' #password to access the database
-BLOCKCHAIN_ENABLED: 'yes' #if this is part of a blockchain network, add the API URL here
+BLOCKCHAIN_ENABLED: 'true' #can either be 'true' or 'false' (remember to use quotes)
 BLOCKCHAIN_ORGID: 'org1' #has to be unique within the whole consortium (e.g., 'org1')
 
 # Example setup below #
@@ -30,5 +30,5 @@ BLOCKCHAIN_ORGID: 'org1' #has to be unique within the whole consortium (e.g., 'o
 #DB_NAME: 'localfca'
 #DB_USER: 'root'
 #DB_PW: 'pw'
-#BLOCKCHAIN_ENABLED: 'yes' #if this is part of a blockchain network, add the API URL here
+#BLOCKCHAIN_ENABLED: 'true' #if this is part of a blockchain network, use 'false' if you don't want to use the blockchain setup
 #BLOCKCHAIN_ORGID: 'org1' #has to be unique within the whole consortium (e.g., 'org1')

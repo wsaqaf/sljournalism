@@ -33,14 +33,14 @@ module Api
       end
 
       def update
-        if (ENV['BLOCKCHAIN_ENABLED'] && params[:blockchain_assessment].present? && current_user.role=="admin")
+        if (ENV['BLOCKCHAIN_ENABLED']=='true' && params[:blockchain_assessment].present? && current_user.role=="admin")
           @tmp = ClaimReview.where("id=?",params[:id]).first
         else
           @tmp = ClaimReview.where("id=? AND user_id=?",params[:id],current_user.id).first
         end
         if (not @tmp.blank?)
           @claim_review=ClaimReview.find(@tmp.id)
-          if (ENV['BLOCKCHAIN_ENABLED'] && params[:blockchain_assessment].present?)
+          if (ENV['BLOCKCHAIN_ENABLED']=='true' && params[:blockchain_assessment].present?)
             if (current_user.role=="admin")
               if (!@claim_review.blockchain_tx.blank?)
                 output=save_to_the_blockchain_assessment()

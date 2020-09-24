@@ -96,7 +96,7 @@ class MediumReview::StepsController < ApplicationController
   def find_medium
     @medium = Medium.find(params[:medium_id])
 
-    @all_steps={'s1'=>t('medium_is_blacklisted_q_short'),'s2'=>t('medium_failed_factcheck_before_q_short'),'s3'=>t('medium_has_poor_security_q_short'),'s4'=>t('medium_whois_info_discrepency_q_short'),'s5'=>t('medium_hosting_discrepency_q_short'),'s6'=>t('medium_is_biased_q_short'),'s7'=>t('medium_is_poorly_ranked_q_short'),'s8'=>t('medium_is_not_liable_q_short'),'s9'=>t('medium_lacks_flagging_means_q_short'),'s10'=>t('medium_other_problems_q_short'),'s11'=>t('calculated_score_q_short'),'s12'=>t('review_verdict_q_short'),'s12'=>t('review_description_q_short'),'s13'=>t('share_setting_brief')}
+    @all_steps={'s1'=>t('medium_is_blacklisted_q_short'),'s2'=>t('medium_failed_factcheck_before_q_short'),'s3'=>t('medium_has_poor_security_q_short'),'s4'=>t('medium_whois_info_discrepency_q_short'),'s5'=>t('medium_hosting_discrepency_q_short'),'s6'=>t('medium_is_biased_q_short'),'s7'=>t('medium_is_poorly_ranked_q_short'),'s8'=>t('medium_is_not_liable_q_short'),'s9'=>t('medium_lacks_flagging_means_q_short'),'s10'=>t('medium_other_problems_q_short'),'s11'=>t('calculated_score_q_short'),'s12'=>t('review_verdict_q_short'),'s13'=>t('share_setting_brief')}
 
   end
 

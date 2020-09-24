@@ -5,13 +5,13 @@ class ClaimReviewsController < ApplicationController
   before_action :blockchain_check2, only: [:update, :edit, :destroy]
 
   def blockchain_check1
-    if (current_user.role!="factchecker" && ENV['BLOCKCHAIN_ENABLED'])
+    if (current_user.role!="factchecker" && ENV['BLOCKCHAIN_ENABLED']=="true")
       redirect_to claims_path
     end
   end
 
   def blockchain_check2
-    if (ENV['BLOCKCHAIN_ENABLED'])
+    if (ENV['BLOCKCHAIN_ENABLED']=="true")
       redirect_to claims_path
     end
   end
@@ -35,7 +35,7 @@ class ClaimReviewsController < ApplicationController
     else
       redirect_to claims_path
     end
-    if (ENV['BLOCKCHAIN_ENABLED'] && params[:blockchain_assessment].present? && current_user.role=="admin")
+    if (ENV['BLOCKCHAIN_ENABLED']=='true' && params[:blockchain_assessment].present? && current_user.role=="admin")
       output=save_to_the_blockchain()
       if (@save_to_blockchain=="-1")
         output="<h4>Error:</h4><font color=red>"+output+"</font>"
