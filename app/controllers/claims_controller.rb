@@ -1,17 +1,10 @@
 class ClaimsController < ApplicationController
   before_action :check_if_signed_in, only: [:show, :edit, :update, :destroy, :new, :create]
   before_action :find_claim, only: [:show, :edit, :update, :destroy]
-  before_action :blockchain_check1, only: [:new, :create]
-  before_action :blockchain_check2, only: [:edit, :update, :destroy]
+  before_action :blockchain_check, only: [:new, :create, :edit, :update, :destroy]
 
-  def blockchain_check1
+  def blockchain_check
     if (current_user.role!="client" && ENV['BLOCKCHAIN_ENABLED']=="true")
-      redirect_to claims_path
-    end
-  end
-
-  def blockchain_check2
-    unless ENV['BLOCKCHAIN_ENABLED']=="true"
       redirect_to claims_path
     end
   end

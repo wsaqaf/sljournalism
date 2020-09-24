@@ -54,7 +54,7 @@
           
           </li>
               
-          <% if !@claim.blockchain_tx.nil? %>
+          <% if !@claim.blockchain_tx.nil? && ENV["BLOCKCHAIN_ENABLED"]=="true" %>
 <li><big><b><font color=blue><%== t('add_to_blockchain_q_long') %></font></b></big><br>
 
           <br><%= f.radio_button :add_to_blockchain, '1', :checked => (!@claim_review.add_to_blockchain.blank? && @claim_review.add_to_blockchain==1) %> <%== t('yes_answer') %><br><%= f.radio_button :add_to_blockchain, '0', :checked => (!@claim_review.add_to_blockchain.blank? && @claim_review.add_to_blockchain==0) %> <%== t('no_answer') %><br><br>
