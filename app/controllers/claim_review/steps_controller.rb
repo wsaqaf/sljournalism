@@ -64,6 +64,13 @@ class ClaimReview::StepsController < ApplicationController
 
   def build_claim_review_schema()
 #    if (@claim_review.note_review_sharing_mode.blank?)
+      review_desc=""
+      if !@claim_review.review_description.blank?
+        review_desc=@claim_review.review_description
+        if !@claim_review.note_review_description.blank?
+          review_desc=review_desc+" "+@claim_review.note_review_description
+        end
+      end
       tmp_arr=[]
       if (@claim.has_image==1 || @claim.has_video==1)
         tmp_arr=tmp_arr+['visual']
@@ -110,7 +117,7 @@ class ClaimReview::StepsController < ApplicationController
                       "bestRating": "5",
                       "worstRating": "1",
                       "alternateName": assessments[@claim_review.review_verdict],
-                      "ratingExplanation": @claim_review.review_description+" "+@claim_review.note_review_description
+                      "ratingExplanation": review_desc
                   },
                   "claimReviewed": @claim.title,
                   "@type": "ClaimReview",

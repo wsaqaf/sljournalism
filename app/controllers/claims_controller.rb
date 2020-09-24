@@ -16,12 +16,6 @@ class ClaimsController < ApplicationController
     end
   end
 
-  def on_blockchain2
-    unless ENV['BLOCKCHAIN_ENABLED']
-      redirect_to claims_path
-    end
-  end
-
   def index
     if params[:import_note].present?
       @import_note=params[:import_note]
@@ -98,10 +92,10 @@ class ClaimsController < ApplicationController
           if (params[:sort]!="r")
             remove_unsure=" AND claim_reviews.review_verdict!=0 "
           end
-          tmp=Claim.joins(:claim_reviews).where("claims.id=claim_reviews.claim_id and (claims.sharing_mode=1 OR claims.user_id="+current_user.id.to_s+") and claim_reviews.review_sharing_mode=1 and claim_reviews.review_verdict IS NOT NULL"+remove_unsure).group("claims.id").order(Arel.sql(sort_statement("claim",params[:sort])))
+          tmp=Claim.joins(:claim_reviews).where("claims.id=claim_reviews.claim_id and (claims.sharing_mode=1 OR claims.user_id=?) and claim_reviews.review_sharing_mode=1 and claim_reviews.review_verdict IS NOT NULL ?",current_user.id.to_s,remove_unsure).group("claims.id").order(Arel.sql(sort_statement("claim",params[:sort])))
           @total_count=tmp.count.length
         elsif  (params[:sort]=="rt")
-          tmp=Claim.joins(:claim_reviews).where("claims.id=claim_reviews.claim_id and (claims.sharing_mode=1 OR claims.user_id="+current_user.id.to_s+") and claim_reviews.review_sharing_mode=1 and claim_reviews.review_verdict IS NOT NULL").group("claims.id,claim_reviews.updated_at,claim_reviews.created_at").order(Arel.sql(sort_statement("claim",params[:sort])))
+          tmp=Claim.joins(:claim_reviews).where("claims.id=claim_reviews.claim_id and (claims.sharing_mode=1 OR claims.user_id=?) and claim_reviews.review_sharing_mode=1 and claim_reviews.review_verdict IS NOT NULL",current_user.id.to_s).group("claims.id,claim_reviews.updated_at,claim_reviews.created_at").order(Arel.sql(sort_statement("claim",params[:sort])))
           @total_count=tmp.count.length
         elsif !user_signed_in?
             return
@@ -121,10 +115,10 @@ class ClaimsController < ApplicationController
         if (params[:sort]!="r")
           remove_unsure=" AND src_reviews.src_review_verdict!=0 "
         end
-        tmp=Claim.joins(:claim_reviews).where("claims.id=claim_reviews.claim_id and (claims.sharing_mode=1 OR claims.user_id="+current_user.id.to_s+") and claim_reviews.review_sharing_mode=1 and claim_reviews.review_verdict IS NOT NULL"+remove_unsure).group("claims.id").order(Arel.sql(sort_statement("claim",params[:sort])))
+        tmp=Claim.joins(:claim_reviews).where("claims.id=claim_reviews.claim_id and (claims.sharing_mode=1 OR claims.user_id=?) and claim_reviews.review_sharing_mode=1 and claim_reviews.review_verdict IS NOT NULL ?",current_user.id.to_s,remove_unsure).group("claims.id").order(Arel.sql(sort_statement("claim",params[:sort])))
         @total_count=tmp.count.length
     elsif  (params[:sort]=="rt")
-        tmp=Claim.joins(:claim_reviews).where("claims.id=claim_reviews.claim_id and (claims.sharing_mode=1 OR claims.user_id="+current_user.id.to_s+") and claim_reviews.review_sharing_mode=1 and claim_reviews.review_verdict IS NOT NULL").group("claims.id,claim_reviews.updated_at,claim_reviews.created_at").order(Arel.sql(sort_statement("claim",params[:sort])))
+        tmp=Claim.joins(:claim_reviews).where("claims.id=claim_reviews.claim_id and (claims.sharing_mode=1 OR claims.user_id=?) and claim_reviews.review_sharing_mode=1 and claim_reviews.review_verdict IS NOT NULL",current_user.id.to_s).group("claims.id,claim_reviews.updated_at,claim_reviews.created_at").order(Arel.sql(sort_statement("claim",params[:sort])))
         @total_count=tmp.count.length
     elsif !user_signed_in?
           return

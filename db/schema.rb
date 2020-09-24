@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_06_22_025033) do
+ActiveRecord::Schema.define(version: 2020_09_14_102520) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -24,11 +24,8 @@ ActiveRecord::Schema.define(version: 2020_06_22_025033) do
   end
 
   create_table "claim_reviews", force: :cascade do |t|
-    t.string "src_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "medium_known"
-    t.integer "src_known"
     t.integer "img_review_started"
     t.integer "vid_review_started"
     t.integer "img_old"
@@ -52,12 +49,10 @@ ActiveRecord::Schema.define(version: 2020_06_22_025033) do
     t.integer "review_sharing_mode"
     t.boolean "review_is_complete"
     t.text "review_published_url"
-    t.string "note_img_review_started"
     t.string "note_img_old"
     t.string "note_img_forensic_discrepency"
     t.string "note_img_metadata_discrepency"
     t.string "note_img_logical_discrepency"
-    t.string "note_vid_review_started"
     t.string "note_vid_old"
     t.string "note_vid_forensic_discrepency"
     t.string "note_vid_metadata_discrepency"

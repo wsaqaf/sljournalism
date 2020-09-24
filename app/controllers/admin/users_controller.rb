@@ -118,7 +118,7 @@ class Admin::UsersController < Admin::BaseController
       redirect_to admin_users_path
       return
     end
-    if (ENV['BLOCKCHAIN_ENABLED'] && (params[:getbalance].present? || (params[:addtobalance].present? && (current_user.role=="admin" || (current_user.role=="client" && current_user.id=params[:id])))))
+    if (ENV['BLOCKCHAIN_ENABLED'] && (params[:getbalance].present? || (params[:addtobalance].present? && (current_user.role=="admin" || (current_user.role=="client" && current_user.id.to_s==params[:id])))))
       argmnt='{"Args":["queryRecords","{\"selector\":{\"docType\":\"wallet\",\"ownerIDInOrg\":\"'+params[:id]+'\",\"orgID\":\"'+ENV['BLOCKCHAIN_ORGID']+'\"},\"fields\":[\"balance\"]}"]}'
       cmnd="peer chaincode query -C mychannel -n factcheck -c '"+argmnt+"'"
 #puts (ENV.to_h.to_s+"\n")

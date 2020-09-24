@@ -570,4 +570,7 @@ sv:
   open_for_reviews: Öppet för faktagranskning
   reward_offered: Den erbjudna tokenbelöningen
   deadline: Deadline
-  ingen: Ingen
+  none: Ingen
+  factchecks_received: Väntar på faktagranskningar
+  factchecks_received: Fick minst en faktagranskning, öppen för mer
+  factchecks_settled: Färdig och accepterar inte längre faktagranskningar

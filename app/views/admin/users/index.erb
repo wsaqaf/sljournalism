@@ -27,6 +27,7 @@ end %>
         <li><%= t('devise.account.details') %>: <%== user.details %></li>
       <% end %>
       <% if ENV['BLOCKCHAIN_ENABLED'] %>
+<% byebug %>
         <% if user.blockchain_tx.present?  %>
               <small><a href=javascript:wallet("<%= config.relative_url_root.to_s %>","<%= config.relative_url_root.to_s+"/admin/users/"+user.id.to_s %>","<%= user.id.to_s %>","0")><%= t('show_wallet_balance') %></a><br>
                 <div id="wallet<%= user.id.to_s %>"></div>

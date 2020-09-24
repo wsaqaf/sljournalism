@@ -118,7 +118,7 @@
         end
       end %>
     <small>
-      <% if ENV['BLOCKCHAIN_ENABLED'] %>
+      <% if (ENV['BLOCKCHAIN_ENABLED'] && !claim.blockchain_tx.blank?) %>
           <b><%= t('current_status') %>: </b>
           <% if claim.status_on_blockchain.nil? %>
             <%= t('open_for_reviews') %> -
