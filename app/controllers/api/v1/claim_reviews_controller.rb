@@ -67,10 +67,13 @@ module Api
               render :json => { error:  "You cannot update blockchain-related fields", status: :ok }, status: :ok
               return
           else
-            if (ClaimReview.update(params[:id], params[:claim_reviews]))
+            begin
+              @claim_review=ClaimReview.find(params[:id])
+              @claim_review.update(claim_review_params)
+#            if (ClaimReview.update(params[:id], params[:claim_review]))
               render :json => { ok:  "Claim review updated successfully.", status: :ok }, status: :ok
               return
-            else
+            rescue
               render :json => { error:  "Could not update the claim review", status: :expectation_failed }, status: :expectation_failed
               return
             end
@@ -181,7 +184,13 @@ module Api
       end
 
       def save_to_the_blockchain_assessment
-        if (params[:blockchain_assessment]=="1") then eval="approved" else eval="rejected" end
+        if Claim.exists?(:id => @claim_review.claim_id)
+          @claim=Claim.find(@claim_review.claim_id);
+        else
+          render :json => { error:  "Claim with id "+params[:claim_id].to_s+" does not exist!", status: :not_found }, status: :not_found
+          return
+        end
+        if (params[:blockchain_assessment]=="approved") then eval="approved" else eval="rejected" end
 
         argmnt='{"Args":["assessFactcheck","'+ENV['BLOCKCHAIN_ORGID']+'","'+@claim_review.blockchain_id.to_s+'", "'+current_user.id.to_s+'", "'+eval+'", "'+escaped_str(params[:blockchain_assessment_rationale].gsub('"', ''))+'"]}'
         cmnd="peer chaincode invoke -o localhost:7050 --ordererTLSHostnameOverride orderer.example.com --tls true --cafile "+Rails.root.to_s+"/hyperledger/fabric-samples/test-network/organizations/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem -C mychannel -n factcheck --peerAddresses localhost:7051 --tlsRootCertFiles "+Rails.root.to_s+"/hyperledger/fabric-samples/test-network/organizations/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/ca.crt --peerAddresses localhost:9051 --tlsRootCertFiles "+Rails.root.to_s+"/hyperledger/fabric-samples/test-network/organizations/peerOrganizations/org2.example.com/peers/peer0.org2.example.com/tls/ca.crt -c '"+argmnt+"' --waitForEvent 2>&1"
@@ -190,7 +199,7 @@ module Api
         output=%x(#{cmnd})
 #  puts("Result:\n"+output+"\n==\n")
         begin
-          status_arr={"factchecks_open"=>1,"factchecks_received"=>2,"factchecks_settled"=>3}
+          status_arr={"factchecks_open"=>"open","factchecks_received"=>"received","factchecks_settled"=>"settled"}
           tx_no=output.match(/ txid \[(.+?)\]/)[1]
           success_confirmation=output.match(/Chaincode invoke successful\. result\: status\:200 payload\:"(.+)"/)[1]
           if (success_confirmation.length>1)
@@ -211,9 +220,7 @@ module Api
             else
               @claim.status_on_blockchain=status_arr['factchecks_received']
             end
-byebug
             @claim.save
-
           else
             @save_to_blockchain="-1"
           end
@@ -238,7 +245,7 @@ byebug
         @claim_review=current_user.claim_reviews.build(claim_review_params)
         if (@claim_review.save(validate: false))
           if (@claim_review.add_to_blockchain==1)
-            if (@claim.blockchain_tx.blank? || @claim.status_on_blockchain==3)
+            if (@claim.blockchain_tx.blank? || @claim.status_on_blockchain=="3")
               render :json => { error:  "Claim not accepting reviews on blockchain", status: :forbidden }, status: :forbidden
               @claim_review.destroy
               return

@@ -104,7 +104,7 @@ module Api
       def update
         claim=Claim.where("id=? AND user_id=?",params[:id],current_user.id.to_s).first
         if (!claim)
-          render :json => { error:  "Unable to find claim with id "+params[:id], status: :not_found }, status: :not_found
+          render :json => { error:  "Unable to find claim with id "+params[:id]+" created by user id "+current_user.id.to_s, status: :not_found }, status: :not_found
           return
         end
         if (!claim.blockchain_tx.nil?)
@@ -121,7 +121,7 @@ module Api
       def destroy
         claim=Claim.where("id=? AND user_id=?",params[:id],current_user.id.to_s).first
         if (!claim)
-          render :json => { error: "Unable to find claim with id "+params[:id], status: :not_found }, status: :not_found
+          render :json => { error: "Unable to find claim with id "+params[:id]+" created by user id "+current_user.id.to_s, status: :not_found }, status: :not_found
           return
         end
         if (!claim.blockchain_tx.nil?)

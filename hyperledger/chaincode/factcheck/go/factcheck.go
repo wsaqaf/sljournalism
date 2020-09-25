@@ -819,6 +819,26 @@ func (t *SimpleChaincode) assessFactcheck(stub shim.ChaincodeStubInterface, args
 			return shim.Error(err.Error())
 		}
 		return shim.Success([]byte("All submitted factchecks have now been evaluated and the rewards (if any) are settled: "+string(claimJSONasBytes)))
+	}	else {
+		ex, err :=time.Parse("2006-01-02 15:04",claimJSON.Deadline)
+		if err != nil {
+			return shim.Error("Error in parsing deadline: "+err.Error())
+		}
+		if ex.After(tm) {
+			claimJSON.Status = "completed"
+			claimJSON.StatusUpdatedAt = currentTime
+
+			claimJSONasBytes, err := json.Marshal(claimJSON)
+			if err != nil {
+				return shim.Error(err.Error())
+			}
+
+			err = stub.PutState(claimJSON.ClaimID, claimJSONasBytes)
+			if err != nil {
+				return shim.Error(err.Error())
+			}
+			return shim.Success([]byte("All submitted factchecks have now been evaluated and the rewards (if any) are settled: "+string(claimJSONasBytes)))
+		}
 	}
 	return shim.Success([]byte("Still waiting for more factchecks."))
 }

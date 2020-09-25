@@ -56,6 +56,7 @@ class ClaimReviewsController < ApplicationController
         output=%x(#{cmnd})
 #  puts("Result:\n"+output+"\n==\n")
         begin
+          status_arr={"factchecks_open"=>"open","factchecks_received"=>"received","factchecks_settled"=>"settled"}
           tx_no=output.match(/ txid \[(.+?)\]/)[1]
           success_confirmation=output.match(/Chaincode invoke successful\. result\: status\:200 payload\:"(.+)"/)[1]
           if (success_confirmation.length>1)
@@ -72,12 +73,11 @@ class ClaimReviewsController < ApplicationController
             end
             @claim_review.save
             if output.include? "All submitted factchecks have now been evaluated"
-              @claim.status_on_blockchain=t('factchecks_settled')
+              @claim.status_on_blockchain=status_arr['factchecks_settled']
             else
-              @claim.status_on_blockchain=t('received_factchecks')
+              @claim.status_on_blockchain=status_arr['factchecks_received']
             end
             @claim.save
-
           else
             @save_to_blockchain="-1"
           end
