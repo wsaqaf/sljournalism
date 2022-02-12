@@ -8,7 +8,7 @@ end
 gem 'rails'
 gem 'bootstrap', '~> 4.5.0'
 gem 'jquery-rails'
-gem "actionview", ">= 5.2.4.2"
+gem "actionview", ">= 5.2.6.2"
 gem 'pg'
 gem 'puma', '~> 4.3.11'
 gem 'sass-rails' #, '~> 5.0'
