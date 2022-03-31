@@ -10,7 +10,7 @@ gem 'bootstrap', '~> 4.5.0'
 gem 'jquery-rails'
 gem "actionview", ">= 5.2.6.2"
 gem 'pg'
-gem 'puma', '~> 4.3.11'
+gem 'puma', '~> 4.3.12'
 gem 'sass-rails' #, '~> 5.0'
 gem 'simple_form', '~> 5.0'
 #gem 'bootstrap-sass' #, '~> 3.4.1'
