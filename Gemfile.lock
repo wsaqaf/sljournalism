@@ -1,6 +1,11 @@
 GEM
-  remote: https://rubygems.org/
   remote: https://rails-assets.org/
+  specs:
+    rails-assets-chosen (1.8.7)
+    rails-assets-tether (2.0.0)
+
+GEM
+  remote: https://rubygems.org/
   specs:
     actioncable (5.2.6.2)
       actionpack (= 5.2.6.2)
@@ -159,7 +164,7 @@ GEM
       rb-fsevent (~> 0.9, >= 0.9.4)
       rb-inotify (~> 0.9, >= 0.9.7)
       ruby_dep (~> 1.2)
-    loofah (2.14.0)
+    loofah (2.19.1)
       crass (~> 1.0.2)
       nokogiri (>= 1.5.9)
     mail (2.7.1)
@@ -167,7 +172,7 @@ GEM
     marcel (1.0.2)
     method_source (1.0.0)
     mini_mime (1.1.2)
-    mini_portile2 (2.7.1)
+    mini_portile2 (2.8.0)
     minitest (5.15.0)
     moment-timezone-rails (1.0.0)
       momentjs-rails (>= 2.10.5, <= 3.0.0)
@@ -182,8 +187,8 @@ GEM
     net-ssh (6.1.0)
     net_http_timeout_errors (0.3.5)
     nio4r (2.5.8)
-    nokogiri (1.13.1)
-      mini_portile2 (~> 2.7.0)
+    nokogiri (1.13.10)
+      mini_portile2 (~> 2.8.0)
       racc (~> 1.4)
     oga (3.3)
       ast
@@ -207,7 +212,7 @@ GEM
       nio4r (~> 2.0)
     pundit (2.1.1)
       activesupport (>= 3.0.0)
-    racc (1.6.0)
+    racc (1.6.1)
     rack (2.2.3)
     rack-cors (1.1.1)
       rack (>= 2.0.0)
@@ -226,13 +231,11 @@ GEM
       bundler (>= 1.3.0)
       railties (= 5.2.6.2)
       sprockets-rails (>= 2.0.0)
-    rails-assets-chosen (1.8.7)
-    rails-assets-tether (2.0.0)
     rails-dom-testing (2.0.3)
       activesupport (>= 4.2.0)
       nokogiri (>= 1.6)
-    rails-html-sanitizer (1.4.2)
-      loofah (~> 2.3)
+    rails-html-sanitizer (1.4.4)
+      loofah (~> 2.19, >= 2.19.1)
     rails-i18n (5.1.3)
       i18n (>= 0.7, < 2)
       railties (>= 5.0, < 6)
